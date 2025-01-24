@@ -11,16 +11,18 @@
     "start": "vite"
   },
   "devDependencies": {
+    "@tanstack/router-plugin": "^1.97.14",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
-    "@tanstack/router-plugin": "^1.97.14",
     "@vitejs/plugin-react": "^4.3.2",
     "vite": "^6.0.3"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.0",
     "@tanstack/react-router": "^1.97.14",
     "@tanstack/router-devtools": "^1.97.14",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.0.0"
   }
 }

@@ -9,7 +9,8 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <div className="p-2 flex gap-2 text-lg">
+      <div className="p-2 flex gap-4 text-lg items-center">
+        <h1 className='font-bold mr-8'>Club Sabana</h1>
         <Link
           to="/"
           activeProps={{
@@ -20,12 +21,21 @@ function RootComponent() {
           Home
         </Link>{' '}
         <Link
-          to="/about"
+          to="/register"
+          activeProps={{
+            className: 'font-bold',
+          }}
+          className='bg-gray-950 px-2 py-1 rounded-xl hover:bg-black transition-colors duration-100'
+        >
+          Register
+        </Link>
+        <Link
+          to="/login"
           activeProps={{
             className: 'font-bold',
           }}
         >
-          About
+          Login
         </Link>
       </div>
       <hr />
