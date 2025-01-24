@@ -7,7 +7,7 @@ export const Route = createFileRoute('/')({
 
 function HomeComponent() {
   return (
-    <div className="p-4">
+    <div className="p-4 w-full min-h-screen">
       <h3>Registrate en sabana club ahora</h3>
     </div>
   )

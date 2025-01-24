@@ -9,7 +9,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <>
-      <div className="p-2 flex gap-4 text-lg items-center bg-gray-950">
+      <div className="p-2 flex gap-4 text-lg items-center dark:bg-gray-950">
         <h1 className='font-bold mr-8'>Club Sabana</h1>
         <Link
           to="/"
