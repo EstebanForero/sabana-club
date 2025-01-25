@@ -10,7 +10,7 @@ export const Route = createFileRoute('/dashboard/')({
 function RouteComponent({ username = 'Usuario' }) {
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 gap-[60px] bg-gray-950">
+      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 gap-[50px] bg-gray-950">
         <h1 className="text-2xl font-bold text-center text-white">
           Bienvenido {username}
         </h1>
