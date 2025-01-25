@@ -1,6 +1,3 @@
-import { Button } from "@heroui/button";
-import { Form } from "@heroui/form";
-import { Input } from "@heroui/input";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
@@ -21,6 +18,7 @@ function RouteComponent() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [idType, setIdType] = useState<string>("");
 
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
@@ -33,7 +31,25 @@ function RouteComponent() {
           Únete a Club Sabana
         </h2>
         <form>
-          <div className="grid gap-7">
+          <div className="grid gap-3">
+            <div className="flex flex-col">
+              <label htmlFor="idType" className="text-sm text-gray-300 mb-2">
+                Tipo de Identificación
+              </label>
+              <select
+                id="idType"
+                value={idType}
+                onChange={(e) => setIdType(e.target.value)}
+                className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              >
+                <option value="">Selecciona tu tipo de identificación</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+                <option value="ti">Tarjeta de Identidad</option>
+                <option value="ce">Cédula de Extranjería</option>
+                <option value="passport">Pasaporte</option>
+              </select>
+            </div>
             <div className="grid grid-cols-[1fr_200px_1fr] ">
               <div className="flex flex-col">
                 <label htmlFor="id" className="text-sm text-gray-300 mb-2">
@@ -83,6 +99,9 @@ function RouteComponent() {
                   placeholder="Ingresa tu correo electrónico"
                   required
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm">{emailError}</p>
+                )}
               </div>
 
               <div className="flex flex-col col-start-3">
