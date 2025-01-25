@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
+import { GiTennisRacket } from 'react-icons/gi';
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -68,28 +69,33 @@ function RouteComponent() {
 
     return null;
   };
-
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-white">
       {formType ? (
         renderForm()
       ) : (
-        <div className="flex gap-4">
-          <button
-            onClick={() => setFormType("crear")}
-            className="p-4 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Crear Entrenamiento
-          </button>
-          <button
-            onClick={() => setFormType("asistencia")}
-            className="p-4 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Asistencia al Entrenamiento
-          </button>
+        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col gap-6 bg-gray-950">
+          <h1 className="text-2xl font-bold text-center text-white">
+            Bienvenido a Entrenamientos
+          </h1>
+          <div className="flex justify-center gap-6">
+            <button
+              onClick={() => setFormType("crear")}
+              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+            >
+              Crear Entrenamiento
+              <GiTennisRacket />
+            </button>
+            <button
+              onClick={() => setFormType("asistencia")}
+              className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600 transition-colors duration-100 flex items-center justify-center gap-2"
+            >
+              Asistencia
+              <GiTennisRacket />
+            </button>
+          </div>
         </div>
       )}
     </div>
-    
   );
 }
