@@ -1,16 +1,30 @@
-import { Button } from '@heroui/button';
-import { Form } from '@heroui/form';
-import { Input } from '@heroui/input';
-import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react';
+import { Button } from "@heroui/button";
+import { Form } from "@heroui/form";
+import { Input } from "@heroui/input";
+import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
-export const Route = createFileRoute('/register')({
+import {
+  handleNumericChange,
+  handleEmailChange,
+  handlePasswordChange,
+  handleConfirmPasswordChange,
+} from "../validations/validations";
+
+export const Route = createFileRoute("/register")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
+  const [id, setId] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const [action, setAction] = useState(null);
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
   return (
     <div className="flex justify-center items-center min-h-screen">
@@ -20,16 +34,18 @@ function RouteComponent() {
         </h2>
         <form>
           <div className="grid gap-7">
-            <div className="grid grid-cols-[1fr_200px_1fr] gap-5">
+            <div className="grid grid-cols-[1fr_200px_1fr] ">
               <div className="flex flex-col">
                 <label htmlFor="id" className="text-sm text-gray-300 mb-2">
-                  ID
+                  Identificación
                 </label>
                 <input
                   id="id"
                   type="text"
+                  value={id}
+                  onChange={(e) => handleNumericChange(e, setId, setPhone)}
                   className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Ingresa tu ID"
+                  placeholder="Ingresa tu Identificación"
                   required
                 />
               </div>
@@ -51,7 +67,7 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[1fr_200px_1fr] gap-5">
+            <div className="grid grid-cols-[1fr_200px_1fr] ">
               <div className="flex flex-col">
                 <label htmlFor="email" className="text-sm text-gray-300 mb-2">
                   Correo electrónico
@@ -59,6 +75,10 @@ function RouteComponent() {
                 <input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) =>
+                    handleEmailChange(e, setEmail, setEmailError)
+                  }
                   className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Ingresa tu correo electrónico"
                   required
@@ -72,6 +92,8 @@ function RouteComponent() {
                 <input
                   id="phone"
                   type="tel"
+                  value={phone}
+                  onChange={(e) => handleNumericChange(e, setId, setPhone)}
                   className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Ingresa tu número de teléfono"
                   required
@@ -79,7 +101,7 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[1fr_200px_1fr] gap-5">
+            <div className="grid grid-cols-[1fr_200px_1fr] ">
               <div className="flex flex-col">
                 <label
                   htmlFor="password"
@@ -90,10 +112,17 @@ function RouteComponent() {
                 <input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) =>
+                    handlePasswordChange(e, setPassword, setPasswordError)
+                  }
                   className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Crea una contraseña"
                   required
                 />
+                {passwordError && (
+                  <p className="text-red-500 text-sm">{passwordError}</p>
+                )}
               </div>
 
               <div className="flex flex-col col-start-3">
@@ -104,12 +133,24 @@ function RouteComponent() {
                   Confirmar Contraseña
                 </label>
                 <input
-                  id="password"
+                  id="confirmPassword"
                   type="password"
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    handleConfirmPasswordChange(
+                      e,
+                      password,
+                      setConfirmPassword,
+                      setConfirmPasswordError
+                    )
+                  }
                   className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Crea una contraseña"
+                  placeholder="Confirma tu contraseña"
                   required
                 />
+                {confirmPasswordError && (
+                  <p className="text-red-500 text-sm">{confirmPasswordError}</p>
+                )}
               </div>
             </div>
 
