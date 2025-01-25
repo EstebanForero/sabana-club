@@ -51,6 +51,14 @@ const linkComponents: LinkRawData[] = [
     alignment: 'center'
   },
   {
+    linkComponent: <Link to='/dashboard'
+      activeProps={{
+        className: 'border-b border-white'
+      }}
+    >Dashboard</Link>,
+    alignment: 'center'
+  },
+  {
     linkComponent: <Link to='/register' className='px-3 py-2 bg-blue-800 rounded-xl hover:bg-blue-600 transition-colors duration-100'>
       Sign Up
     </Link>,

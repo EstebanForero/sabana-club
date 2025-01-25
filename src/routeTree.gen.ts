@@ -11,18 +11,17 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SearchImport } from './routes/search'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
+import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as DashboardTorneosImport } from './routes/dashboard/torneos'
+import { Route as DashboardMatriculaImport } from './routes/dashboard/matricula'
+import { Route as DashboardInformesImport } from './routes/dashboard/informes'
+import { Route as DashboardEntrenamientosImport } from './routes/dashboard/entrenamientos'
 
 // Create/Update Routes
-
-const SearchRoute = SearchImport.update({
-  id: '/search',
-  path: '/search',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
@@ -36,10 +35,46 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardIndexRoute = DashboardIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardTorneosRoute = DashboardTorneosImport.update({
+  id: '/torneos',
+  path: '/torneos',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardMatriculaRoute = DashboardMatriculaImport.update({
+  id: '/matricula',
+  path: '/matricula',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardInformesRoute = DashboardInformesImport.update({
+  id: '/informes',
+  path: '/informes',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardEntrenamientosRoute = DashboardEntrenamientosImport.update({
+  id: '/entrenamientos',
+  path: '/entrenamientos',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -51,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -67,61 +109,150 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
-    '/search': {
-      id: '/search'
-      path: '/search'
-      fullPath: '/search'
-      preLoaderRoute: typeof SearchImport
-      parentRoute: typeof rootRoute
+    '/dashboard/entrenamientos': {
+      id: '/dashboard/entrenamientos'
+      path: '/entrenamientos'
+      fullPath: '/dashboard/entrenamientos'
+      preLoaderRoute: typeof DashboardEntrenamientosImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/informes': {
+      id: '/dashboard/informes'
+      path: '/informes'
+      fullPath: '/dashboard/informes'
+      preLoaderRoute: typeof DashboardInformesImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/matricula': {
+      id: '/dashboard/matricula'
+      path: '/matricula'
+      fullPath: '/dashboard/matricula'
+      preLoaderRoute: typeof DashboardMatriculaImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/torneos': {
+      id: '/dashboard/torneos'
+      path: '/torneos'
+      fullPath: '/dashboard/torneos'
+      preLoaderRoute: typeof DashboardTorneosImport
+      parentRoute: typeof DashboardImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexImport
+      parentRoute: typeof DashboardImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface DashboardRouteChildren {
+  DashboardEntrenamientosRoute: typeof DashboardEntrenamientosRoute
+  DashboardInformesRoute: typeof DashboardInformesRoute
+  DashboardMatriculaRoute: typeof DashboardMatriculaRoute
+  DashboardTorneosRoute: typeof DashboardTorneosRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardEntrenamientosRoute: DashboardEntrenamientosRoute,
+  DashboardInformesRoute: DashboardInformesRoute,
+  DashboardMatriculaRoute: DashboardMatriculaRoute,
+  DashboardTorneosRoute: DashboardTorneosRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
+  '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
+  '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/matricula': typeof DashboardMatriculaRoute
+  '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
+  '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
+  '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/matricula': typeof DashboardMatriculaRoute
+  '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/search': typeof SearchRoute
+  '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
+  '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/matricula': typeof DashboardMatriculaRoute
+  '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/register' | '/search'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/entrenamientos'
+    | '/dashboard/informes'
+    | '/dashboard/matricula'
+    | '/dashboard/torneos'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/search'
-  id: '__root__' | '/' | '/login' | '/register' | '/search'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/dashboard/entrenamientos'
+    | '/dashboard/informes'
+    | '/dashboard/matricula'
+    | '/dashboard/torneos'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/register'
+    | '/dashboard/entrenamientos'
+    | '/dashboard/informes'
+    | '/dashboard/matricula'
+    | '/dashboard/torneos'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
-  SearchRoute: typeof SearchRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
-  SearchRoute: SearchRoute,
 }
 
 export const routeTree = rootRoute
@@ -135,13 +266,23 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/dashboard",
         "/login",
-        "/register",
-        "/search"
+        "/register"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.tsx",
+      "children": [
+        "/dashboard/entrenamientos",
+        "/dashboard/informes",
+        "/dashboard/matricula",
+        "/dashboard/torneos",
+        "/dashboard/"
+      ]
     },
     "/login": {
       "filePath": "login.tsx"
@@ -149,8 +290,25 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.tsx"
     },
-    "/search": {
-      "filePath": "search.tsx"
+    "/dashboard/entrenamientos": {
+      "filePath": "dashboard/entrenamientos.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/informes": {
+      "filePath": "dashboard/informes.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/matricula": {
+      "filePath": "dashboard/matricula.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/torneos": {
+      "filePath": "dashboard/torneos.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/": {
+      "filePath": "dashboard/index.tsx",
+      "parent": "/dashboard"
     }
   }
 }
