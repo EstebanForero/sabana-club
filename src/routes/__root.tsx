@@ -3,6 +3,7 @@ import { Link, Outlet, createRootRoute, rootRouteId, useMatch, useParams, useRou
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import NavBarComponent from './../components/navBarComponent'
 
+
 export const Route = createRootRoute({
   component: RootComponent,
 })
