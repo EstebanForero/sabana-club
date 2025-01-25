@@ -1,12 +1,12 @@
 import { Link, Outlet } from '@tanstack/react-router'
 import React from 'react'
-import { FaHome, FaSignOutAlt, FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa' // Import icons from FontAwesome
-import { GiTennisRacket } from 'react-icons/gi' // Import tennis racket icon from Game Icons
+import { FaHome, FaSignOutAlt, FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa' 
+import { GiTennisRacket } from 'react-icons/gi' 
 
 type LinkData = {
   linkText: string
   to: string
-  icon?: React.ReactNode // Optional icon for the link
+  icon?: React.ReactNode 
 }
 
 const links: LinkData[] = [
@@ -32,7 +32,7 @@ const NavBarDashboard = () => {
             }}
           >
             {item.linkText}
-            {item.icon} {/* Render the icon after the text */}
+            {item.icon}
           </Link>
         ))}
       </nav>
