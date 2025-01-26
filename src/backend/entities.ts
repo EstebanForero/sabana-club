@@ -3,9 +3,19 @@ export type UserCreationInfo = {
   nombre: string;
   contrasena: string;
   correo: string;
-  telefono: string;
+  telefono: number;
   identificacion: string;
   nombre_tipo_identificacion: string;
+};
+
+export type UserInfo = {
+  id_persona: string;
+  nombre: string;
+  correo: string;
+  telefono: number;
+  identificacion: string;
+  nombre_tipo_identificacion: string;
+  es_admin: boolean;
 };
 
 export type Tournament = {
