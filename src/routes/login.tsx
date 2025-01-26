@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { LogInInfo, logInUser } from "backend/auth";
+import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { LogInInfo, logInUser } from "../backend/auth";
 import { UserCreationInfo } from "backend/entities";
 import { useState } from "react";
 
@@ -10,16 +10,22 @@ export const Route = createFileRoute("/login")({
 function RouteComponent() {
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({
     identificacion: "",
-    contrasena: ""
-  })
+    contrasena: "",
+  });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const onLogIn = async (logInInfo: LogInInfo) => {
+    setErrorMessage(null);
     try {
-      await logInUser(logInInfo)
+      await logInUser(logInInfo);
+      redirect({ to: "/dashboard" });
     } catch (error) {
-      console.log('error loging user')
+      console.log("error loging user");
+      setErrorMessage(
+        "Error al iniciar sesión. Por favor, verifica tus credenciales."
+      );
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
@@ -40,10 +46,12 @@ function RouteComponent() {
                 id="identifier"
                 type="text"
                 value={logInInfo.identificacion}
-                onChange={(e) => setLogInInfo({
-                  ...logInInfo,
-                  identificacion: e.target.value
-                })}
+                onChange={(e) =>
+                  setLogInInfo({
+                    ...logInInfo,
+                    identificacion: e.target.value,
+                  })
+                }
                 className="p-2 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ingresa tu correo electrónico o teléfono"
                 required
@@ -58,15 +66,23 @@ function RouteComponent() {
                 id="password"
                 type="password"
                 value={logInInfo.contrasena}
-                onChange={(e) => setLogInInfo({
-                  ...logInInfo,
-                  contrasena: e.target.value
-                })}
+                onChange={(e) =>
+                  setLogInInfo({
+                    ...logInInfo,
+                    contrasena: e.target.value,
+                  })
+                }
                 className="p-2 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Ingresa tu contraseña"
                 required
               />
             </div>
+
+            {errorMessage && (
+              <div className="text-red-500 text-center mb-4">
+                {errorMessage}
+              </div>
+            )}
 
             <div className="flex justify-center">
               <button
