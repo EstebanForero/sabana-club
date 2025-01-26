@@ -19,3 +19,15 @@ export type UserTournamentRegistration = {
   puesto: number;
 };
 
+export type Training = {
+  id_entrenamiento: string;
+  tiempo_minutos: number;
+  nombre_entrenamiento: string;
+};
+
+export type TrainingRegistration = {
+  id_entrenamiento: string;
+  id_persona: string;
+};
+
+
