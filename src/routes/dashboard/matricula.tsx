@@ -1,23 +1,61 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { createTuition } from '../../backend/tuition';
 
 export const Route = createFileRoute('/dashboard/matricula')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [selectedPlan, setSelectedPlan] = useState('');
+  const [selectedPlan, setSelectedPlan] = useState<'Plan Bronze' | 'Plan Plata' | 'Plan Oro' | ''>('');
   const [showModal, setShowModal] = useState(false);
+  const [paymentAmount, setPaymentAmount] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handlePayment = (plan: string) => {
-    setSelectedPlan(plan);
-    setShowModal(true); 
+  const planDetails: Record<'Plan Bronze' | 'Plan Plata' | 'Plan Oro', { price: number; description: string }> = {
+    'Plan Bronze': {
+      price: 10,
+      description:
+        'Perfecto para iniciarte en el tenis. Accede a la plataforma para revisar tus estadísticas básicas, agendar entrenamientos ocasionales y participar en torneos locales.',
+    },
+    'Plan Plata': {
+      price: 20,
+      description:
+        'Ideal para jugadores comprometidos. Monitorea tu desempeño con estadísticas detalladas, organiza entrenamientos frecuentes y accede a torneos nacionales.',
+    },
+    'Plan Oro': {
+      price: 30,
+      description:
+        'Diseñado para los más competitivos. Disfruta de estadísticas avanzadas, entrenamientos ilimitados y prioridad en la inscripción a torneos internacionales.',
+    },
   };
 
-  const confirmPayment = () => {
-    setShowModal(false);
-    alert(`Pago confirmado para el ${selectedPlan}`);
+  const handlePayment = (plan: 'Plan Bronze' | 'Plan Plata' | 'Plan Oro') => {
+    setSelectedPlan(plan);
+    setPaymentAmount(planDetails[plan].price);
+    setShowModal(true);
+  };
+
+  const confirmPayment = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      if (selectedPlan && paymentAmount !== null) {
+        await createTuition({
+          id_persona: 'USER_ID',
+          monto_usd: paymentAmount,
+        });
+        alert(`Pago confirmado para el ${selectedPlan} por $${paymentAmount}`);
+        setShowModal(false);
+      }
+    } catch (err) {
+      setError('Error al procesar el pago. Intenta nuevamente.');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -27,51 +65,33 @@ function RouteComponent() {
         <h1 className="text-l text-left text-white mb-7 mt-5">Elige una membresía</h1>
 
         <div className="grid grid-cols-3 gap-4">
-          <div className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35">
-            <p className="text-sm font-bold mb-4">Plan Bronze</p>
-            <p className="text-sm text-gray-400 mb-7">
-              Perfecto para iniciarte en el tenis. Accede a la plataforma para revisar tus estadísticas básicas, agendar entrenamientos ocasionales y participar en torneos locales.
-            </p>
-            <button
-              onClick={() => handlePayment('Plan Bronze')}
-              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+          {Object.entries(planDetails).map(([plan, details]) => (
+            <div
+              key={plan}
+              className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35"
             >
-              USD 10$
-            </button>
-          </div>
-          <div className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35">
-            <p className="text-sm font-bold mb-4">Plan Plata</p>
-            <p className="text-sm text-gray-400 mb-7">
-              Ideal para jugadores comprometidos. Monitorea tu desempeño con estadísticas detalladas, organiza entrenamientos frecuentes y accede a torneos nacionales.
-            </p>
-            <button
-              onClick={() => handlePayment('Plan Plata')}
-              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
-            >
-              USD 20$
-            </button>
-          </div>
-          <div className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35">
-            <p className="text-sm font-bold mb-4">Plan Oro</p>
-            <p className="text-sm text-gray-400 mb-7">
-              Diseñado para los más competitivos. Disfruta de estadísticas avanzadas, entrenamientos ilimitados y prioridad en la inscripción a torneos internacionales.
-            </p>
-            <button
-              onClick={() => handlePayment('Plan Oro')}
-              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
-            >
-              USD 30$
-            </button>
-          </div>
+              <p className="text-sm font-bold mb-4">{plan}</p>
+              <p className="text-sm text-gray-400 mb-7">{details.description}</p>
+              <button
+                onClick={() => handlePayment(plan as 'Plan Bronze' | 'Plan Plata' | 'Plan Oro')}
+                className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+              >
+                Pagar ${details.price}
+              </button>
+            </div>
+          ))}
         </div>
 
-        
-        {showModal && (
+        {loading && <p className="text-center text-white">Procesando...</p>}
+        {error && <p className="text-center text-red-500">{error}</p>}
+
+        {showModal && paymentAmount !== null && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
               <h2 className="text-xl font-bold mb-4 text-black">Confirmación de Pago</h2>
               <p className="text-gray-600 mb-6">
-                ¿Estás seguro de que deseas pagar por el <strong>{selectedPlan}</strong>?
+                ¿Estás seguro de que deseas pagar <strong>${paymentAmount}</strong> por el{' '}
+                <strong>{selectedPlan}</strong>?
               </p>
               <div className="flex justify-end gap-4">
                 <button
