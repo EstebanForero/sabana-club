@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations'; 
 
@@ -18,6 +18,32 @@ function RouteComponent() {
   
   const [formType, setFormType] = useState<"crear" | "asistencia" | null>(null);
   const [duration, setDuration] = useState<number | ''>(''); // State for duration
+  const [entrenamientos, setEntrenamientos] = useState<string[]>([]); // Lista de entrenamientos
+  const [participantes, setParticipantes] = useState<string[]>([]); // Lista de participantes
+  const [loading, setLoading] = useState<boolean>(false); // Estado de carga
+
+  // Solicita datos al backend al cargar el componente
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const entrenamientosResponse = await fetch('/api/entrenamientos'); // Endpoint para entrenamientos
+        const participantesResponse = await fetch('/api/participantes'); // Endpoint para participantes
+
+        const entrenamientosData = await entrenamientosResponse.json();
+        const participantesData = await participantesResponse.json();
+
+        setEntrenamientos(entrenamientosData);
+        setParticipantes(participantesData);
+      } catch (error) {
+        console.error("Error al cargar datos del backend:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -29,6 +55,10 @@ function RouteComponent() {
   };
 
   const renderForm = () => {
+    if (loading) {
+      return <p>Cargando datos...</p>;
+    }
+
     if (formType === "crear") {
       return (
         <form className="flex flex-col gap-4 p-4 border rounded shadow-md w-full max-w-md bg-white">
@@ -38,7 +68,6 @@ function RouteComponent() {
             placeholder="Nombre del entrenamiento"
             className="p-2 border rounded"
           />
-          <input type="date" className="p-2 border rounded" />
           <input
             type="number"
             placeholder="Duracíon del entrenamiento en horas"
@@ -61,16 +90,32 @@ function RouteComponent() {
       return (
         <form className="flex flex-col gap-4 p-4 border rounded shadow-md w-full max-w-md bg-white">
           <h2 className="text-xl font-bold">Formulario Asistencia</h2>
-          <input
-            type="text"
-            placeholder="Nombre del entrenamiento"
+          <select
             className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            placeholder="Nombre del participante"
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Selecciona el entrenamiento
+            </option>
+            {entrenamientos.map((entrenamiento, index) => (
+              <option key={index} value={entrenamiento}>
+                {entrenamiento}
+              </option>
+            ))}
+          </select>
+          <select
             className="p-2 border rounded"
-          />
+            defaultValue=""
+          >
+            <option value="" disabled>
+              Selecciona el ID del participante
+            </option>
+            {participantes.map((participante, index) => (
+              <option key={index} value={participante}>
+                {participante}
+              </option>
+            ))}
+          </select>
           <button
             type="submit"
             className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
