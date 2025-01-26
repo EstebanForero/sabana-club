@@ -19,6 +19,16 @@ function RouteComponent() {
       </button>
     </div>
   </div>
+  <div className="shadow-md p-4 rounded-lg bg-white">
+        <h2 className="text-xl font-bold mb-4">Register Player</h2>
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold">Tournament</label>
+          <select className="w-full p-2 border rounded">
+            <option value="">Select a tournament</option>
+          </select>
+        </div>
+        
+  </div>
 
   </div>
 }
