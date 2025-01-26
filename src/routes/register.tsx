@@ -15,10 +15,10 @@ export const Route = createFileRoute("/register")({
 });
 
 function RouteComponent() {
-  const [id, setId] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [identificador, setIdentificador] = useState<string>("");
+  const [telefono, setTelefono] = useState<string>("");
+  const [correo, setCorreo] = useState<string>("");
+  const [password, setContrasena] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [idType, setIdType] = useState<string>("");
 
@@ -69,10 +69,10 @@ function RouteComponent() {
                 required
               >
                 <option value="">Selecciona tu tipo de identificación</option>
-                <option value="cc">Cédula de Ciudadanía</option>
-                <option value="ti">Tarjeta de Identidad</option>
-                <option value="ce">Cédula de Extranjería</option>
-                <option value="passport">Pasaporte</option>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="TI">Tarjeta de Identidad</option>
+                <option value="CE">Cédula de Extranjería</option>
+                <option value="PASSPORT">Pasaporte</option>
               </select>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
