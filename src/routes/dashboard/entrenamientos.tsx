@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
+import { validateNumericInput } from '../../validations/validations'; 
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -16,6 +17,16 @@ export default function App() {
 function RouteComponent() {
   
   const [formType, setFormType] = useState<"crear" | "asistencia" | null>(null);
+  const [duration, setDuration] = useState<number | ''>(''); // State for duration
+
+  const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (validateNumericInput(value) && Number(value) >= 0) { // Validate input
+      setDuration(Number(value));
+    } else {
+      setDuration(''); 
+    }
+  };
 
   const renderForm = () => {
     if (formType === "crear") {
@@ -30,8 +41,11 @@ function RouteComponent() {
           <input type="date" className="p-2 border rounded" />
           <input
             type="number"
-            placeholder="Duracíon del entrenamiento"
+            placeholder="Duracíon del entrenamiento en horas"
             className="p-2 border rounded"
+            value={duration} 
+            onChange={handleDurationChange} 
+            min="0" 
           />
           <button
             type="submit"
@@ -69,6 +83,7 @@ function RouteComponent() {
 
     return null;
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
       {formType ? (
