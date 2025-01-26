@@ -49,15 +49,6 @@ function RouteComponent() {
         </div>
 
         <div className="mb-4">
-          <label className="block mb-1 font-semibold text-gray-700">Score</label>
-          <input 
-            type="text" 
-            placeholder="Score" 
-            className="w-full p-2 border rounded text-gray-800" 
-          />
-        </div>
-
-        <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-700">Position</label>
           <input 
             type="text" 
@@ -82,7 +73,6 @@ function RouteComponent() {
                 <tr className="bg-gray-100">
                   <th className="border p-2 text-left text-gray-800">Player Name</th>
                   <th className="border p-2 text-left text-gray-800">Identification</th>
-                  <th className="border p-2 text-left text-gray-800">Score</th>
                   <th className="border p-2 text-left text-gray-800">Position</th>
                 </tr>
               </thead>
