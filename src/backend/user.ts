@@ -11,3 +11,6 @@ export async function getAllUsers(): Promise<UserInfo[]> {
   return await ky.get(`${backendUrl}/user/all`).json<UserInfo[]>();
 }
 
+export async function getCurrentUser(): Promise<UserInfo> {
+  return await ky.get(`${backendUrl}/user`).json<UserInfo>();
+}

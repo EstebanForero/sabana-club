@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useState } from "react";
+import { registerUser } from "../backend/auth";
+import { UserCreationInfo } from "backend/entities";
 
 import {
   handleNumericChange,
@@ -24,6 +26,24 @@ function RouteComponent() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
+  const [userCreationInfo, setUserCreationInfo] = useState<UserCreationInfo>({
+    nombre: "",
+    contrasena: "",
+    correo: "",
+    telefono: "",
+    identificacion: "",
+    nombre_tipo_identificacion: "",
+  });
+
+  const onRegister = async (userCreationInfo: UserCreationInfo) => {
+    try {
+      await registerUser(userCreationInfo);
+      redirect({ to: "/login" });
+    } catch (error) {
+      console.log("error registering user");
+    }
+  };
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="w-full max-w-4xl p-6 bg-gray-950 rounded-lg shadow-lg">
@@ -38,8 +58,13 @@ function RouteComponent() {
               </label>
               <select
                 id="idType"
-                value={idType}
-                onChange={(e) => setIdType(e.target.value)}
+                value={userCreationInfo.nombre_tipo_identificacion}
+                onChange={(e) =>
+                  setUserCreationInfo({
+                    ...userCreationInfo,
+                    nombre_tipo_identificacion: e.target.value,
+                  })
+                }
                 className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               >
@@ -177,6 +202,7 @@ function RouteComponent() {
               <button
                 type="submit"
                 className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={() => onRegister(userCreationInfo)}
               >
                 Registrar
               </button>
