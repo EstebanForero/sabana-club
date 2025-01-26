@@ -11,7 +11,6 @@ export async function getAllUsers(): Promise<UserInfo[]> {
   return await ky.get(`${backendUrl}/user/all`).json<UserInfo[]>();
 }
 
-// Solo se puede usar despues de iniciar sesion
 export async function getCurrentUser(): Promise<UserInfo> {
   return await ky.get(`${backendUrl}/user`).json<UserInfo>();
 }
