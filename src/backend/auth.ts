@@ -3,7 +3,7 @@ import { UserCreationInfo } from "./entities";
 
 const backendUrl = "https://sabana-club-backend.fly.dev/"
 
-export function registerUser(userCreationInfo: UserCreationInfo) {
+export async function registerUser(userCreationInfo: UserCreationInfo) {
   ky.post(`${backendUrl}/user`, {
     json: userCreationInfo
   })
@@ -14,7 +14,7 @@ export type LogInInfo = {
   contrasena: string,
 }
 
-export function logInUser(logInInfo: LogInInfo) {
+export async function logInUser(logInInfo: LogInInfo) {
   ky.post(`${backendUrl}/log_in`, {
     json: logInInfo
   })
