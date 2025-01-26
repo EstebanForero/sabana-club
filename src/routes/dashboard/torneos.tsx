@@ -27,7 +27,7 @@ function RouteComponent() {
             <option value="">Select a tournament</option>
           </select>
         </div>
-        
+
         <div className="mb-4">
           <label className="block mb-1 font-semibold">Player Name</label>
           <input 
@@ -42,6 +42,24 @@ function RouteComponent() {
           <input 
             type="text" 
             placeholder="Player Identification" 
+            className="w-full p-2 border rounded" 
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold">Score</label>
+          <input 
+            type="text" 
+            placeholder="Score" 
+            className="w-full p-2 border rounded" 
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block mb-1 font-semibold">Position</label>
+          <input 
+            type="text" 
+            placeholder="Position" 
             className="w-full p-2 border rounded" 
           />
         </div>
