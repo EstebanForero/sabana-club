@@ -25,7 +25,7 @@ function RouteComponent() {
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="flex justify-center items-center min-h-screen bg-gray-900">
       <div className="w-full max-w-4xl p-6 bg-gray-950 rounded-lg shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-6">
           Únete a Club Sabana
@@ -50,7 +50,7 @@ function RouteComponent() {
                 <option value="passport">Pasaporte</option>
               </select>
             </div>
-            <div className="grid grid-cols-[1fr_200px_1fr] ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="flex flex-col">
                 <label htmlFor="id" className="text-sm text-gray-300 mb-2">
                   Identificación
@@ -66,7 +66,7 @@ function RouteComponent() {
                 />
               </div>
 
-              <div className="flex flex-col col-start-3">
+              <div className="flex flex-col">
                 <label
                   htmlFor="username"
                   className="text-sm text-gray-300 mb-2"
@@ -83,7 +83,7 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[1fr_200px_1fr] ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="flex flex-col">
                 <label htmlFor="email" className="text-sm text-gray-300 mb-2">
                   Correo electrónico
@@ -104,7 +104,7 @@ function RouteComponent() {
                 )}
               </div>
 
-              <div className="flex flex-col col-start-3">
+              <div className="flex flex-col">
                 <label htmlFor="phone" className="text-sm text-gray-300 mb-2">
                   Teléfono
                 </label>
@@ -120,7 +120,7 @@ function RouteComponent() {
               </div>
             </div>
 
-            <div className="grid grid-cols-[1fr_200px_1fr] ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <div className="flex flex-col">
                 <label
                   htmlFor="password"
@@ -144,9 +144,9 @@ function RouteComponent() {
                 )}
               </div>
 
-              <div className="flex flex-col col-start-3">
+              <div className="flex flex-col">
                 <label
-                  htmlFor="password"
+                  htmlFor="confirmPassword"
                   className="text-sm text-gray-300 mb-2"
                 >
                   Confirmar Contraseña
