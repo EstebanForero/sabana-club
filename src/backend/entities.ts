@@ -30,4 +30,13 @@ export type TrainingRegistration = {
   id_persona: string;
 };
 
+export type Tuition = {
+  id_persona: string;
+  monto_usd: number;
+  fecha_inscripccion: string;
+};
 
+export type TuitionInfo = {
+  id_persona: string;
+  monto_usd: number;
+};
