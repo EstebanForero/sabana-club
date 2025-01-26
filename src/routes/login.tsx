@@ -1,6 +1,5 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import { LogInInfo, logInUser } from "../backend/auth";
-import { UserCreationInfo } from "backend/entities";
 import { useState } from "react";
 
 export const Route = createFileRoute("/login")({
