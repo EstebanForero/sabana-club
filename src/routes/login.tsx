@@ -18,7 +18,6 @@ function RouteComponent() {
   const onLogIn = async (logInInfo: LogInInfo) => {
     setErrorMessage(null);
     try {
-      console.log("trying to log in the user")
       await logInUser(logInInfo);
       console.log("user is logged in now")
       navigate({ to: '/dashboard' })
