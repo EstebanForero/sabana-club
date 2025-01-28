@@ -2,7 +2,7 @@
 import ky from "ky";
 import { Tuition, TuitionInfo } from "./entities";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/";
+const backendUrl = "https://sabana-club-backend.fly.dev";
 
 export async function createTuition(tuitionInfo: TuitionInfo): Promise<void> {
   await ky.post(`${backendUrl}/tuition`, {

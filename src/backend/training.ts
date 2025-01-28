@@ -1,7 +1,7 @@
 import ky from "ky";
 import { Training, TrainingRegistration } from "./entities";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/";
+const backendUrl = "https://sabana-club-backend.fly.dev";
 
 // This function returns the newly crted training id
 export async function createTraining(trainingInfo: TrainingInfo): Promise<string> {

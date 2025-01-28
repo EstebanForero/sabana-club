@@ -2,7 +2,7 @@
 import ky from "ky";
 import { Tournament, UserTournamentRegistration } from "./entities";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/";
+const backendUrl = "https://sabana-club-backend.fly.dev";
 
 export async function createTournament(nombre: string): Promise<void> {
   await ky.post(`${backendUrl}/tournament/${nombre}`);

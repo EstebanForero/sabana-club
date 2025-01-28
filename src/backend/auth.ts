@@ -1,10 +1,10 @@
 import ky from "ky";
 import { UserCreationInfo } from "./entities";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/"
+const backendUrl = "https://sabana-club-backend.fly.dev"
 
 export async function registerUser(userCreationInfo: UserCreationInfo) {
-  ky.post(`${backendUrl}/user`, {
+  await ky.post(`${backendUrl}/user`, {
     json: userCreationInfo
   })
 }
@@ -15,7 +15,7 @@ export type LogInInfo = {
 }
 
 export async function logInUser(logInInfo: LogInInfo) {
-  ky.post(`${backendUrl}/log_in`, {
+  await ky.post(`${backendUrl}/log_in`, {
     json: logInInfo
   })
 }
