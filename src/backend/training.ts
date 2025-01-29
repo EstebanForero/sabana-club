@@ -25,6 +25,15 @@ export async function getUsersInTraining(idEntrenamiento: string): Promise<Train
   return await ky.get(`${backendUrl}/training/users/${idEntrenamiento}`).json<TrainingRegistration[]>();
 }
 
+// Obtiene los entrenamientos de el usuario registrado actualmente
+export async function getTrainingsForCurrentUser(): Promise<Training[]> {
+  return await ky.get(`${backendUrl}/training`).json<Training[]>();
+}
+
+// El user identifier puede ser email o telefono o el id de el usuario
+export async function getTrainingsForUser(userIdentifier: string): Promise<Training[]> {
+  return await ky.get(`${backendUrl}/training/${userIdentifier}`).json<Training[]>();
+}
 
 export type TrainingInfo = {
   tiempo_minutos: number;

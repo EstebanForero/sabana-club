@@ -1,3 +1,8 @@
+export type UserTournamentInfo = {
+  id_torneo: String,
+  nombre: String,
+  puesto: number,
+}
 
 export type UserCreationInfo = {
   nombre: string;

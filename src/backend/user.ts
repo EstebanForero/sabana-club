@@ -11,6 +11,7 @@ export async function getAllUsers(): Promise<UserInfo[]> {
   return await ky.get(`${backendUrl}/user/all`).json<UserInfo[]>();
 }
 
+// Obtiene la informacion de el usuario actualmente loggeado
 export async function getCurrentUser(): Promise<UserInfo> {
   return await ky.get(`${backendUrl}/user`).json<UserInfo>();
 }
