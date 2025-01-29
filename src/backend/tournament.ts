@@ -24,6 +24,7 @@ export async function getUsersInTournament(id_torneo: string): Promise<UserTourn
 }
 
 
+// No usar por el momento
 // Esta funcion obtiene los torneos de el usuario que esta actualmente registrado
 export async function getTournamentsOfCurrentUser(): Promise<UserTournamentInfo[]> {
   return await ky.get(`${backendUrl}/tournament`).json<UserTournamentInfo[]>();

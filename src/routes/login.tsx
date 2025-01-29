@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { LogInInfo, logInUser } from "../backend/auth";
 import { useState } from "react";
 

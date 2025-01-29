@@ -25,6 +25,7 @@ export async function getUsersInTraining(idEntrenamiento: string): Promise<Train
   return await ky.get(`${backendUrl}/training/users/${idEntrenamiento}`).json<TrainingRegistration[]>();
 }
 
+// No usar por el momento
 // Obtiene los entrenamientos de el usuario registrado actualmente
 export async function getTrainingsForCurrentUser(): Promise<Training[]> {
   return await ky.get(`${backendUrl}/training`).json<Training[]>();

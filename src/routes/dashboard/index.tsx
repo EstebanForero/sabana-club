@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router';
 import { Link } from '@tanstack/react-router';
+import { getCurrentUser } from './../../backend/user';
 import { FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa';
 import { GiTennisRacket } from 'react-icons/gi';
 
@@ -7,7 +8,10 @@ export const Route = createFileRoute('/dashboard/')({
   component: RouteComponent,
 });
 
-function RouteComponent({ username = 'Usuario' }) {
+function RouteComponent() {
+
+  const username = "user"
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 gap-[50px] bg-gray-950">

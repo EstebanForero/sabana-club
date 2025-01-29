@@ -16,7 +16,10 @@ export type LogInInfo = {
 
 export async function logInUser(logInInfo: LogInInfo) {
   await ky.post(`${backendUrl}/log_in`, {
-    json: logInInfo
+    json: logInInfo,
   })
 }
 
+export async function testAuth(token: string) {
+  return await ky.get(`${backendUrl}/test_auth`)
+} 
