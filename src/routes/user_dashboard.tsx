@@ -17,7 +17,6 @@ const links: LinkData[] = [
 
 function RouteComponent() {
   return <div>
-    User dashboard
     <NavBarDashboard links={links} />
   </div>
 

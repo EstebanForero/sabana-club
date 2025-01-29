@@ -18,6 +18,9 @@ import { Route as DashboardImport } from './routes/dashboard'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserdashboardIndexImport } from './routes/user_dashboard/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
+import { Route as UserdashboardTuitionImport } from './routes/user_dashboard/tuition'
+import { Route as UserdashboardTrainingImport } from './routes/user_dashboard/training'
+import { Route as UserdashboardTournamentImport } from './routes/user_dashboard/tournament'
 import { Route as DashboardTorneosImport } from './routes/dashboard/torneos'
 import { Route as DashboardMatriculaImport } from './routes/dashboard/matricula'
 import { Route as DashboardInformesImport } from './routes/dashboard/informes'
@@ -65,6 +68,24 @@ const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRoute,
+} as any)
+
+const UserdashboardTuitionRoute = UserdashboardTuitionImport.update({
+  id: '/tuition',
+  path: '/tuition',
+  getParentRoute: () => UserdashboardRoute,
+} as any)
+
+const UserdashboardTrainingRoute = UserdashboardTrainingImport.update({
+  id: '/training',
+  path: '/training',
+  getParentRoute: () => UserdashboardRoute,
+} as any)
+
+const UserdashboardTournamentRoute = UserdashboardTournamentImport.update({
+  id: '/tournament',
+  path: '/tournament',
+  getParentRoute: () => UserdashboardRoute,
 } as any)
 
 const DashboardTorneosRoute = DashboardTorneosImport.update({
@@ -158,6 +179,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTorneosImport
       parentRoute: typeof DashboardImport
     }
+    '/user_dashboard/tournament': {
+      id: '/user_dashboard/tournament'
+      path: '/tournament'
+      fullPath: '/user_dashboard/tournament'
+      preLoaderRoute: typeof UserdashboardTournamentImport
+      parentRoute: typeof UserdashboardImport
+    }
+    '/user_dashboard/training': {
+      id: '/user_dashboard/training'
+      path: '/training'
+      fullPath: '/user_dashboard/training'
+      preLoaderRoute: typeof UserdashboardTrainingImport
+      parentRoute: typeof UserdashboardImport
+    }
+    '/user_dashboard/tuition': {
+      id: '/user_dashboard/tuition'
+      path: '/tuition'
+      fullPath: '/user_dashboard/tuition'
+      preLoaderRoute: typeof UserdashboardTuitionImport
+      parentRoute: typeof UserdashboardImport
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -198,10 +240,16 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 )
 
 interface UserdashboardRouteChildren {
+  UserdashboardTournamentRoute: typeof UserdashboardTournamentRoute
+  UserdashboardTrainingRoute: typeof UserdashboardTrainingRoute
+  UserdashboardTuitionRoute: typeof UserdashboardTuitionRoute
   UserdashboardIndexRoute: typeof UserdashboardIndexRoute
 }
 
 const UserdashboardRouteChildren: UserdashboardRouteChildren = {
+  UserdashboardTournamentRoute: UserdashboardTournamentRoute,
+  UserdashboardTrainingRoute: UserdashboardTrainingRoute,
+  UserdashboardTuitionRoute: UserdashboardTuitionRoute,
   UserdashboardIndexRoute: UserdashboardIndexRoute,
 }
 
@@ -219,6 +267,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
+  '/user_dashboard/training': typeof UserdashboardTrainingRoute
+  '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user_dashboard/': typeof UserdashboardIndexRoute
 }
@@ -231,6 +282,9 @@ export interface FileRoutesByTo {
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
+  '/user_dashboard/training': typeof UserdashboardTrainingRoute
+  '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user_dashboard': typeof UserdashboardIndexRoute
 }
@@ -246,6 +300,9 @@ export interface FileRoutesById {
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
+  '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
+  '/user_dashboard/training': typeof UserdashboardTrainingRoute
+  '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user_dashboard/': typeof UserdashboardIndexRoute
 }
@@ -262,6 +319,9 @@ export interface FileRouteTypes {
     | '/dashboard/informes'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
+    | '/user_dashboard/tournament'
+    | '/user_dashboard/training'
+    | '/user_dashboard/tuition'
     | '/dashboard/'
     | '/user_dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -273,6 +333,9 @@ export interface FileRouteTypes {
     | '/dashboard/informes'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
+    | '/user_dashboard/tournament'
+    | '/user_dashboard/training'
+    | '/user_dashboard/tuition'
     | '/dashboard'
     | '/user_dashboard'
   id:
@@ -286,6 +349,9 @@ export interface FileRouteTypes {
     | '/dashboard/informes'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
+    | '/user_dashboard/tournament'
+    | '/user_dashboard/training'
+    | '/user_dashboard/tuition'
     | '/dashboard/'
     | '/user_dashboard/'
   fileRoutesById: FileRoutesById
@@ -346,6 +412,9 @@ export const routeTree = rootRoute
     "/user_dashboard": {
       "filePath": "user_dashboard.tsx",
       "children": [
+        "/user_dashboard/tournament",
+        "/user_dashboard/training",
+        "/user_dashboard/tuition",
         "/user_dashboard/"
       ]
     },
@@ -364,6 +433,18 @@ export const routeTree = rootRoute
     "/dashboard/torneos": {
       "filePath": "dashboard/torneos.tsx",
       "parent": "/dashboard"
+    },
+    "/user_dashboard/tournament": {
+      "filePath": "user_dashboard/tournament.tsx",
+      "parent": "/user_dashboard"
+    },
+    "/user_dashboard/training": {
+      "filePath": "user_dashboard/training.tsx",
+      "parent": "/user_dashboard"
+    },
+    "/user_dashboard/tuition": {
+      "filePath": "user_dashboard/tuition.tsx",
+      "parent": "/user_dashboard"
     },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx",
