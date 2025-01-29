@@ -1,6 +1,6 @@
 export type UserTournamentInfo = {
-  id_torneo: String,
-  nombre: String,
+  id_torneo: string,
+  nombre: string,
   puesto: number,
 }
 
