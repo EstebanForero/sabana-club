@@ -1,6 +1,7 @@
 
 import ky from "ky";
 import { Tournament, UserTournamentInfo, UserTournamentRegistration } from "./entities";
+import { tokenStore } from "../stores/token_store";
 
 const backendUrl = "https://sabana-club-backend.fly.dev";
 
@@ -24,10 +25,14 @@ export async function getUsersInTournament(id_torneo: string): Promise<UserTourn
 }
 
 
-// No usar por el momento
 // Esta funcion obtiene los torneos de el usuario que esta actualmente registrado
 export async function getTournamentsOfCurrentUser(): Promise<UserTournamentInfo[]> {
-  return await ky.get(`${backendUrl}/tournament`).json<UserTournamentInfo[]>();
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/tournament`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<UserTournamentInfo[]>();
 }
 
 export async function getTournamentByUser(identificator: string): Promise<UserTournamentInfo[]> {

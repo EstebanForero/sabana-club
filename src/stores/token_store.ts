@@ -7,3 +7,8 @@ export function getToken() {
 
   }
 }
+
+export function saveToken(token: string) {
+  console.log('saving token')
+  tokenStore.setState(() => token)
+}

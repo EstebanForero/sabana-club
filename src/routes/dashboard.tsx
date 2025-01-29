@@ -1,10 +1,20 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import NavBarDashboard, { LinkData } from './../components/navBarDashboard'
 import { FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
+import { isAuthenticated } from './../backend/auth'
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
+  beforeLoad: async () => {
+    if (!await isAuthenticated()) {
+      console.log("trowing redirect")
+      throw redirect({
+        to: '/login'
+      })
+    }
+    console.log("user authenticated")
+  }
 })
 
 const links: LinkData[] = [

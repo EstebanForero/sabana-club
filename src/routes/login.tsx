@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { LogInInfo, logInUser } from "../backend/auth";
 import { useState } from "react";
+import { saveToken } from "./../stores/token_store";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -18,8 +19,8 @@ function RouteComponent() {
   const onLogIn = async (logInInfo: LogInInfo) => {
     setErrorMessage(null);
     try {
-      await logInUser(logInInfo);
-      console.log("user is logged in now")
+      const token = await logInUser(logInInfo);
+      saveToken(token)
       navigate({ to: '/dashboard' })
     } catch (error) {
       console.log("error loging user");

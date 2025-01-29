@@ -1,5 +1,6 @@
 import ky from "ky";
 import { UserInfo } from "./entities";
+import { tokenStore } from "./../stores/token_store";
 
 const backendUrl = "https://sabana-club-backend.fly.dev"
 
@@ -12,10 +13,11 @@ export async function getAllUsers(): Promise<UserInfo[]> {
 }
 
 
-// No usar por el momento
-// Obtiene la informacion de el usuario actualmente loggeado
 export async function getCurrentUser(): Promise<UserInfo> {
+  const token = tokenStore.state
   return await ky.get(`${backendUrl}/user`, {
-    // credentials: 'include'
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   }).json<UserInfo>();
 }

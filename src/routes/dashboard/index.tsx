@@ -3,6 +3,7 @@ import { Link } from '@tanstack/react-router';
 import { getCurrentUser } from './../../backend/user';
 import { FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa';
 import { GiTennisRacket } from 'react-icons/gi';
+import { useQuery } from "@tanstack/react-query"
 
 export const Route = createFileRoute('/dashboard/')({
   component: RouteComponent,
@@ -10,13 +11,16 @@ export const Route = createFileRoute('/dashboard/')({
 
 function RouteComponent() {
 
-  const username = "user"
+  const { data: thisUserData } = useQuery({
+    queryKey: ['this_user'],
+    queryFn: getCurrentUser
+  })
 
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 gap-[50px] bg-gray-950">
         <h1 className="text-2xl font-bold text-center text-white">
-          Bienvenido {username}
+          Bienvenido {thisUserData?.nombre}
         </h1>
 
         <div className="grid grid-cols-2 gap-4 gap-[50px]">
