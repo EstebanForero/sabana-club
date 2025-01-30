@@ -1,7 +1,8 @@
 import ky from "ky";
 import { UserInfo } from "./entities";
+import { tokenStore } from "./../stores/token_store";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/"
+const backendUrl = "https://sabana-club-backend.fly.dev"
 
 export async function getUserByIdentification(identification: string): Promise<UserInfo> {
   return await ky.get(`${backendUrl}/user/${identification}`).json<UserInfo>();
@@ -11,6 +12,12 @@ export async function getAllUsers(): Promise<UserInfo[]> {
   return await ky.get(`${backendUrl}/user/all`).json<UserInfo[]>();
 }
 
+
 export async function getCurrentUser(): Promise<UserInfo> {
-  return await ky.get(`${backendUrl}/user`).json<UserInfo>();
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<UserInfo>();
 }

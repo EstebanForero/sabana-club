@@ -1,10 +1,11 @@
 import ky from "ky";
 import { UserCreationInfo } from "./entities";
+import { tokenStore } from "./../stores/token_store";
 
-const backendUrl = "https://sabana-club-backend.fly.dev/"
+const backendUrl = "https://sabana-club-backend.fly.dev"
 
 export async function registerUser(userCreationInfo: UserCreationInfo) {
-  ky.post(`${backendUrl}/user`, {
+  await ky.post(`${backendUrl}/user`, {
     json: userCreationInfo
   })
 }
@@ -15,8 +16,32 @@ export type LogInInfo = {
 }
 
 export async function logInUser(logInInfo: LogInInfo) {
-  ky.post(`${backendUrl}/log_in`, {
-    json: logInInfo
+  return await ky.post(`${backendUrl}/log_in`, {
+    json: logInInfo,
+  }).text()
+}
+
+async function testAuth(token: string) {
+  return await ky.get(`${backendUrl}/test_auth`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
 }
 
+export async function isAuthenticated() {
+
+  const token = tokenStore.state
+
+  if (!token) {
+    return false
+  }
+
+
+  try {
+    await testAuth(token)
+    return true
+  } catch (error) {
+    return false
+  }
+}

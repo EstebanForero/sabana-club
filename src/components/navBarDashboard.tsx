@@ -1,24 +1,19 @@
 import { Link, Outlet } from '@tanstack/react-router'
 import React from 'react'
-import { FaHome, FaSignOutAlt, FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa' 
-import { GiTennisRacket } from 'react-icons/gi' 
+import { FaHome, FaSignOutAlt, FaTrophy, FaFileAlt, FaCreditCard } from 'react-icons/fa'
+import { GiTennisRacket } from 'react-icons/gi'
 
-type LinkData = {
+export type LinkData = {
   linkText: string
   to: string
-  icon?: React.ReactNode 
+  icon?: React.ReactNode
 }
 
-const links: LinkData[] = [
-  { linkText: 'Inicio', to: '/dashboard', icon: <FaHome className="inline ml-2" /> },
-  { linkText: 'Entrenamientos', to: '/dashboard/entrenamientos', icon: <GiTennisRacket className="inline ml-2" /> },
-  { linkText: 'Torneos', to: '/dashboard/torneos', icon: <FaTrophy className="inline ml-2" /> },
-  { linkText: 'Informes', to: '/dashboard/informes', icon: <FaFileAlt className="inline ml-2" /> },
-  { linkText: 'Matricula', to: '/dashboard/matricula', icon: <FaCreditCard className="inline ml-2" /> },
-  { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },
-]
+type Props = {
+  links: LinkData[]
+}
 
-const NavBarDashboard = () => {
+const NavBarDashboard = ({ links }: Props) => {
   return (
     <div className="flex">
       <nav className="w-60 h-screen bg-gray-950 p-4 flex flex-col gap-4">

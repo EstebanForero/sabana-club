@@ -1,3 +1,8 @@
+export type UserTournamentInfo = {
+  id_torneo: string,
+  nombre: string,
+  puesto: number,
+}
 
 export type UserCreationInfo = {
   nombre: string;
@@ -50,3 +55,4 @@ export type TuitionInfo = {
   id_persona: string;
   monto_usd: number;
 };
+
