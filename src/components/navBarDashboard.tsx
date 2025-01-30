@@ -14,6 +14,7 @@ type Props = {
 }
 
 const NavBarDashboard = ({ links }: Props) => {
+  console.log('The links are: ', JSON.stringify(links))
   return (
     <div className="flex">
       <nav className="w-60 h-screen bg-gray-950 p-4 flex flex-col gap-4">

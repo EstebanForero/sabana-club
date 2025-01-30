@@ -27,3 +27,11 @@ export async function getCurrentUser(): Promise<UserInfo> {
   }).json<UserInfo>();
 }
 
+export async function currentUserIsAdmin(): Promise<boolean> {
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/user/admin`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<boolean>();
+}
