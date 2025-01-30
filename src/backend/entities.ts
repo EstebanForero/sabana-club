@@ -23,6 +23,17 @@ export type UserInfo = {
   es_admin: boolean;
 };
 
+export type UserSelectionInfo = {
+  id_persona: string;
+  nombre: string;
+  correo: string;
+  telefono: number;
+  identificacion: string;
+  nombre_tipo_identificacion: string;
+  es_admin: boolean;
+  matricula_valida: boolean;
+};
+
 export type Tournament = {
   id_torneo: string;
   nombre: string;
