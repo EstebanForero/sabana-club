@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState, useEffect } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations'; 
+import { createTraining, getAllTrainings } from '../../backend/training'; // Import the necessary functions
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -27,14 +28,9 @@ function RouteComponent() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const entrenamientosResponse = await fetch('/api/entrenamientos'); // Endpoint para entrenamientos
-        const participantesResponse = await fetch('/api/participantes'); // Endpoint para participantes
-
-        const entrenamientosData = await entrenamientosResponse.json();
-        const participantesData = await participantesResponse.json();
-
-        setEntrenamientos(entrenamientosData);
-        setParticipantes(participantesData);
+        const entrenamientosData = await getAllTrainings(); // Fetch trainings from backend
+        setEntrenamientos(entrenamientosData.map(training => training.nombre_entrenamiento)); // Assuming the training object has a name property
+        // Fetch participants as needed
       } catch (error) {
         console.error("Error al cargar datos del backend:", error);
       } finally {
@@ -54,6 +50,21 @@ function RouteComponent() {
     }
   };
 
+  const handleCreateTraining = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (duration === '' || duration < 0) {
+      console.error("Invalid duration");
+      return;
+    }
+    const trainingInfo = {
+      tiempo_minutos: duration,
+      nombre_entrenamiento: "New Training" // Replace with actual input value
+    };
+    await createTraining(trainingInfo); // Call the createTraining function
+    setDuration(''); // Reset the form
+    // Optionally, refetch trainings to update the list
+  };
+
   const renderForm = () => {
     if (loading) {
       return <p>Cargando datos...</p>;
@@ -62,7 +73,7 @@ function RouteComponent() {
     if (formType === "crear") {
       return (
         <div className="min-h-screen flex items-center justify-center">
-          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950" onSubmit={handleCreateTraining}>
             <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
             <input
               type="text"
