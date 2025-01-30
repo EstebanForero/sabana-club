@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 type Props = {
   onChange: (value: string) => void
   name: string
-  validator?: (value: string) => string | undefined
+  validator?: (value: string) => (string | undefined) | Promise<string | undefined>
   placeholder?: string
   type?: React.HTMLInputTypeAttribute
 }
@@ -20,14 +20,14 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
     }
   }, [value])
 
-  const onInputChange = (value: string) => {
+  const onInputChange = async (value: string) => {
     setErrorMessage('')
     if (!validator) {
       setValue(value)
       return
     }
 
-    const errorMessage = validator(value)
+    const errorMessage = await validator(value)
 
     if (!errorMessage) {
       setValue(value)

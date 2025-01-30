@@ -29,6 +29,14 @@ async function testAuth(token: string) {
   })
 }
 
+export async function exists_email(email: string) {
+  return await ky.get(`${backendUrl}/check_email/${email}`).json<boolean>()
+}
+
+export async function exists_phone(phone: string) {
+  return await ky.get(`${backendUrl}/check_phone/${phone}`).json<boolean>()
+}
+
 export async function isAuthenticated() {
 
   const token = tokenStore.state

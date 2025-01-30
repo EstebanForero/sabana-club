@@ -22,7 +22,7 @@ function RouteComponent() {
 
   const navigate = useNavigate({ from: '/login' })
 
-  const onRegister = () => {
+  const onRegister = async () => {
 
     const userCreationInfo: UserCreationInfo = {
       identificacion: id,
@@ -33,7 +33,7 @@ function RouteComponent() {
       nombre_tipo_identificacion: idType
     }
 
-    const validateResult = validateUserCreation(userCreationInfo)
+    const validateResult = await validateUserCreation(userCreationInfo)
 
     if (!validateResult.isValid) {
       setErrorMessage(errorMessage)

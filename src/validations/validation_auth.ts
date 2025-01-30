@@ -1,3 +1,4 @@
+import { exists_email, exists_phone } from "../backend/auth";
 import { UserCreationInfo } from "../backend/entities";
 
 export const validateRequired = (value: string): string | undefined => {
@@ -6,7 +7,7 @@ export const validateRequired = (value: string): string | undefined => {
   }
 };
 
-export const validateEmail = (value: string): string | undefined => {
+export const validateEmail = async (value: string): Promise<string | undefined> => {
   if (!value || value.trim() === "") {
     return "El correo electrónico es requerido";
   }
@@ -14,6 +15,10 @@ export const validateEmail = (value: string): string | undefined => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(value)) {
     return "Correo electrónico inválido";
+  }
+
+  if (await exists_email(value)) {
+    return "Este correo electronico ya esta registrado"
   }
 };
 
@@ -46,7 +51,7 @@ export const validateConfirmPassword = (
   }
 };
 
-export const validatePhone = (value: string): string | undefined => {
+export const validatePhone = async (value: string): Promise<string | undefined> => {
   if (!value || value.trim() === "") {
     return "El número de teléfono es requerido";
   }
@@ -58,6 +63,11 @@ export const validatePhone = (value: string): string | undefined => {
 
   if (value.length < 7 || value.length > 15) {
     return "El número de teléfono debe tener entre 7 y 15 dígitos";
+  }
+
+  console.log('validating phone')
+  if (await exists_phone(value)) {
+    return "Este numero de telefono ya esta registrado"
   }
 };
 
@@ -91,9 +101,9 @@ export const validateUsername = (value: string): string | undefined => {
   }
 };
 
-export const validateUserCreation = (
+export const validateUserCreation = async (
   userInfo: UserCreationInfo
-): { isValid: boolean; errorMessage?: string } => {
+): Promise<{ isValid: boolean; errorMessage?: string }> => {
 
   const nombreError = validateUsername(userInfo.nombre);
   if (nombreError) return { isValid: false, errorMessage: nombreError };
@@ -101,10 +111,10 @@ export const validateUserCreation = (
   const contrasenaError = validatePassword(userInfo.contrasena);
   if (contrasenaError) return { isValid: false, errorMessage: contrasenaError };
 
-  const correoError = validateEmail(userInfo.correo);
+  const correoError = await validateEmail(userInfo.correo);
   if (correoError) return { isValid: false, errorMessage: correoError };
 
-  const telefonoError = validatePhone(userInfo.telefono.toString());
+  const telefonoError = await validatePhone(userInfo.telefono.toString());
   if (telefonoError) return { isValid: false, errorMessage: telefonoError };
 
   const identificacionError = validateId(userInfo.identificacion);
