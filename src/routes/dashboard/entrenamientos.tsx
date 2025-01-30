@@ -105,7 +105,7 @@ function RouteComponent() {
                 Selecciona el entrenamiento
               </option>
               {entrenamientos.map((entrenamiento, index) => (
-                <option key={index} value={entrenamiento.id_entrenamiento}>
+                <option key={index} value={entrenamiento.id_entrenamiento} className="bg-gray-950">
                   {entrenamiento.nombre_entrenamiento}
                 </option>
               ))}
