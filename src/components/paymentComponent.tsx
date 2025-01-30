@@ -86,7 +86,7 @@ const PaymentComponent = () => {
           {Object.entries(planDetails).map(([plan, details]) => (
             <div
               key={plan}
-              className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35"
+              className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35 flex flex-col justify-between"
             >
               <p className="text-sm font-bold mb-4">{plan}</p>
               <p className="text-sm text-gray-400 mb-7">{details.description}</p>
