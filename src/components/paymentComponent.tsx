@@ -77,8 +77,8 @@ const PaymentComponent = () => {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+    <div className="flex items-center justify-center">
+      <div className="max-w-[800px] w-full shadow-black shadow-lg rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
         <h1 className="text-2xl font-bold text-center text-white">Realiza tu pago</h1>
         <h1 className="text-l text-left text-white mb-7 mt-5">Elige una membresía</h1>
 
@@ -104,7 +104,7 @@ const PaymentComponent = () => {
         {error && <p className="text-center text-red-500">{error}</p>}
 
         {showModal && paymentAmount !== null && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="fixed inset-0 flex items-center justify-center backdrop-brightness-75 z-50">
             <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
               <h2 className="text-xl font-bold mb-4 text-black">Confirmación de Pago</h2>
               <p className="text-gray-600 mb-6">
