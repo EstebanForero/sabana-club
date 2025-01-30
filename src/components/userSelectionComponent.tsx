@@ -47,22 +47,22 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
         )}
       </summary>
 
-      <div className="menu dropdown-content bg-base-100 rounded-box z-10 w-full p-2 shadow-lg">
+      <div className="menu dropdown-content rounded-box z-10 w-full p-2 shadow-black shadow-lg bg-gray-950">
         <div className="flex gap-2 mb-2">
           <button
-            className={`btn border ${queryType === "UserName" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            className={`btn ${queryType === "UserName" ? "bg-blue-500 text-white" : "border-gray-300"}`}
             onClick={() => setQueryType("UserName")}
           >
             UserName
           </button>
           <button
-            className={`btn border ${queryType === "Email" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            className={`btn ${queryType === "Email" ? "bg-blue-500 text-white" : "border-gray-300"}`}
             onClick={() => setQueryType("Email")}
           >
             Email
           </button>
           <button
-            className={`btn border ${queryType === "PhoneNumber" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            className={`btn ${queryType === "PhoneNumber" ? "bg-blue-500 text-white" : "border-gray-300"}`}
             onClick={() => setQueryType("PhoneNumber")}
           >
             PhoneNumber
