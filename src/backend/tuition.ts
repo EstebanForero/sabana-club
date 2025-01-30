@@ -21,7 +21,7 @@ export async function getMostRecentTuition(idPersona: string): Promise<Tuition> 
 
 
 // Obtiene las matriculas de el usuario que esta actualmente registrado
-export async function getTuitionsForUserWithExtension(): Promise<Tuition[]> {
+export async function getTuitionsForCurrentUser(): Promise<Tuition[]> {
   const token = tokenStore.state
   return await ky.get(`${backendUrl}/tuition`, {
     headers: {
