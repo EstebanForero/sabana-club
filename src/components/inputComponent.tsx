@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
   onChange: (value: string) => void
@@ -14,9 +14,14 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
   const [errorMessage, setErrorMessage] = useState('')
   const [value, setValue] = useState('')
 
+  useEffect(() => {
+    if (!errorMessage) {
+      onChange(value)
+    }
+  }, [value])
+
   const onInputChange = (value: string) => {
     if (!validator) {
-      onChange(value)
       setValue(value)
       return
     }
@@ -24,11 +29,11 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
     const errorMessage = validator(value)
 
     if (!errorMessage) {
-      onChange(value)
       setValue(value)
       return
     }
 
+    setValue(value)
     setErrorMessage(errorMessage)
   }
 
