@@ -55,3 +55,4 @@ export type TuitionInfo = {
   id_persona: string;
   monto_usd: number;
 };
+

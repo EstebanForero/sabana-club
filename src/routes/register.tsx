@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { registerUser } from '../backend/auth';
 import InputComponent from '../components/inputComponent';
+import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateRequired, validateUserCreation } from '../validations/validation_auth';
+import { UserCreationInfo } from 'backend/entities/';
 
 export const Route = createFileRoute("/register")({
   component: RouteComponent,
@@ -16,17 +18,30 @@ function RouteComponent() {
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
+  const [errorMessage, setErrorMessage] = useState("")
+
   const navigate = useNavigate({ from: '/login' })
 
   const onRegister = () => {
-    registerUser({
+
+    const userCreationInfo: UserCreationInfo = {
       identificacion: id,
       telefono: Number(phone),
       correo: email,
       contrasena: password,
       nombre: nombreUsuario,
       nombre_tipo_identificacion: idType
-    })
+    }
+
+    const validateResult = validateUserCreation(userCreationInfo)
+
+    if (!validateResult.isValid) {
+      setErrorMessage(errorMessage)
+      setTimeout(() => setErrorMessage(''), 4000)
+      return
+    }
+
+    registerUser(userCreationInfo)
       .then(() => navigate({ to: '/login' }))
       .catch(e => console.log("Error registering user: ", e));
   }
@@ -38,7 +53,7 @@ function RouteComponent() {
           Únete a Club Sabana
         </h2>
 
-        <div className="grid gap-3">
+        <div className="grid gap-6">
 
           <div className="flex flex-col">
             <label htmlFor="idType" className="text-sm text-gray-300 mb-2">
@@ -48,8 +63,7 @@ function RouteComponent() {
               id="idType"
               value={idType}
               onChange={(e) => setIdType(e.target.value)}
-              className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow
-                         focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               required
             >
               <option value="">Selecciona tu tipo de identificación</option>
@@ -60,12 +74,12 @@ function RouteComponent() {
             </select>
           </div>
 
-          <div className="grid grid-cols-[1fr_200px_1fr] gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <InputComponent
               name="Identificación"
               placeholder="Ingresa tu Identificación"
               type="text"
-              // validator={validateId}
+              validator={validateId}
               onChange={setId}
             />
 
@@ -73,17 +87,17 @@ function RouteComponent() {
               name="Nombre de Usuario"
               placeholder="Ingresa tu nombre de usuario"
               type="text"
-              // validator={validateRequired}
+              validator={validateRequired}
               onChange={setNombreUsuario}
             />
           </div>
 
-          <div className="grid grid-cols-[1fr_200px_1fr] gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <InputComponent
               name="Correo electrónico"
               placeholder="Ingresa tu correo electrónico"
               type="email"
-              // validator={validateEmail}
+              validator={validateEmail}
               onChange={setEmail}
             />
 
@@ -91,17 +105,17 @@ function RouteComponent() {
               name="Teléfono"
               placeholder="Ingresa tu número de teléfono"
               type="tel"
-              // validator={validatePhone}
+              validator={validatePhone}
               onChange={setPhone}
             />
           </div>
 
-          <div className="grid grid-cols-[1fr_200px_1fr] gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <InputComponent
               name="Contraseña"
               placeholder="Crea una contraseña"
               type="password"
-              // validator={validatePassword}
+              validator={validatePassword}
               onChange={setPassword}
             />
 
@@ -109,24 +123,24 @@ function RouteComponent() {
               name="Confirmar Contraseña"
               placeholder="Confirma tu contraseña"
               type="password"
-              // validator={(val) => validateConfirmPassword(val, password)}
+              validator={(val) => validateConfirmPassword(val, password)}
               onChange={setConfirmPassword}
             />
           </div>
 
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center">
+            <p className="text-red-500 mb-3">{errorMessage}</p>
             <button
               onClick={onRegister}
-              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow
-                         hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
               Registrar
             </button>
           </div>
-
         </div>
       </div>
     </div>
+
   );
 }
 

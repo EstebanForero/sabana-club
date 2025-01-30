@@ -21,6 +21,7 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
   }, [value])
 
   const onInputChange = (value: string) => {
+    setErrorMessage('')
     if (!validator) {
       setValue(value)
       return
@@ -38,7 +39,7 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
   }
 
   return (
-    <div>
+    <div className='flex flex-col'>
       <label htmlFor={name} className='className="text-sm text-gray-300 mb-2"'>
         {name}
       </label>
