@@ -13,16 +13,17 @@ const queryClient = new QueryClient()
 
 function RootComponent() {
 
-  const match = useMatch({ from: '/register', shouldThrow: false })
+  const match_dashboard = useMatch({ from: '/dashboard', shouldThrow: false })
+  const match_user_dashboard = useMatch({ from: '/user_dashboard', shouldThrow: false })
 
-  if (match) {
+  if (match_dashboard) {
     console.log('actually in register')
   }
 
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <NavBarComponent />
+        {(match_dashboard || match_user_dashboard) ? <div></div> : <NavBarComponent />}
         <Outlet />
         <ReactQueryDevtools />
       </QueryClientProvider>

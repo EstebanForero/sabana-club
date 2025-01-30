@@ -3,6 +3,7 @@ import NavBarDashboard, { LinkData } from './../components/navBarDashboard'
 import { FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy, FaUser } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from './../backend/auth'
+import { currentUserIsAdmin } from '../backend/user'
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
@@ -13,6 +14,13 @@ export const Route = createFileRoute('/dashboard')({
         to: '/login'
       })
     }
+
+    if (!currentUserIsAdmin()) {
+      throw redirect({
+        to: '/user_dashboard'
+      })
+    }
+
     console.log("user authenticated")
   }
 })

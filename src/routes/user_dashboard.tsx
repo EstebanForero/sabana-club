@@ -1,8 +1,10 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import NavBarDashboard, { LinkData } from '../components/navBarDashboard'
-import { FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy } from 'react-icons/fa'
+import { FaChessBoard, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from '../backend/auth'
+import { useQuery } from "@tanstack/react-query"
+import { currentUserIsAdmin, getCurrentUser } from '../backend/user'
 
 export const Route = createFileRoute('/user_dashboard')({
   component: RouteComponent,
@@ -25,9 +27,31 @@ const links: LinkData[] = [
   { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },
 ]
 
+const adminLink: LinkData = {
+  linkText: 'Admin dashboard',
+  to: '/dashboard',
+  icon: <FaChessBoard className='inline ml-2' />
+}
+
 function RouteComponent() {
+
+  const { data: isAdmin } = useQuery({
+    queryKey: ['isAdmin'],
+    queryFn: currentUserIsAdmin
+  })
+
+  const returnLinks = () => {
+    if (isAdmin) {
+      console.log('user is admin')
+      return [...links, adminLink]
+    }
+
+    console.log('user is not admin')
+    return links
+  }
+
   return <div>
-    <NavBarDashboard links={links} />
+    <NavBarDashboard links={returnLinks()} />
   </div>
 
 }
