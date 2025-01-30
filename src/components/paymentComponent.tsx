@@ -2,7 +2,7 @@
 
 const PaymentComponent = () => {
   return (
-    <div>paymentComponent</div>
+    <div>PaymentComponent</div>
   )
 }
 

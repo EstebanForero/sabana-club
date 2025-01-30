@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { getRecentTuitionForCurrentUser, getTuitionsForCurrentUser } from '../../backend/tuition'
 import { getFutureDateAndRemainingDays } from '../../utils/utils'
-import PaymentComponent from 'components/paymentComponent/'
+import PaymentComponent from '../../components/paymentComponent'
 
 export const Route = createFileRoute('/user_dashboard/tuition')({
   component: RouteComponent,
