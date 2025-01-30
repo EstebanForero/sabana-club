@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 import {
@@ -26,6 +26,8 @@ function RouteComponent() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
 
+  const navigate = useNavigate({ from: '/login' })
+
   const onRegister = () => {
     console.log("register user is executing")
     registerUser({
@@ -35,7 +37,7 @@ function RouteComponent() {
       contrasena: password,
       nombre: nombreUsuario,
       nombre_tipo_identificacion: idType
-    }).catch(e => console.log("Error registering user: ", e));
+    }).then(() => navigate({ to: '/login' })).catch(e => console.log("Error registering user: ", e));
   }
 
   return (
