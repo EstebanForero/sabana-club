@@ -1,7 +1,7 @@
 // import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { createTuition } from '../backend/tuition';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCurrentUser } from '../backend/user';
 
 const PaymentComponent = () => {
@@ -16,6 +16,15 @@ const PaymentComponent = () => {
   const [paymentAmount, setPaymentAmount] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const queryClient = useQueryClient()
+
+  const createTuitionMutation = useMutation({
+    mutationFn: createTuition,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["this_tuitions"] })
+    }
+  })
 
   const planDetails: Record<'Plan Bronze' | 'Plan Plata' | 'Plan Oro', { price: number; description: string }> = {
     'Plan Bronze': {
@@ -51,10 +60,10 @@ const PaymentComponent = () => {
       }
 
       if (selectedPlan && paymentAmount !== null) {
-        await createTuition({
-          id_persona: thisUserData.id_persona, 
-          monto_usd: paymentAmount,
-        });
+        await createTuitionMutation.mutateAsync({
+          id_persona: thisUserData.id_persona,
+          monto_usd: paymentAmount
+        })
         alert(`Pago confirmado para el ${selectedPlan} por $${paymentAmount}`);
         setShowModal(false);
       }
