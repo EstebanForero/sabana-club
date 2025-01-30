@@ -32,10 +32,16 @@ function HomeComponent() {
         onMouseLeave={() => setHoveredSection(null)}
       >
         <div className="relative z-10 text-center">
-          <h1 className="text-6xl font-bold mb-4 text-white animate-fade-in group-hover:text-gray-100 transition duration-200">
+          <h1
+            className="text-6xl font-bold mb-4 text-white animate-fade-in group-hover:text-gray-100 transition duration-200"
+            style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
+          >
             Únete al Sabana Club
           </h1>
-          <p className="text-xl mb-8 text-gray-200 animate-fade-in delay-100 group-hover:text-gray-100 transition duration-200">
+          <p
+            className="text-xl mb-8 text-gray-200 animate-fade-in delay-100 group-hover:text-gray-100 transition duration-200"
+            style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
+          >
             Regístrate y forma parte de la mejor comunidad de tenis.
           </p>
           <Link to="/register">
@@ -62,10 +68,16 @@ function HomeComponent() {
         onMouseLeave={() => setHoveredSection(null)}
       >
         <div className="relative z-10 text-center">
-          <h1 className="text-6xl font-bold mb-4 text-white animate-fade-in group-hover:text-gray-100 transition duration-200">
+          <h1
+            className="text-6xl font-bold mb-4 text-white animate-fade-in group-hover:text-gray-100 transition duration-200"
+            style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
+          >
             Ingresa a tu cuenta
           </h1>
-          <p className="text-xl mb-8 text-gray-200 animate-fade-in delay-100 group-hover:text-gray-100 transition duration-200">
+          <p
+            className="text-xl mb-8 text-gray-200 animate-fade-in delay-100 group-hover:text-gray-100 transition duration-200"
+            style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
+          >
             Accede a tu perfil y reserva tu cancha.
           </p>
           <Link to="/login">
