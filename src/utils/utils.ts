@@ -1,4 +1,4 @@
-function getFutureDateAndRemainingDays(startDateStr: string): { futureDate: string; daysRemaining: number } {
+export function getFutureDateAndRemainingDays(startDateStr: string): { futureDate: string; daysRemaining: number } {
   const startDate = new Date(startDateStr);
   const futureDate = new Date(startDate);
   futureDate.setDate(startDate.getDate() + 30);

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { getRecentTuitionForCurrentUser, getTuitionsForCurrentUser } from '../../backend/tuition'
+import { getFutureDateAndRemainingDays } from '../../utils/utils'
 
 export const Route = createFileRoute('/user_dashboard/tuition')({
   component: RouteComponent,
@@ -29,9 +30,13 @@ function RouteComponent() {
 
     {userMostRecentTuition ?
       <div className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg'>
-        <h2 className='font-semibold text-xl mb-6'>Matricula</h2>
-        <p>Monto pagado: {userMostRecentTuition.monto_usd} USD</p>
-        <p>Fecha de pago: {userMostRecentTuition.fecha_inscripccion}</p>
+        <p className='mb-4'>Monto pagado: {userMostRecentTuition.monto_usd} USD</p>
+        <p className='mb-4'>Fecha de pago: {userMostRecentTuition.fecha_inscripccion}</p>
+        {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining == 0 ?
+          <p>Se vencio tu matricula anterior, paga en cuanto puedas</p>
+          :
+          <p>Aun te quedan {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining} dias con el ultimo pago de matricula</p>
+        }
       </div> : <p>Loading ...</p>}
 
   </div>
