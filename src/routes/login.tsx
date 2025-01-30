@@ -81,7 +81,7 @@ function RouteComponent() {
           <div className="flex justify-center">
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
               onClick={onLogIn}
             >
               Entrar
