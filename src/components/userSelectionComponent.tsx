@@ -48,46 +48,30 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
       </summary>
 
       <div className="menu dropdown-content bg-base-100 rounded-box z-10 w-full p-2 shadow-lg">
-        <div className="filter flex gap-2 mb-2">
-          <input
-            className="btn filter-reset bg-blue-500"
-            type="radio"
-            name="queryType"
-            value="All"
-            onChange={() => setQueryType("UserName")}
-            aria-label="All"
-          />
-          <input
-            className="btn"
-            type="radio"
-            name="queryType"
-            value="UserName"
-            checked={queryType === "UserName"}
-            onChange={() => setQueryType("UserName")}
-            aria-label="UserName"
-          />
-          <input
-            className="btn"
-            type="radio"
-            name="queryType"
-            value="Email"
-            checked={queryType === "Email"}
-            onChange={() => setQueryType("Email")}
-            aria-label="Email"
-          />
-          <input
-            className="btn"
-            type="radio"
-            name="queryType"
-            value="PhoneNumber"
-            checked={queryType === "PhoneNumber"}
-            onChange={() => setQueryType("PhoneNumber")}
-            aria-label="PhoneNumber"
-          />
+        <div className="flex gap-2 mb-2">
+          <button
+            className={`btn border ${queryType === "UserName" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            onClick={() => setQueryType("UserName")}
+          >
+            UserName
+          </button>
+          <button
+            className={`btn border ${queryType === "Email" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            onClick={() => setQueryType("Email")}
+          >
+            Email
+          </button>
+          <button
+            className={`btn border ${queryType === "PhoneNumber" ? "border-green-500 bg-blue-500 text-white" : "border-gray-300"}`}
+            onClick={() => setQueryType("PhoneNumber")}
+          >
+            PhoneNumber
+          </button>
         </div>
 
+
         <input
-          className="border rounded px-2 py-1 w-full outline-none mb-2"
+          className="border rounded-xl px-3 py-2 w-full outline-none mb-2"
           type="text"
           value={inputValue}
           onChange={handleInputChange}
