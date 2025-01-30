@@ -20,6 +20,7 @@ function RouteComponent() {
 
   const [formType, setFormType] = useState<"crear" | "asistencia" | null>(null);
   const [duration, setDuration] = useState<number | ''>(''); // State for duration
+  const [trainingName, setTrainingName] = useState("");
   const [participantes, setParticipantes] = useState<string[]>([]); // Lista de participantes
   const [loading, setLoading] = useState<boolean>(false); // Estado de carga
 
@@ -39,16 +40,17 @@ function RouteComponent() {
 
   const handleCreateTraining = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (duration === '' || duration < 0) {
+    if (duration === '' || duration < 0 || trainingName.trim() === '') {
       console.error("Invalid duration");
       return;
     }
     const trainingInfo = {
       tiempo_minutos: duration,
-      nombre_entrenamiento: "New Training"
+      nombre_entrenamiento: trainingName
     };
     await createTraining(trainingInfo);
     setDuration('');
+    setTrainingName("");
   };
 
   const renderForm = () => {
@@ -65,6 +67,9 @@ function RouteComponent() {
               type="text"
               placeholder="Nombre del entrenamiento"
               className="p-2 border rounded"
+              value={trainingName}
+              onChange={(e) => 
+                setTrainingName(e.target.value)}
             />
             <input
               type="number"
