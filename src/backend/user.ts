@@ -12,7 +12,7 @@ export async function getAllUsers(): Promise<UserInfo[]> {
   return await ky.get(`${backendUrl}/user/all`).json<UserInfo[]>();
 }
 
-type QuerySelection = "Email" | "PhoneNumber" | "UserName"
+export type QuerySelection = "Email" | "PhoneNumber" | "UserName"
 
 export async function searchUserSelectionInfo(query: string, selection: QuerySelection, limit: number): Promise<UserSelectionInfo[]> {
   return await ky.get(`${backendUrl}/user/search/${query}/${selection}/${limit}`).json<UserSelectionInfo[]>();
