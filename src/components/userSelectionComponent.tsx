@@ -35,7 +35,7 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
   }
 
   return (
-    <details className="dropdown w-full max-w-sm">
+    <details className="dropdown w-full max-w-sm shadow-black shadow-lg">
       <summary className="m-1 w-full text-left cursor-pointer bg-gray-950 rounded-xl p-4">
         {selectedUser ? (
           <div className="flex flex-col">
