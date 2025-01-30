@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
 import { createTraining, getAllTrainings } from '../../backend/training'; // Import the necessary functions
+import { useQuery } from '@tanstack/react-query'
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -19,27 +20,13 @@ function RouteComponent() {
 
   const [formType, setFormType] = useState<"crear" | "asistencia" | null>(null);
   const [duration, setDuration] = useState<number | ''>(''); // State for duration
-  const [entrenamientos, setEntrenamientos] = useState<string[]>([]); // Lista de entrenamientos
   const [participantes, setParticipantes] = useState<string[]>([]); // Lista de participantes
   const [loading, setLoading] = useState<boolean>(false); // Estado de carga
 
-  // Solicita datos al backend al cargar el componente
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const entrenamientosData = await getAllTrainings(); // Fetch trainings from backend
-        setEntrenamientos(entrenamientosData.map(training => training.nombre_entrenamiento)); // Assuming the training object has a name property
-        // Fetch participants as needed
-      } catch (error) {
-        console.error("Error al cargar datos del backend:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data: entrenamientos, isLoading } = useQuery({
+    queryKey: ['all_trainings'],
+    queryFn: getAllTrainings
+  })
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -58,15 +45,14 @@ function RouteComponent() {
     }
     const trainingInfo = {
       tiempo_minutos: duration,
-      nombre_entrenamiento: "New Training" // Replace with actual input value
+      nombre_entrenamiento: "New Training"
     };
-    await createTraining(trainingInfo); // Call the createTraining function
-    setDuration(''); // Reset the form
-    // Optionally, refetch trainings to update the list
+    await createTraining(trainingInfo);
+    setDuration('');
   };
 
   const renderForm = () => {
-    if (loading) {
+    if (isLoading || !entrenamientos) {
       return <p>Cargando datos...</p>;
     }
 
@@ -119,8 +105,8 @@ function RouteComponent() {
                 Selecciona el entrenamiento
               </option>
               {entrenamientos.map((entrenamiento, index) => (
-                <option key={index} value={entrenamiento}>
-                  {entrenamiento}
+                <option key={index} value={entrenamiento.id_entrenamiento}>
+                  {entrenamiento.nombre_entrenamiento}
                 </option>
               ))}
             </select>
