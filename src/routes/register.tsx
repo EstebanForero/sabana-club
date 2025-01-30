@@ -194,7 +194,7 @@ function RouteComponent() {
           <div className="flex justify-center">
             <button
               onClick={() => onRegister()}
-              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
               Registrar
             </button>
