@@ -43,7 +43,7 @@ function RouteComponent() {
               Revisa los torneos en los que has participado
             </p>
             <Link
-              to="/dashboard/torneos"
+              to="/user_dashboard/tournament"
               className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Torneos
@@ -53,7 +53,7 @@ function RouteComponent() {
           <div className="text-center">
             <p className="text-sm text-gray-400 mb-2">Realiza tus pagos y consulta tu matricula</p>
             <Link
-              to="/dashboard/matricula"
+              to="/user_dashboard/tuition"
               className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Pagos
