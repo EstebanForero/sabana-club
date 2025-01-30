@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { LogInInfo, logInUser } from "../backend/auth";
 import { useState } from "react";
 import { saveToken } from "./../stores/token_store";
+import InputComponent from "../components/inputComponent";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
@@ -14,16 +15,26 @@ function RouteComponent() {
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const navigate = useNavigate({ from: '/login' })
+  const navigate = useNavigate({ from: '/login' });
 
-  const onLogIn = async (logInInfo: LogInInfo) => {
+  const onLogIn = async () => {
     setErrorMessage(null);
+
+    if (!logInInfo.identificacion.trim()) {
+      setErrorMessage("El identificador es requerido.");
+      return;
+    }
+    if (!logInInfo.contrasena.trim()) {
+      setErrorMessage("La contraseña es requerida.");
+      return;
+    }
+
     try {
       const token = await logInUser(logInInfo);
-      saveToken(token)
-      navigate({ to: '/dashboard' })
+      saveToken(token);
+      navigate({ to: '/dashboard' });
     } catch (error) {
-      console.log("error loging user");
+      console.log("Error logging user");
       setErrorMessage(
         "Error al iniciar sesión. Por favor, verifica tus credenciales."
       );
@@ -37,48 +48,29 @@ function RouteComponent() {
           Iniciar Sesión
         </h2>
         <div className="grid gap-6">
-          <div className="flex flex-col">
-            <label
-              htmlFor="identifier"
-              className="text-sm text-gray-300 mb-2"
-            >
-              Correo Electrónico o Teléfono
-            </label>
-            <input
-              id="identifier"
-              type="text"
-              value={logInInfo.identificacion}
-              onChange={(e) =>
-                setLogInInfo({
-                  ...logInInfo,
-                  identificacion: e.target.value,
-                })
-              }
-              className="p-2 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ingresa tu correo electrónico o teléfono"
-              required
-            />
-          </div>
+          <InputComponent
+            name="Correo Electrónico o Teléfono"
+            placeholder="Ingresa tu correo electrónico o teléfono"
+            type="text"
+            validator={(value) => {
+              if (!value.trim()) return "El identificador es requerido.";
+            }}
+            onChange={(value) =>
+              setLogInInfo({ ...logInInfo, identificacion: value })
+            }
+          />
 
-          <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm text-gray-300 mb-2">
-              Contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={logInInfo.contrasena}
-              onChange={(e) =>
-                setLogInInfo({
-                  ...logInInfo,
-                  contrasena: e.target.value,
-                })
-              }
-              className="p-2 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ingresa tu contraseña"
-              required
-            />
-          </div>
+          <InputComponent
+            name="Contraseña"
+            placeholder="Ingresa tu contraseña"
+            type="password"
+            validator={(value) => {
+              if (!value.trim()) return "La contraseña es requerida.";
+            }}
+            onChange={(value) =>
+              setLogInInfo({ ...logInInfo, contrasena: value })
+            }
+          />
 
           {errorMessage && (
             <div className="text-red-500 text-center mb-4">
@@ -90,7 +82,7 @@ function RouteComponent() {
             <button
               type="submit"
               className="w-full py-2 px-4 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => onLogIn(logInInfo)}
+              onClick={onLogIn}
             >
               Entrar
             </button>
@@ -100,3 +92,5 @@ function RouteComponent() {
     </div>
   );
 }
+
+
