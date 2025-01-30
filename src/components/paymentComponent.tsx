@@ -22,7 +22,7 @@ const PaymentComponent = () => {
   const createTuitionMutation = useMutation({
     mutationFn: createTuition,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["this_tuitions"] })
+      queryClient.invalidateQueries({ queryKey: ["this_tuitions", "this_recent_tuition"] })
     }
   })
 
