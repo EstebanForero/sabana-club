@@ -61,68 +61,72 @@ function RouteComponent() {
 
     if (formType === "crear") {
       return (
-        <form className="flex flex-col gap-4 p-4 border rounded shadow-md w-full max-w-md bg-white">
-          <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
-          <input
-            type="text"
-            placeholder="Nombre del entrenamiento"
-            className="p-2 border rounded"
-          />
-          <input
-            type="number"
-            placeholder="Duracíon del entrenamiento en horas"
-            className="p-2 border rounded"
-            value={duration} 
-            onChange={handleDurationChange} 
-            min="0" 
-          />
-          <button
-            type="submit"
-            className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Crear
-          </button>
-        </form>
+        <div className="min-h-screen flex items-center justify-center">
+          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+            <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
+            <input
+              type="text"
+              placeholder="Nombre del entrenamiento"
+              className="p-2 border rounded"
+            />
+            <input
+              type="number"
+              placeholder="Duracíon del entrenamiento en horas"
+              className="p-2 border rounded"
+              value={duration} 
+              onChange={handleDurationChange} 
+              min="0" 
+            />
+            <button
+              type="submit"
+              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Crear
+            </button>
+          </form>
+        </div>
       );
     }
 
     if (formType === "asistencia") {
       return (
-        <form className="flex flex-col gap-4 p-4 border rounded shadow-md w-full max-w-md bg-white">
-          <h2 className="text-xl font-bold">Formulario Asistencia</h2>
-          <select
-            className="p-2 border rounded"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Selecciona el entrenamiento
-            </option>
-            {entrenamientos.map((entrenamiento, index) => (
-              <option key={index} value={entrenamiento}>
-                {entrenamiento}
+        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-950">
+            <h2 className="text-xl font-bold">Formulario Asistencia</h2>
+            <select
+              className="p-2 border rounded"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecciona el entrenamiento
               </option>
-            ))}
-          </select>
-          <select
-            className="p-2 border rounded"
-            defaultValue=""
-          >
-            <option value="" disabled>
-              Selecciona el ID del participante
-            </option>
-            {participantes.map((participante, index) => (
-              <option key={index} value={participante}>
-                {participante}
+              {entrenamientos.map((entrenamiento, index) => (
+                <option key={index} value={entrenamiento}>
+                  {entrenamiento}
+                </option>
+              ))}
+            </select>
+            <select
+              className="p-2 border rounded"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Selecciona el ID del participante
               </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
-          >
-            Registrar Asistencia
-          </button>
-        </form>
+              {participantes.map((participante, index) => (
+                <option key={index} value={participante}>
+                  {participante}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
+            >
+              Registrar Asistencia
+            </button>
+          </form>
+        </div>
       );
     }
 
@@ -130,7 +134,7 @@ function RouteComponent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
+    <div className="min-h-screen flex items-center justify-center">
       {formType ? (
         renderForm()
       ) : (
