@@ -30,3 +30,12 @@ export async function getTuitionsForCurrentUser(): Promise<Tuition[]> {
   }).json<Tuition[]>();
 }
 
+export async function getRecentTuitionForCurrentUser(): Promise<Tuition> {
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/tuition/user/recent`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<Tuition>();
+}
+

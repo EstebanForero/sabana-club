@@ -16,7 +16,7 @@ function RouteComponent() {
   return <div>
     <h1 className='text-2xl font-bold mb-8'>Los torneos en los que has participado</h1>
     {userTrainings?.map(userTraining => <div key={userTraining.id_entrenamiento} className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg'>
-      <h2 className='font-semibold text-xl mb-6'>Nombre de el entrenamiento: {userTraining.nombre_entrenamiento}</h2>
+      <h2 className='font-semibold text-xl mb-6'>{userTraining.nombre_entrenamiento}</h2>
       <p>Duracion de el entrenamiento: {userTraining.tiempo_minutos} minutos</p>
     </div>)}
   </div>
