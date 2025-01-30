@@ -38,7 +38,7 @@ function RouteComponent() {
             placeholder="Nombre de usuario"
             className="min-w-[300px] min-h-[40px] p-2 rounded-lg bg-gray-800 text-white border-2 border-gray-400 mb-4"
           />
-          
+
           {/* Contenedor flex para el botón centrado */}
           <div className="flex justify-center">
             <button
