@@ -17,7 +17,7 @@ const NavBarDashboard = ({ links }: Props) => {
   console.log('The links are: ', JSON.stringify(links))
   return (
     <div className="flex">
-      <nav className="w-60 h-screen bg-gray-950 p-4 flex flex-col gap-4">
+      <nav className="w-60 h-screen bg-gray-950 p-4 flex flex-col gap-4 fixed">
         {links.map((item, idx) => (
           <Link
             key={idx}
@@ -33,7 +33,7 @@ const NavBarDashboard = ({ links }: Props) => {
         ))}
       </nav>
 
-      <div className="flex-1 p-4">
+      <div className="ml-60 flex-1 p-4">
         <Outlet />
       </div>
     </div>
