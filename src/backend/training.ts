@@ -6,7 +6,7 @@ const backendUrl = "https://sabana-club-backend.fly.dev";
 
 // This function returns the newly crted training id
 export async function createTraining(trainingInfo: TrainingInfo): Promise<string> {
-  const response = await ky.post(`${backendUrl}/training/`, {
+  const response = await ky.post(`${backendUrl}/training`, {
     json: trainingInfo
   });
   return await response.json<string>();
