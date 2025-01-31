@@ -2,7 +2,8 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Tournament, UserSelectionInfo, UserTournamentRegistration } from './../../backend/entities';
 import { createTournament, getAllTournaments, getUsersInTournament, registerUserInTournament } from './../../backend/tournament';
-import { getAllUsers } from './../../backend/user'; 
+import { getAllUsers } from './../../backend/user';
+import UserSelectionComponent from '../../components/userSelectionComponent';
 
 export const Route = createFileRoute('/dashboard/torneos')({
   component: RouteComponent,
@@ -11,7 +12,7 @@ export const Route = createFileRoute('/dashboard/torneos')({
 function RouteComponent() {
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [tournamentPlayers, setTournamentPlayers] = useState<Record<string, UserTournamentRegistration[]>>({});
-  const [users, setUsers] = useState<{ id: string, nombre: string }[]>([]); 
+  const [users, setUsers] = useState<{ id: string, nombre: string }[]>([]);
   const [newTournamentName, setNewTournamentName] = useState('');
   const [selectedTournamentId, setSelectedTournamentId] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState('');
@@ -41,14 +42,14 @@ function RouteComponent() {
 
   async function fetchUsers(): Promise<void> {
     try {
-  
-      
+
+
       const formattedUsers = (await getAllUsers()).map(user => ({
-        id: user.id_persona, 
-        nombre: user.nombre 
+        id: user.id_persona,
+        nombre: user.nombre
       }));
-  
-      setUsers(formattedUsers); 
+
+      setUsers(formattedUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
@@ -129,19 +130,7 @@ function RouteComponent() {
           </select>
         </div>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold text-gray-300">Player Name</label>
-          <select
-            className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-gray-200"
-            value={selectedPlayerId}
-            onChange={(e) => setSelectedPlayerId(e.target.value)}
-          >
-            <option value="">Select a player</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.nombre}
-              </option>
-            ))}
-          </select>
+          <UserSelectionComponent onChangeUser={(user_id) => setSelectedPlayerId(user_id)} />
         </div>
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-300">Position</label>
