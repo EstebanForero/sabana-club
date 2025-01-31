@@ -37,15 +37,18 @@ function RouteComponent() {
         </h1>
         <div className="container mx-auto p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <ul>
-              {entrenamientos ? (
-                entrenamientos.map((entrenamiento) => (
-                  <li key={`${entrenamiento.nombre_entrenamiento}`}>{entrenamiento.tiempo_minutos}</li>
-                ))
-              ) : (
-                <li>No hay entrenamientos disponibles.</li>
-              )}
-            </ul>
+            {entrenamientos && entrenamientos.length > 0 ? (
+              entrenamientos.map((entrenamiento) => (
+                <div key={`${entrenamiento.nombre_entrenamiento}`} className="p-4 border rounded bg-gray-950">
+                  <p><strong>Nombre del entrenamiento:</strong> {entrenamiento.nombre_entrenamiento}</p>
+                  <p><strong>Duración del entrenamiento:</strong> {entrenamiento.tiempo_minutos} minutos</p>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-1 sm:col-span-2">
+                <p>No hay entrenamientos disponibles.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
