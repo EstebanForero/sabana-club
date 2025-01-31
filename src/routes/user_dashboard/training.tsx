@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { GiTennisRacket } from 'react-icons/gi'
 import { validateNumericInput } from '../../validations/validations'
 import { useQuery } from '@tanstack/react-query'
@@ -20,10 +20,14 @@ function RouteComponent() {
   const [duration, setDuration] = useState<number | ''>('') // State for duration
   const [loading, setLoading] = useState<boolean>(false) // Estado de carga
 
-  const { data: entrenamientos,isLoading } = useQuery({
+  const { data: entrenamientos, isLoading } = useQuery({
     queryKey: ["this-trainings"],
     queryFn: getTrainingsForCurrentUser
   })
+
+  // Agregar console.log para mostrar los entrenamientos
+  console.log(entrenamientos);
+
   if (isLoading) return <div>Loading...</div>;
   return (
     <div className="min-h-screen flex-item justify-center ">
@@ -34,9 +38,13 @@ function RouteComponent() {
         <div className="container mx-auto p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <ul>
-              {entrenamientos.map((entrenamiento) => (
-                <li key={`${entrenamiento.nombre_entrenamiento}`}>{entrenamiento.tiempo_minutos}</li>
-              ))}
+              {entrenamientos ? (
+                entrenamientos.map((entrenamiento) => (
+                  <li key={`${entrenamiento.nombre_entrenamiento}`}>{entrenamiento.tiempo_minutos}</li>
+                ))
+              ) : (
+                <li>No hay entrenamientos disponibles.</li>
+              )}
             </ul>
           </div>
         </div>
