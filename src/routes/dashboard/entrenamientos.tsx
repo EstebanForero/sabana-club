@@ -120,8 +120,8 @@ function RouteComponent() {
 
     if (formType === "crear") {
       return (
-        <div className="min-h-screen flex items-center justify-center">
-          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950" onSubmit={handleCreateTraining}>
+        <div className="min-h-screen flex items-center justify-center w-full ">
+          <form className="max-w-[2000px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-blue-950" onSubmit={handleCreateTraining}>
             <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
             <input
               type="text"
@@ -140,13 +140,13 @@ function RouteComponent() {
             />
             <button
               type="submit"
-              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:cursor-pointer"
             >
               Crear
             </button>
             <button
               type="button"
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
               onClick={() => {
                 setFormType(null);
                 setDuration('');
@@ -162,11 +162,11 @@ function RouteComponent() {
 
     if (formType === "asistencia") {
       return (
-        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-950">
+        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-green-500">
+          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-green-700">
             <h2 className="text-xl font-bold">Formulario Asistencia</h2>
             <select
-              className="p-2 border rounded"
+              className="p-2 border rounded max-w-full my-2"
               defaultValue=""
               onChange={(e) => {
                 console.log("Training selected:", e.target.value); // Log the selected value
@@ -178,16 +178,16 @@ function RouteComponent() {
                 Selecciona el entrenamiento
               </option>
               {entrenamientos.map((entrenamiento) => (
-                <option key={entrenamiento.id_entrenamiento} value={entrenamiento.id_entrenamiento} className="bg-gray-950">
+                <option key={entrenamiento.id_entrenamiento} value={entrenamiento.id_entrenamiento} className="bg-gray-950 hover:cursor-pointer">
                   {entrenamiento.nombre_entrenamiento}
                 </option>
               ))}
             </select>
             {users_in_training && users_in_training.length > 0 && (
               <div className="mt-4">
-                <h3 className="text-lg font-bold">Usuarios en el Entrenamiento:</h3>
+                <h3 className="text-lg font-bold">Usuarios que asisten a este Entrenamiento:</h3>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ marginRight: '20px' }}>
+                  <div style={{ marginRight: '150px' }}>
                     <h4 className="text-md font-semibold">Nombres</h4>
                     <ul>
                       {users_in_training.map((user, index) => (
@@ -208,7 +208,7 @@ function RouteComponent() {
             )}
             <button
               type="button"
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
               onClick={() => setFormType(null)}
             >
               Regresar
@@ -220,11 +220,11 @@ function RouteComponent() {
 
     if (formType === "añadir") {
       return (
-        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-950" onSubmit={handleregisterUserInTraining}>
+        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-yellow-600">
+          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-yellow-700" onSubmit={handleregisterUserInTraining}>
             <h2 className="text-xl font-bold">Añadir Usuario a Entrenamiento</h2>
             <select
-              className="p-2 border rounded"
+              className="p-2 border rounded max-w-full"
               defaultValue=""
               onChange={(e) => {
                 console.log("Training selected:", e.target.value); // Log the selected value
@@ -235,7 +235,7 @@ function RouteComponent() {
                 Selecciona el entrenamiento
               </option>
               {entrenamientos.map((entrenamiento) => (
-                <option key={entrenamiento.id_entrenamiento} value={entrenamiento.id_entrenamiento} className="bg-gray-950">
+                <option key={entrenamiento.id_entrenamiento} value={entrenamiento.id_entrenamiento} className="bg-gray-950 hover:cursor-pointer">
                   {entrenamiento.nombre_entrenamiento}
                 </option>
               ))}
@@ -244,13 +244,13 @@ function RouteComponent() {
             </UserSelectionComponent>
             <button
               type="submit"
-              className="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+              className="p-2 bg-yellow-500 text-white rounded hover:bg-green-800 hover:cursor-pointer"
             >
               Añadir Usuario
             </button>
             <button
               type="button"
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
+              className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
               onClick={() => {
                 setFormType(null);
                 setUserId("");
@@ -288,21 +288,21 @@ function RouteComponent() {
           <div className="flex justify-center gap-6">
             <button
               onClick={() => setFormType("crear")}
-              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 hover:cursor-pointer transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Crear Entrenamiento
               <GiTennisRacket />
             </button>
             <button
               onClick={() => setFormType("añadir")}
-              className="min-w-[180px] min-h-[55px] bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-600 transition-colors duration-100 flex items-center justify-center gap-2"
+              className="min-w-[180px] min-h-[55px] bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-600  hover:cursor-pointer transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Añadir Usuario a Entrenamiento
               <GiHealthIncrease />
             </button>
             <button
               onClick={() => setFormType("asistencia")}
-              className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600 transition-colors duration-100 flex items-center justify-center gap-2"
+              className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600  hover:cursor-pointer transition-colors duration-100 flex items-center justify-center gap-2"
             >
               ver asistencias de usuarios
               <GiPerson />
