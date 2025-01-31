@@ -92,7 +92,7 @@ const PaymentComponent = () => {
               <p className="text-sm text-gray-400 mb-7">{details.description}</p>
               <button
                 onClick={() => handlePayment(plan as 'Plan Bronze' | 'Plan Plata' | 'Plan Oro')}
-                className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+                className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 hover:cursor-pointer transition-colors duration-100 flex items-center justify-center gap-2"
               >
                 Pagar ${details.price}
               </button>
@@ -114,13 +114,13 @@ const PaymentComponent = () => {
               <div className="flex justify-end gap-4">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg"
+                  className="bg-gray-300 hover:bg-gray-400 hover:cursor-pointer text-gray-800 py-2 px-4 rounded-lg"
                 >
                   Cancelar
                 </button>
                 <button
                   onClick={confirmPayment}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+                  className="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white py-2 px-4 rounded-lg"
                 >
                   Confirmar
                 </button>
