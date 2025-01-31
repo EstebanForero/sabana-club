@@ -1,7 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from './../../backend/user'; // Asumiendo que la función getCurrentUser existe
+import UserSelectionComponent from './../../components/userSelectionComponent'; // Componente para seleccionar un usuario
 
 export const Route = createFileRoute('/dashboard/informes')({
   component: RouteComponent,
@@ -13,8 +14,26 @@ function RouteComponent() {
     queryFn: getCurrentUser
   });
 
-  // Estado para manejar el nombre que el usuario desea buscar
-  const [searchName, setSearchName] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Esta función se ejecuta cuando un usuario es seleccionado en el componente UserSelectionComponent
+  const onUserSelect = (user_id: string) => {
+    setSelectedUserId(user_id); // Guardamos el ID del usuario seleccionado
+    setErrorMessage(null); // Limpiamos cualquier mensaje de error previo
+  };
+
+  // Función para manejar el botón de "Buscar"
+  const onSearchUser = () => {
+    if (!selectedUserId) {
+      setErrorMessage('Por favor selecciona un usuario');
+      return;
+    }
+
+    // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
+    navigate({to:`/informes_usuario/${selectedUserId}`});
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -22,25 +41,25 @@ function RouteComponent() {
         <h1 className="text-2xl font-bold text-center text-white mb-0.1">
           Bienvenido {thisUserData?.nombre}
         </h1>
-        {/* Caja para buscar un usuario */}
-        <div className="text-center">
-          <input
-            type="text"
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            placeholder="Nombre de usuario"
-            className="min-w-[300px] min-h-[40px] p-2 rounded-lg bg-gray-800 text-white border-2 border-gray-400 mb-4"
-          />
 
-          {/* Contenedor flex para el botón centrado */}
-          <div className="flex justify-center">
-            <button
-              onClick={() => console.log(`Buscando a: ${searchName}`)}
-              className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 text-2xl"
-            >
-              Buscar
-            </button>
+        {/* Componente para seleccionar un usuario */}
+        <UserSelectionComponent onChangeUser={onUserSelect} />
+
+        {/* Mostrar mensaje de error si no se encuentra el usuario o hay algún problema */}
+        {errorMessage && (
+          <div className="text-red-500 text-center mb-4">
+            {errorMessage}
           </div>
+        )}
+
+        {/* Botón de búsqueda */}
+        <div className="flex justify-center">
+          <button
+            onClick={onSearchUser}
+            className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 text-2xl"
+          >
+            Buscar
+          </button>
         </div>
       </div>
     </div>
