@@ -135,11 +135,17 @@ function RouteComponent() {
         <div className="mb-4">
           <label className="block mb-1 font-semibold text-gray-300">Position</label>
           <input
-            type="text"
+            type="number"
             placeholder="Position"
             className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-gray-200"
             value={playerPosition}
-            onChange={(e) => setPlayerPosition(e.target.value)}
+            onChange={(e) => {
+              const position = e.target.value
+
+              if (Number(position) > 0) {
+                setPlayerPosition(e.target.value)
+              }
+            }}
           />
         </div>
         <button
