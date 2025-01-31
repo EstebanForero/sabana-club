@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { GiHealthIncrease, GiPerson, GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
-import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training'; 
-import { getUserByIdentification } from '../../backend/user'; 
+import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
+import { getUserByIdentification } from '../../backend/user';
 import { useQuery } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
 
@@ -28,7 +28,7 @@ function RouteComponent() {
     queryKey: ['all_trainings'],
     queryFn: getAllTrainings
   });
-  
+
   const { data: users_in_training, isLoading: isLoadingUsers } = useQuery({
     queryKey: ['user_training', selectedTraining],
     queryFn: async () => {
@@ -83,11 +83,10 @@ function RouteComponent() {
     }, 3000); // Ocultar el toast después de 3 segundos
   };
 
-  const handleregisterUserInTraining = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleregisterUserInTraining = async () => {
     console.log("Selected Training:", selectedTraining);
     console.log("User ID:", userId);
-    
+
     if (!selectedTraining || userId.trim() === '') {
       setShowToast(true);
       setToastMessage("FALTA INFORMACION");
@@ -105,8 +104,6 @@ function RouteComponent() {
       setShowToast(true);
       setToastMessage("Error al añadir usuario al entrenamiento. Inténtalo de nuevo.");
     } finally {
-      setUserId("");
-      setSelectedTraining(null); // Reset the selected training
       setTimeout(() => {
         setShowToast(false);
       }, 3000); // Ocultar el toast después de 3 segundos
@@ -114,7 +111,7 @@ function RouteComponent() {
   };
 
   const renderForm = () => {
-    if (isLoading || !entrenamientos ) {
+    if (isLoading || !entrenamientos) {
       return <p>Cargando datos...</p>;
     }
 
@@ -221,7 +218,7 @@ function RouteComponent() {
     if (formType === "añadir") {
       return (
         <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-yellow-600">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-yellow-700" onSubmit={handleregisterUserInTraining}>
+          <div className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-yellow-700">
             <h2 className="text-xl font-bold">Añadir Usuario a Entrenamiento</h2>
             <select
               className="p-2 border rounded max-w-full"
@@ -243,8 +240,8 @@ function RouteComponent() {
             <UserSelectionComponent onChangeUser={setUserId}>
             </UserSelectionComponent>
             <button
-              type="submit"
               className="p-2 bg-yellow-500 text-white rounded hover:bg-green-800 hover:cursor-pointer"
+              onClick={() => handleregisterUserInTraining()}
             >
               Añadir Usuario
             </button>
@@ -259,7 +256,7 @@ function RouteComponent() {
             >
               Regresar
             </button>
-          </form>
+          </div>
         </div>
       );
     }
