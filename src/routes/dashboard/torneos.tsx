@@ -170,12 +170,15 @@ function RouteComponent() {
                       </tr>
                     </thead>
                     <tbody>
-                      {players.map((player, idx) => (
+                      {players.sort((a, b) => a.puesto - b.puesto).map((player, idx) => (
                         <tr key={idx}>
-                          <td className="border border-gray-600 p-2 text-gray-200">{users.find(u => u.id === player.id_persona)?.nombre || "Unknown"}</td>
+                          <td className="border border-gray-600 p-2 text-gray-200">
+                            {users.find(u => u.id === player.id_persona)?.nombre || "Unknown"}
+                          </td>
                           <td className="border border-gray-600 p-2 text-gray-200">{player.puesto}</td>
                         </tr>
                       ))}
+
                     </tbody>
                   </table>
                 )}
