@@ -1,116 +1,133 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { createTuition } from '../../backend/tuition';
+import { createTuition, getRecentTuitionForCurrentUser, getTuitionsForCurrentUser, getTuitionsForUser, getMostRecentTuition } from '../../backend/tuition';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getCurrentUser } from '../../backend/user';
+import UserSelectionComponent from './../../components/userSelectionComponent';
+import { getFutureDateAndRemainingDays } from '../../utils/utils'
 
 export const Route = createFileRoute('/dashboard/matricula')({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [selectedPlan, setSelectedPlan] = useState<'Plan Bronze' | 'Plan Plata' | 'Plan Oro' | ''>('');
-  const [showModal, setShowModal] = useState(false);
-  const [paymentAmount, setPaymentAmount] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState<string | undefined>();
+  const [submittedUserId, setSubmittedUserId] = useState<string | undefined>();
+  const [showUserSelector, setShowUserSelector] = useState(true);
+  const [showDropdown, setShowDropdown] = useState(false);
 
-  const planDetails: Record<'Plan Bronze' | 'Plan Plata' | 'Plan Oro', { price: number; description: string }> = {
-    'Plan Bronze': {
-      price: 10,
-      description:
-        'Perfecto para iniciarte en el tenis. Accede a la plataforma para revisar tus estadísticas básicas, agendar entrenamientos ocasionales y participar en torneos locales.',
-    },
-    'Plan Plata': {
-      price: 20,
-      description:
-        'Ideal para jugadores comprometidos. Monitorea tu desempeño con estadísticas detalladas, organiza entrenamientos frecuentes y accede a torneos nacionales.',
-    },
-    'Plan Oro': {
-      price: 30,
-      description:
-        'Diseñado para los más competitivos. Disfruta de estadísticas avanzadas, entrenamientos ilimitados y prioridad en la inscripción a torneos internacionales.',
-    },
-  };
+  const { data: thisUserData } = useQuery({
+    queryKey: ['this_user'],
+    queryFn: getCurrentUser
+  });
 
-  const handlePayment = (plan: 'Plan Bronze' | 'Plan Plata' | 'Plan Oro') => {
-    setSelectedPlan(plan);
-    setPaymentAmount(planDetails[plan].price);
-    setShowModal(true);
-  };
-
-  const confirmPayment = async () => {
-    setLoading(true);
-    setError('');
-
-    try {
-      if (selectedPlan && paymentAmount !== null) {
-        await createTuition({
-          id_persona: 'USER_ID',
-          monto_usd: paymentAmount,
-        });
-        alert(`Pago confirmado para el ${selectedPlan} por $${paymentAmount}`);
-        setShowModal(false);
-      }
-    } catch (err) {
-      setError('Error al procesar el pago. Intenta nuevamente.');
-      console.error(err);
-    } finally {
-      setLoading(false);
+  const handleUserSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittedUserId(selectedUserId);
+    if (!selectedUserId) {
+      alert('Por favor seleccione un usuario');
+      return;
+    } else {
+      setShowUserSelector(false);
+      setShowDropdown(false);
     }
+    // setShowUserSelector(false);
   };
+
+  const handleChangeUser = () => {
+    setShowUserSelector(true);
+    setSubmittedUserId(undefined);
+  };
+
+
+  const { data: userTuitions } = useQuery({
+    queryKey: ["user_tuitions", submittedUserId],
+    queryFn: () => {
+      if (submittedUserId) {
+        return getTuitionsForUser(submittedUserId);
+      }
+      return getTuitionsForCurrentUser();
+    },
+    enabled: !!submittedUserId || !!thisUserData?.id_persona
+  });
+
+  const { data: userMostRecentTuition } = useQuery({
+    queryKey: ["user_recent_tuition", submittedUserId],
+    queryFn: () => {
+      if (submittedUserId) {
+        return getMostRecentTuition(submittedUserId);
+      }
+      return getRecentTuitionForCurrentUser();
+    },
+    enabled: !!submittedUserId || !!thisUserData?.id_persona
+  });
+
+  // Opcional crearle un pago/matricula a un usuario
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
-        <h1 className="text-2xl font-bold text-center text-white">Realiza tu pago</h1>
-        <h1 className="text-l text-left text-white mb-7 mt-5">Elige una membresía</h1>
-
-        <div className="grid grid-cols-3 gap-4">
-          {Object.entries(planDetails).map(([plan, details]) => (
-            <div
-              key={plan}
-              className="text-left rounded-lg shadow-gray-800 shadow-lg p-[20px] bg-sky-500/35"
-            >
-              <p className="text-sm font-bold mb-4">{plan}</p>
-              <p className="text-sm text-gray-400 mb-7">{details.description}</p>
-              <button
-                onClick={() => handlePayment(plan as 'Plan Bronze' | 'Plan Plata' | 'Plan Oro')}
-                className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 flex items-center justify-center gap-2"
+    <div className='flex flex-col gap-4 w-full h-full justify-evenly min-h-screen'>
+      <form onSubmit={handleUserSubmit} className="">
+        <div className='flex flex-row justify-center gap-4 w-full'>
+          {showUserSelector ? (
+            <>
+              <UserSelectionComponent 
+                onChangeUser={(user_id) => {
+                  setSelectedUserId(user_id);
+                  setShowDropdown(false);
+                }}
+              />
+              <button 
+                type='submit'
+                className='bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 hover:cursor-pointer'
               >
-                Pagar ${details.price}
+                Buscar usuario
               </button>
-            </div>
-          ))}
+            </>
+          ) : (
+            <button
+              type='button'
+              onClick={handleChangeUser}
+              className='bg-blue-500 text-white px-4 py-2 rounded-lg h-[60px] hover:bg-blue-600 hover:cursor-pointer'
+            >
+              Nueva busqueda
+            </button>
+          )}
         </div>
+      </form>
 
-        {loading && <p className="text-center text-white">Procesando...</p>}
-        {error && <p className="text-center text-red-500">{error}</p>}
-
-        {showModal && paymentAmount !== null && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-              <h2 className="text-xl font-bold mb-4 text-black">Confirmación de Pago</h2>
-              <p className="text-gray-600 mb-6">
-                ¿Estás seguro de que deseas pagar <strong>${paymentAmount}</strong> por el{' '}
-                <strong>{selectedPlan}</strong>?
-              </p>
-              <div className="flex justify-end gap-4">
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg"
-                >
-                  Cancelar
-                </button>
-                <button
-                  onClick={confirmPayment}
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
-                >
-                  Confirmar
-                </button>
+      {submittedUserId && (
+        <div className='flex flex-row justify-evenly gap-4 w-full'>
+          <div>
+            <h1 className='text-2xl font-bold mb-8'>Historial de pagos de matrícula</h1>
+            {userTuitions?.map((userTuition, index) => (
+              <div key={index} className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg mb-4'>
+                <h2 className='font-semibold text-xl mb-6'>Matrícula</h2>
+                <p>Monto pagado: {userTuition.monto_usd} USD</p>
+                <p>Fecha de pago: {new Date(userTuition.fecha_inscripccion).toLocaleDateString()}</p>
               </div>
-            </div>
+            ))}
           </div>
-        )}
-      </div>
+
+          <div>
+            <h1 className='text-2xl font-bold mb-8'>Pago de matrícula más reciente</h1>
+            {userMostRecentTuition ? (
+              <div className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg'>
+                <p className='mb-4'>Monto pagado: {userMostRecentTuition.monto_usd} USD</p>
+                <p className='mb-4'>Fecha de pago: {new Date(userMostRecentTuition.fecha_inscripccion).toLocaleDateString()}</p>
+                {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining === 0 ? (
+                  <p className='text-red-500'>Se vencio tu matricula anterior, paga en cuanto puedas</p>
+                ) : (
+                  <p className='text-green-500'>
+                    Días restantes: {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining}
+                  </p>
+                )}
+              </div>
+            ) : (
+              <p className='text-gray-400'>No se encontraron pagos recientes</p>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

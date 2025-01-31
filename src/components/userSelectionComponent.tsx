@@ -31,20 +31,19 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
   }
 
   return (
-    <details className="dropdown w-full max-w-sm shadow-black shadow-lg rounded-xl">
-      <summary className="m-1 w-full text-left cursor-pointer bg-gray-950 rounded-xl p-4">
+    <details className="dropdown w-full max-w-sm shadow-lg rounded-xl transition-all ease-in-out duration-300 justify-center">
+      <summary className="m-1 w-full text-left cursor-pointer bg-gray-950 rounded-xl p-4 border-2 border-transparent hover:border-blue-500 hover:bg-gray-800 justify-center">
         {selectedUser ? (
-          <div className="flex flex-col">
-            <span className="font-semibold">{selectedUser.nombre}</span>
-            <span className="text-sm">{selectedUser.correo}</span>
+          <div className="flex flex-col justify-center">
+            <span className="font-semibold text-white justify-center">{selectedUser.nombre}</span>
+            <span className="text-sm text-gray-400 justify-center">{selectedUser.correo}</span>
           </div>
         ) : (
-          "Select a user"
+          <span className="text-white justify-center">Seleccione a Un Usuario</span>
         )}
       </summary>
-
-      <div className="menu dropdown-content rounded-box z-10 w-full p-2 shadow-black shadow-lg bg-gray-950">
-        <div className="flex gap-2 mb-2">
+      <div className="menu dropdown-content rounded-box z-10 w-full p-2 shadow-black shadow-lg bg-gray-950 justify-center">
+        <div className="flex gap-2 mb-2 justify-center">
           <button
             className={`btn ${queryType === "UserName" ? "bg-blue-500 text-white" : "border-gray-300"}`}
             onClick={() => setQueryType("UserName")}

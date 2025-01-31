@@ -31,14 +31,17 @@ function RouteComponent() {
       return;
     }
 
+    // Guardamos el ID del usuario seleccionado en el sessionStorage
+    sessionStorage.setItem('selectedUserId', selectedUserId);
+
     // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
-    navigate({to:`/informes_usuario/${selectedUserId}`});
+    navigate({to: '/dashboard/informes_user'});
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 gap-[50px] bg-gray-950">
-        <h1 className="text-2xl font-bold text-center text-white mb-0.1">
+    <div className="min-h-screen flex items-center justify-center bg-gray-800">
+      <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-8 flex flex-col justify-evenly gap-8 bg-gray-950">
+        <h1 className="text-3xl font-bold text-center text-white mb-4">
           Bienvenido {thisUserData?.nombre}
         </h1>
 
@@ -56,7 +59,7 @@ function RouteComponent() {
         <div className="flex justify-center">
           <button
             onClick={onSearchUser}
-            className="min-w-[180px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-100 text-2xl"
+            className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
           >
             Buscar
           </button>

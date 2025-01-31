@@ -40,6 +40,7 @@ export type Tournament = {
 };
 
 export type UserTournamentRegistration = {
+  nombre: string;
   id_persona: string;
   id_torneo: string;
   puesto: number;

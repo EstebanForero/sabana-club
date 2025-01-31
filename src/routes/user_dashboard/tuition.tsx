@@ -40,9 +40,9 @@ function RouteComponent() {
               <p className='mb-4'>Monto pagado: {userMostRecentTuition.monto_usd} USD</p>
               <p className='mb-4'>Fecha de pago: {userMostRecentTuition.fecha_inscripccion}</p>
               {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining == 0 ?
-                <p>Se vencio tu matricula anterior, paga en cuanto puedas</p>
+                <p className='text-red-500'>Se vencio tu matricula anterior, paga en cuanto puedas</p>
                 :
-                <p>Aun te quedan {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining} dias con el ultimo pago de matricula</ p>
+                <p className='text-green-500'>Días restantes: {getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion).daysRemaining}</ p>
               }
             </div> : <p>Loading ...</p>}
         </div>
