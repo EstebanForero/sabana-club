@@ -32,7 +32,7 @@ function RouteComponent() {
     queryFn: () => selectedTraining ? getUsersInTraining(selectedTraining) : [], // Ejecutar solo si hay un entrenamiento seleccionado
     enabled: !!selectedTraining, // Solo activar la consulta cuando haya un entrenamiento seleccionado
   });
-  
+
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (validateNumericInput(value) && Number(value) >= 0) { // Validate input
@@ -57,16 +57,6 @@ function RouteComponent() {
     setToastMessage("Entrenamiento creado exitosamente.");
     setDuration('');
     setTrainingName("");
-    setTimeout(() => {
-      setShowToast(false);
-    }, 3000); // Ocultar el toast después de 3 segundos
-  };
-
-  const handleRegisterAttendance = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Lógica para registrar asistencia
-    setShowToast(true);
-    setToastMessage("Asistencia registrada exitosamente.");
     setTimeout(() => {
       setShowToast(false);
     }, 3000); // Ocultar el toast después de 3 segundos
@@ -148,7 +138,7 @@ function RouteComponent() {
     if (formType === "asistencia") {
       return (
         <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-950" onSubmit={handleRegisterAttendance}>
+          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-950">
             <h2 className="text-xl font-bold">Formulario Asistencia</h2>
             <select
               className="p-2 border rounded"
@@ -167,12 +157,17 @@ function RouteComponent() {
                 </option>
               ))}
             </select>
-            <button
-              type="submit"
-              className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
-            >
-              Registrar Asistencia
-            </button>
+            {users_in_training && users_in_training.length > 0 && (
+              <div className="mt-4">
+                <h3 className="text-lg font-bold">Usuarios en el Entrenamiento:</h3>
+                <ul>
+                  {users_in_training.map(user => (
+                    <li key={user.id_persona} value={user.id_persona} className="p-2 border-b">
+                      {user.id_persona} (ID: {user.id_persona})</li> // Updated to show name and ID
+                  ))}
+                </ul>
+              </div>
+            )}
             <button
               type="button"
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -258,17 +253,17 @@ function RouteComponent() {
               <GiTennisRacket />
             </button>
             <button
-              onClick={() => setFormType("asistencia")}
-              className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600 transition-colors duration-100 flex items-center justify-center gap-2"
-            >
-              Asistencia
-              <GiTennisRacket />
-            </button>
-            <button
               onClick={() => setFormType("añadir")}
               className="min-w-[180px] min-h-[55px] bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-600 transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Añadir Usuario a Entrenamiento
+              <GiTennisRacket />
+            </button>
+            <button
+              onClick={() => setFormType("asistencia")}
+              className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600 transition-colors duration-100 flex items-center justify-center gap-2"
+            >
+              ver asistencias de usuarios
               <GiTennisRacket />
             </button>
           </div>
@@ -277,5 +272,3 @@ function RouteComponent() {
     </div>
   );
 }
-
-export default RouteComponent;
