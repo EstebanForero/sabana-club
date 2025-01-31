@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState, useEffect } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
-import { validateNumericInput } from '../../validations/validations'; 
+import { validateNumericInput } from '../../validations/validations';
+import { createTraining, getAllTrainings } from '../../backend/training'; // Import the necessary functions
+import { useQuery } from '@tanstack/react-query'
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -15,67 +17,67 @@ export default function App() {
 
 // Componente para la ruta
 function RouteComponent() {
-  
+
   const [formType, setFormType] = useState<"crear" | "asistencia" | null>(null);
   const [duration, setDuration] = useState<number | ''>(''); // State for duration
-  const [entrenamientos, setEntrenamientos] = useState<string[]>([]); // Lista de entrenamientos
+  const [trainingName, setTrainingName] = useState("");
   const [participantes, setParticipantes] = useState<string[]>([]); // Lista de participantes
   const [loading, setLoading] = useState<boolean>(false); // Estado de carga
 
-  // Solicita datos al backend al cargar el componente
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const entrenamientosResponse = await fetch('/api/entrenamientos'); // Endpoint para entrenamientos
-        const participantesResponse = await fetch('/api/participantes'); // Endpoint para participantes
-
-        const entrenamientosData = await entrenamientosResponse.json();
-        const participantesData = await participantesResponse.json();
-
-        setEntrenamientos(entrenamientosData);
-        setParticipantes(participantesData);
-      } catch (error) {
-        console.error("Error al cargar datos del backend:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data: entrenamientos, isLoading } = useQuery({
+    queryKey: ['all_trainings'],
+    queryFn: getAllTrainings
+  })
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (validateNumericInput(value) && Number(value) >= 0) { // Validate input
       setDuration(Number(value));
     } else {
-      setDuration(''); 
+      setDuration('');
     }
   };
 
+  const handleCreateTraining = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (duration === '' || duration < 0 || trainingName.trim() === '') {
+      console.error("Invalid duration");
+      return;
+    }
+    const trainingInfo = {
+      tiempo_minutos: duration,
+      nombre_entrenamiento: trainingName
+    };
+    await createTraining(trainingInfo);
+    setDuration('');
+    setTrainingName("");
+  };
+
   const renderForm = () => {
-    if (loading) {
+    if (isLoading || !entrenamientos) {
       return <p>Cargando datos...</p>;
     }
 
     if (formType === "crear") {
       return (
         <div className="min-h-screen flex items-center justify-center">
-          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+          <form className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950" onSubmit={handleCreateTraining}>
             <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
             <input
               type="text"
               placeholder="Nombre del entrenamiento"
               className="p-2 border rounded"
+              value={trainingName}
+              onChange={(e) => 
+                setTrainingName(e.target.value)}
             />
             <input
               type="number"
-              placeholder="Duracíon del entrenamiento en horas"
+              placeholder="Duracíon entrenamiento en minutos"
               className="p-2 border rounded"
-              value={duration} 
-              onChange={handleDurationChange} 
-              min="0" 
+              value={duration}
+              onChange={handleDurationChange}
+              min="0"
             />
             <button
               type="submit"
@@ -108,8 +110,8 @@ function RouteComponent() {
                 Selecciona el entrenamiento
               </option>
               {entrenamientos.map((entrenamiento, index) => (
-                <option key={index} value={entrenamiento}>
-                  {entrenamiento}
+                <option key={index} value={entrenamiento.id_entrenamiento} className="bg-gray-950">
+                  {entrenamiento.nombre_entrenamiento}
                 </option>
               ))}
             </select>
