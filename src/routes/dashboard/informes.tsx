@@ -22,15 +22,8 @@ function RouteComponent() {
         <h1 className="text-2xl font-bold text-center text-white mb-0.1">
           Bienvenido {thisUserData?.nombre}
         </h1>
-        <h1 className="text-center text-white mb-0.1">
-          ¿Qué usuario deseas buscar el día de hoy?
-        </h1>
-
         {/* Caja para buscar un usuario */}
         <div className="text-center">
-          <p className="text-sm text-gray-400 mb-2">
-            Introduce el nombre de alguien para buscar
-          </p>
           <input
             type="text"
             value={searchName}
