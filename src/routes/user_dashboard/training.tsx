@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { GiTennisRacket } from 'react-icons/gi'
 import { validateNumericInput } from '../../validations/validations'
 import { useQuery } from '@tanstack/react-query'
-import { getTrainingsForCurrentUser } from 'backend/training/'
+import { getTrainingsForCurrentUser } from '../../backend/training'
 
 // Definición de la ruta
 export const Route = createFileRoute('/user_dashboard/training')({

@@ -31,8 +31,11 @@ function RouteComponent() {
       return;
     }
 
+    // Guardamos el ID del usuario seleccionado en el sessionStorage
+    sessionStorage.setItem('selectedUserId', selectedUserId);
+
     // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
-    navigate({to:`/informes_usuario/${selectedUserId}`});
+    navigate({to: '/dashboard/informes_user'});
   };
 
   return (
