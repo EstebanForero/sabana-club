@@ -4,6 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getTrainingsForUser } from './../../backend/training'; // Asegúrate de tener esta función importada
 import { getUserByIdentification } from './../../backend/user'; // Usamos la función correcta para obtener el nombre del usuario por ID
 import { getAllTournaments, getTournamentByUser } from './../../backend/tournament'; // Funciones para torneos
+import { CircularProgressbar } from 'react-circular-progressbar'; // Importamos la rueda de progreso
+import 'react-circular-progressbar/dist/styles.css'; // Estilos de la rueda
 
 export const Route = createFileRoute('/dashboard/informes_user')({
   component: RouteComponent,
@@ -119,11 +121,27 @@ function RouteComponent() {
               </div>
             ) : (
               <>
-                {/* Mostrar el porcentaje de participación en torneos dentro de una caja */}
+                {/* Mostrar la rueda de porcentaje */}
                 <div className="flex flex-col items-center py-4">
                   <div className="text-white mb-2">Porcentaje de Participación en Torneos</div>
-                  <div className="bg-green-600 text-white text-4xl font-bold py-4 px-8 rounded-lg shadow-lg">
-                    {participationPercentage.toFixed(2)}%
+                  <div className="w-24 h-24">
+                    <CircularProgressbar
+                      value={participationPercentage}
+                      text={`${participationPercentage.toFixed(2)}%`}
+                      styles={{
+                        path: {
+                          stroke: participationPercentage < 50 ? '#FF6347' : participationPercentage < 80 ? '#FFD700' : '#32CD32',
+                          strokeWidth: 10,
+                        },
+                        trail: {
+                          stroke: '#2d2d2d',
+                        },
+                        text: {
+                          fill: '#fff',
+                          fontSize: '16px',
+                        },
+                      }}
+                    />
                   </div>
                 </div>
 
