@@ -23,6 +23,7 @@ import { Route as UserdashboardTrainingImport } from './routes/user_dashboard/tr
 import { Route as UserdashboardTournamentImport } from './routes/user_dashboard/tournament'
 import { Route as DashboardTorneosImport } from './routes/dashboard/torneos'
 import { Route as DashboardMatriculaImport } from './routes/dashboard/matricula'
+import { Route as DashboardInformesuserImport } from './routes/dashboard/informes_user'
 import { Route as DashboardInformesImport } from './routes/dashboard/informes'
 import { Route as DashboardEntrenamientosImport } from './routes/dashboard/entrenamientos'
 
@@ -100,6 +101,12 @@ const DashboardMatriculaRoute = DashboardMatriculaImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
+const DashboardInformesuserRoute = DashboardInformesuserImport.update({
+  id: '/informes_user',
+  path: '/informes_user',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
 const DashboardInformesRoute = DashboardInformesImport.update({
   id: '/informes',
   path: '/informes',
@@ -165,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardInformesImport
       parentRoute: typeof DashboardImport
     }
+    '/dashboard/informes_user': {
+      id: '/dashboard/informes_user'
+      path: '/informes_user'
+      fullPath: '/dashboard/informes_user'
+      preLoaderRoute: typeof DashboardInformesuserImport
+      parentRoute: typeof DashboardImport
+    }
     '/dashboard/matricula': {
       id: '/dashboard/matricula'
       path: '/matricula'
@@ -222,6 +236,7 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteChildren {
   DashboardEntrenamientosRoute: typeof DashboardEntrenamientosRoute
   DashboardInformesRoute: typeof DashboardInformesRoute
+  DashboardInformesuserRoute: typeof DashboardInformesuserRoute
   DashboardMatriculaRoute: typeof DashboardMatriculaRoute
   DashboardTorneosRoute: typeof DashboardTorneosRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
@@ -230,6 +245,7 @@ interface DashboardRouteChildren {
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardEntrenamientosRoute: DashboardEntrenamientosRoute,
   DashboardInformesRoute: DashboardInformesRoute,
+  DashboardInformesuserRoute: DashboardInformesuserRoute,
   DashboardMatriculaRoute: DashboardMatriculaRoute,
   DashboardTorneosRoute: DashboardTorneosRoute,
   DashboardIndexRoute: DashboardIndexRoute,
@@ -265,6 +281,7 @@ export interface FileRoutesByFullPath {
   '/user_dashboard': typeof UserdashboardRouteWithChildren
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/informes_user': typeof DashboardInformesuserRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
@@ -280,6 +297,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/informes_user': typeof DashboardInformesuserRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
@@ -298,6 +316,7 @@ export interface FileRoutesById {
   '/user_dashboard': typeof UserdashboardRouteWithChildren
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
+  '/dashboard/informes_user': typeof DashboardInformesuserRoute
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
@@ -317,6 +336,7 @@ export interface FileRouteTypes {
     | '/user_dashboard'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
+    | '/dashboard/informes_user'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
     | '/user_dashboard/tournament'
@@ -331,6 +351,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
+    | '/dashboard/informes_user'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
     | '/user_dashboard/tournament'
@@ -347,6 +368,7 @@ export interface FileRouteTypes {
     | '/user_dashboard'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
+    | '/dashboard/informes_user'
     | '/dashboard/matricula'
     | '/dashboard/torneos'
     | '/user_dashboard/tournament'
@@ -398,6 +420,7 @@ export const routeTree = rootRoute
       "children": [
         "/dashboard/entrenamientos",
         "/dashboard/informes",
+        "/dashboard/informes_user",
         "/dashboard/matricula",
         "/dashboard/torneos",
         "/dashboard/"
@@ -424,6 +447,10 @@ export const routeTree = rootRoute
     },
     "/dashboard/informes": {
       "filePath": "dashboard/informes.tsx",
+      "parent": "/dashboard"
+    },
+    "/dashboard/informes_user": {
+      "filePath": "dashboard/informes_user.tsx",
       "parent": "/dashboard"
     },
     "/dashboard/matricula": {
