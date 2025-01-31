@@ -99,6 +99,12 @@ export const validateUsername = (value: string): string | undefined => {
   if (!usernameRegex.test(value)) {
     return "El nombre de usuario solo puede contener letras y números";
   }
+
+  const usernameRegexv2 = /^[A-Za-z0-9]+$/;
+
+  if (!usernameRegexv2.test(value)) {
+    return "Username solo debe contener letras y numeros";
+  }
 };
 
 export const validateUserCreation = async (

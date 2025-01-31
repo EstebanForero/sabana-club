@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { registerUser } from '../backend/auth';
 import InputComponent from '../components/inputComponent';
-import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateRequired, validateUserCreation } from '../validations/validation_auth';
+import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateRequired, validateUserCreation, validateUsername } from '../validations/validation_auth';
 import { UserCreationInfo } from 'backend/entities/';
 
 export const Route = createFileRoute("/register")({
@@ -87,7 +87,7 @@ function RouteComponent() {
               name="Nombre de Usuario"
               placeholder="Ingresa tu nombre de usuario"
               type="text"
-              validator={validateRequired}
+              validator={validateUsername}
               onChange={setNombreUsuario}
             />
           </div>
