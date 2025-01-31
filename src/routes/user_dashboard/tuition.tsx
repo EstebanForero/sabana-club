@@ -20,7 +20,7 @@ function RouteComponent() {
   })
 
   return (
-    <div className='flex flex-col gap-4 w-full h-full justify-evenly'>
+    <div className='flex flex-col gap-4 w-full h-full justify-evenly min-h-screen'>
 
       <div className='flex flex-row justify-evenly gap-4 w-full'>
         <div>
