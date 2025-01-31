@@ -4,7 +4,11 @@ import { createTuition } from '../backend/tuition';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCurrentUser } from '../backend/user';
 
-const PaymentComponent = () => {
+type PaymentComponentProps = {
+  onPaymentSuccess: () => void
+}
+
+const PaymentComponent = ({ onPaymentSuccess }: PaymentComponentProps) => {
 
   const { data: thisUserData } = useQuery({
     queryKey: ['this_user'],
@@ -66,6 +70,7 @@ const PaymentComponent = () => {
         })
         alert(`Pago confirmado para el ${selectedPlan} por $${paymentAmount}`);
         setShowModal(false);
+        onPaymentSuccess()
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al procesar el pago. Intenta nuevamente.');
@@ -81,7 +86,6 @@ const PaymentComponent = () => {
       <div className="max-w-[800px] w-full shadow-black shadow-lg rounded-lg p-6 flex flex-col justify-evenly gap-1 bg-gray-950">
         <h1 className="text-2xl font-bold text-center text-white">Realiza tu pago</h1>
         <h1 className="text-l text-left text-white mb-7 mt-5">Elige una membresía</h1>
-
         <div className="grid grid-cols-3 gap-4">
           {Object.entries(planDetails).map(([plan, details]) => (
             <div

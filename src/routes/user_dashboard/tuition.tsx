@@ -1,5 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { getRecentTuitionForCurrentUser, getTuitionsForCurrentUser } from '../../backend/tuition'
 import { getFutureDateAndRemainingDays } from '../../utils/utils'
 import PaymentComponent from '../../components/paymentComponent'
@@ -9,6 +10,9 @@ export const Route = createFileRoute('/user_dashboard/tuition')({
 })
 
 function RouteComponent() {
+  const queryClient = useQueryClient()
+  const [showPayment, setShowPayment] = useState(true)
+
   const { data: userTuitions } = useQuery({
     queryKey: ["this_tuitions"],
     queryFn: getTuitionsForCurrentUser
@@ -16,8 +20,25 @@ function RouteComponent() {
 
   const { data: userMostRecentTuition } = useQuery({
     queryKey: ["this_recent_tuition"],
-    queryFn: getRecentTuitionForCurrentUser
+    queryFn: getRecentTuitionForCurrentUser,
   })
+
+  const handlePaymentSuccess = () => {
+    queryClient.invalidateQueries({ 
+      queryKey: ["this_tuitions", "this_recent_tuition"] 
+    });
+    setShowPayment(false);
+  };
+
+
+  useEffect(() => {
+    if (userMostRecentTuition) {
+      const { daysRemaining } = getFutureDateAndRemainingDays(userMostRecentTuition.fecha_inscripccion);
+      setShowPayment(daysRemaining <= 0);
+    }
+  }, [userMostRecentTuition]);
+
+
 
   return (
     <div className='flex flex-col gap-4 w-full h-full justify-evenly min-h-screen'>
@@ -50,9 +71,11 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div>
-        <PaymentComponent />
-      </div>
+      {showPayment && (
+        <div>
+          <PaymentComponent onPaymentSuccess={handlePaymentSuccess} />
+        </div>
+      )}
     </div>
   )
 }
