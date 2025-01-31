@@ -25,7 +25,7 @@ function RouteComponent() {
     e.preventDefault();
     setSubmittedUserId(selectedUserId);
     if (!selectedUserId) {
-      alert('Please select a user');
+      alert('Por favor seleccione un usuario');
       return;
     } else {
       setShowUserSelector(false);
