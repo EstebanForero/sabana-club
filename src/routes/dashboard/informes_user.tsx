@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getTrainingsForUser } from './../../backend/training'; // Asegúrate de tener esta función importada
@@ -27,6 +27,13 @@ function RouteComponent() {
 
     fetchUserName();
     }, [selectedUserId]);
+
+    const navigate = useNavigate();
+
+    const onSearchUser = () => {
+        // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
+        navigate({to: '/dashboard/informes'});
+    };
 
   // Consultas para obtener los datos de entrenamientos y torneos
     const { data: trainings, isLoading: isLoadingTrainings } = useQuery({
@@ -68,7 +75,7 @@ function RouteComponent() {
             Informes de {userName || 'Usuario'}
         </h1>
 
-        {/* Caja contenedora de Entrenamientos y Torneos */}
+        {/* Caja contenedora de Entrenamientos, Torneos y puesto*/}
         <div className="flex justify-between gap-8">
           {/* Sección de Entrenamientos */}
             <div className="flex-1 bg-blue-900 p-6 rounded-lg shadow-lg">
@@ -202,6 +209,16 @@ function RouteComponent() {
                 ))}
             </div>
             </div>
+            
+        </div>
+             {/* Espacio entre los contenedores y el botón */}
+             <div className="flex justify-center mt-8"> {/* Aquí agregamos mt-8 */}
+            <button
+                onClick={onSearchUser}
+                className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-3 px-6 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
+            >
+                Atras
+            </button>
         </div>
         </div>
     </div>
