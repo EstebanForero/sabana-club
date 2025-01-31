@@ -61,8 +61,8 @@ export const validatePhone = async (value: string): Promise<string | undefined> 
     return "El número de teléfono solo puede contener dígitos";
   }
 
-  if (value.length < 7 || value.length > 15) {
-    return "El número de teléfono debe tener entre 7 y 15 dígitos";
+  if (value.length < 7 || value.length > 11) {
+    return "El número de teléfono debe tener entre 7 y 11 dígitos";
   }
 
   console.log('validating phone')
