@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
 import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training'; 
+import { getUserByIdentification } from '../../backend/user'; 
 import { useQuery } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
 
@@ -28,9 +29,17 @@ function RouteComponent() {
   });
   
   const { data: users_in_training, isLoading: isLoadingUsers } = useQuery({
-    queryKey: ['user_training', selectedTraining], // La clave depende del entrenamiento seleccionado
-    queryFn: () => selectedTraining ? getUsersInTraining(selectedTraining) : [], // Ejecutar solo si hay un entrenamiento seleccionado
-    enabled: !!selectedTraining, // Solo activar la consulta cuando haya un entrenamiento seleccionado
+    queryKey: ['user_training', selectedTraining],
+    queryFn: async () => {
+      if (selectedTraining) {
+        const users = await getUsersInTraining(selectedTraining);
+        const userDetailsPromises = users.map(user => getUserByIdentification(user.id_persona)); // Fetch user details by ID
+        const userDetails = await Promise.all(userDetailsPromises);
+        return userDetails; // Return the complete UserInfo objects
+      }
+      return [];
+    },
+    enabled: !!selectedTraining,
   });
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -160,12 +169,24 @@ function RouteComponent() {
             {users_in_training && users_in_training.length > 0 && (
               <div className="mt-4">
                 <h3 className="text-lg font-bold">Usuarios en el Entrenamiento:</h3>
-                <ul>
-                  {users_in_training.map(user => (
-                    <li key={user.id_persona} value={user.id_persona} className="p-2 border-b">
-                      {user.id_persona} (ID: {user.id_persona})</li> // Updated to show name and ID
-                  ))}
-                </ul>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <div style={{ marginRight: '20px' }}>
+                    <h4 className="text-md font-semibold">Nombres</h4>
+                    <ul>
+                      {users_in_training.map((user, index) => (
+                        <li key={`${user.id_persona}-${index}`}>{user.nombre}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-md font-semibold">Identificación</h4>
+                    <ul>
+                      {users_in_training.map((user, index) => (
+                        <li key={`${user.id_persona}-${index}`}>{user.identificacion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             )}
             <button
