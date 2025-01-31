@@ -4,6 +4,7 @@ import { GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
 import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training'; 
 import { useQuery } from '@tanstack/react-query'
+import UserSelectionComponent from "../../components/userSelectionComponent";
 
 // Definición de la ruta
 export const Route = createFileRoute("/dashboard/entrenamientos")({
@@ -206,13 +207,9 @@ function RouteComponent() {
                 </option>
               ))}
             </select>
-            <input
-              type="text"
-              placeholder="ID del usuario"
-              className="p-2 border rounded"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-            />
+            <UserSelectionComponent onChangeUser={setUserId}>
+              
+            </UserSelectionComponent>
             <button
               type="submit"
               className="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
