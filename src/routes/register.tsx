@@ -36,7 +36,7 @@ function RouteComponent() {
     const validateResult = await validateUserCreation(userCreationInfo)
 
     if (!validateResult.isValid) {
-      setErrorMessage(errorMessage)
+      setErrorMessage(validateResult.errorMessage ?? '')
       setTimeout(() => setErrorMessage(''), 4000)
       return
     }
