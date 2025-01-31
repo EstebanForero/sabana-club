@@ -100,7 +100,7 @@ function RouteComponent() {
           <div>
             <h1 className='text-2xl font-bold mb-8'>Historial de pagos de matrícula</h1>
             {userTuitions?.map((userTuition, index) => (
-              <div key={index} className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg mb-4'>
+              <div key={index} className='bg-gray-950 rounded-xl p-4 max-w-80 shadow-black shadow-lg mb-8'>
                 <h2 className='font-semibold text-xl mb-6'>Matrícula</h2>
                 <p>Monto pagado: {userTuition.monto_usd} USD</p>
                 <p>Fecha de pago: {new Date(userTuition.fecha_inscripccion).toLocaleDateString()}</p>
