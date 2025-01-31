@@ -32,7 +32,7 @@ function RouteComponent() {
     try {
       const token = await logInUser(logInInfo);
       saveToken(token);
-      navigate({ to: '/dashboard' });
+      navigate({ to: '/user_dashboard' });
     } catch (error) {
       console.log("Error logging user");
       setErrorMessage(
