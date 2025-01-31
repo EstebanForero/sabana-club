@@ -31,7 +31,7 @@ function RouteComponent() {
   if (isLoading) return <div>Loading...</div>;
   return (
     <div className="min-h-screen flex-item justify-center ">
-      <div className=" w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col gap-6 bg-gray-950">
+      <div className=" w-full rounded-lg p-6 flex flex-col gap-6 bg-gray-950 shadow-black shadow-lg">
         <h1 className="text-2xl font-bold text-center text-white">
           Tus Entrenamientos
         </h1>
@@ -39,7 +39,7 @@ function RouteComponent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {entrenamientos && entrenamientos.length > 0 ? (
               entrenamientos.map((entrenamiento) => (
-                <div key={`${entrenamiento.nombre_entrenamiento}`} className="p-4 border rounded bg-gray-950">
+                <div key={`${entrenamiento.nombre_entrenamiento}`} className="p-4 rounded bg-gray-900 shadow-gray-800 shadow-lg">
                   <p><strong>Nombre del entrenamiento:</strong> {entrenamiento.nombre_entrenamiento}</p>
                   <p><strong>Duración del entrenamiento:</strong> {entrenamiento.tiempo_minutos} minutos</p>
                 </div>
