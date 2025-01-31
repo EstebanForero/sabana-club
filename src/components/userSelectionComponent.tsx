@@ -22,7 +22,8 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["users_selection", debouncedValue, queryType],
-    queryFn: async () => searchUserSelectionInfo(debouncedValue, queryType, 10)
+    queryFn: async () => searchUserSelectionInfo(debouncedValue, queryType, 10),
+    refetchInterval: 1000
   });
 
   const onSelectUser = (userInfo: UserSelectionInfo) => {
