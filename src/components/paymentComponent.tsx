@@ -78,7 +78,7 @@ const PaymentComponent = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <div className="max-w-[800px] w-full shadow-black shadow-lg rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-950">
+      <div className="max-w-[800px] w-full shadow-black shadow-lg rounded-lg p-6 flex flex-col justify-evenly gap-1 bg-gray-950">
         <h1 className="text-2xl font-bold text-center text-white">Realiza tu pago</h1>
         <h1 className="text-l text-left text-white mb-7 mt-5">Elige una membresía</h1>
 
