@@ -20,11 +20,11 @@ function RouteComponent() {
   const [duration, setDuration] = useState<number | ''>('') // State for duration
   const [loading, setLoading] = useState<boolean>(false) // Estado de carga
 
-  const { data: entrenamientos } = useQuery({
+  const { data: entrenamientos,isLoading } = useQuery({
     queryKey: ["this-trainings"],
     queryFn: getTrainingsForCurrentUser
   })
-
+  if (isLoading) return <div>Loading...</div>;
   return (
     <div className="min-h-screen flex-item justify-center ">
       <div className=" w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col gap-6 bg-gray-950">
@@ -33,14 +33,11 @@ function RouteComponent() {
         </h1>
         <div className="container mx-auto p-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 1</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 2</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 3</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 4</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 5</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 6</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 7</div>
-            <div className="bg-blue-500 text-white p-4 rounded">entrenamiento 8</div>
+            <ul>
+              {entrenamientos.map((entrenamiento) => (
+                <li key={`${entrenamiento.nombre_entrenamiento}`}>{entrenamiento.tiempo_minutos}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </div>

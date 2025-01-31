@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
-import { GiTennisRacket } from 'react-icons/gi';
+import { GiHealthIncrease, GiPerson, GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
 import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training'; 
 import { getUserByIdentification } from '../../backend/user'; 
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/dashboard/entrenamientos")({
 
 // Componente para la ruta
 function RouteComponent() {
+  const [toastColor, setToastColor] = useState("");
   const [formType, setFormType] = useState<"crear" | "asistencia" | "añadir" | null>(null);
   const [duration, setDuration] = useState<number | ''>(''); // State for duration
   const [trainingName, setTrainingName] = useState("");
@@ -44,17 +45,28 @@ function RouteComponent() {
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (validateNumericInput(value) && Number(value) >= 0) { // Validate input
+    if (validateNumericInput(value) && Number(value) > 0) { // Validate input
       setDuration(Number(value));
     } else {
       setDuration('');
     }
   };
 
+  const validateTrainingName = (name: string) => {
+    const regex = /^[\w\s]+$/; // Allow only alphanumeric characters and spaces
+    return regex.test(name);
+  };
+
   const handleCreateTraining = async (e: React.FormEvent) => {
     e.preventDefault();
     if (duration === '' || duration < 0 || trainingName.trim() === '') {
-      console.error("duracíon invalida o nombre de entrenamiento vacío");
+      setShowToast(true);
+      setToastMessage("Por favor complete todos los campos.");
+      return;
+    }
+    if (!validateTrainingName(trainingName)) {
+      setShowToast(true);
+      setToastMessage("El nombre del entrenamiento contiene caracteres no permitidos.");
       return;
     }
     const trainingInfo = {
@@ -64,8 +76,8 @@ function RouteComponent() {
     await createTraining(trainingInfo);
     setShowToast(true);
     setToastMessage("Entrenamiento creado exitosamente.");
-    setDuration('');
-    setTrainingName("");
+    setDuration(''); // Reset duration
+    setTrainingName(""); // Reset training name
     setTimeout(() => {
       setShowToast(false);
     }, 3000); // Ocultar el toast después de 3 segundos
@@ -77,7 +89,8 @@ function RouteComponent() {
     console.log("User ID:", userId);
     
     if (!selectedTraining || userId.trim() === '') {
-      console.error("Entrenamiento no seleccionado o ID de usuario vacío");
+      setShowToast(true);
+      setToastMessage("FALTA INFORMACION");
       return;
     }
     const TrainingRegistration = {
@@ -89,12 +102,11 @@ function RouteComponent() {
       setShowToast(true);
       setToastMessage("Usuario añadido al entrenamiento exitosamente.");
     } catch (error) {
-      console.error("Error al añadir usuario al entrenamiento:", error);
       setShowToast(true);
       setToastMessage("Error al añadir usuario al entrenamiento. Inténtalo de nuevo.");
     } finally {
       setUserId("");
-      setSelectedTraining(null);
+      setSelectedTraining(null); // Reset the selected training
       setTimeout(() => {
         setShowToast(false);
       }, 3000); // Ocultar el toast después de 3 segundos
@@ -135,7 +147,11 @@ function RouteComponent() {
             <button
               type="button"
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={() => setFormType(null)}
+              onClick={() => {
+                setFormType(null);
+                setDuration('');
+                setTrainingName('');
+              }}
             >
               Regresar
             </button>
@@ -155,6 +171,7 @@ function RouteComponent() {
               onChange={(e) => {
                 console.log("Training selected:", e.target.value); // Log the selected value
                 setSelectedTraining(e.target.value); // Guardar el entrenamiento seleccionado
+                setUserId(""); // Reset user ID when training is selected
               }}
             >
               <option value="" disabled>
@@ -224,7 +241,6 @@ function RouteComponent() {
               ))}
             </select>
             <UserSelectionComponent onChangeUser={setUserId}>
-              
             </UserSelectionComponent>
             <button
               type="submit"
@@ -235,7 +251,11 @@ function RouteComponent() {
             <button
               type="button"
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={() => setFormType(null)}
+              onClick={() => {
+                setFormType(null);
+                setUserId("");
+                setSelectedTraining(null); // Reset the selected training
+              }}
             >
               Regresar
             </button>
@@ -278,14 +298,14 @@ function RouteComponent() {
               className="min-w-[180px] min-h-[55px] bg-yellow-500 text-white py-2 px-4 rounded-xl hover:bg-yellow-600 transition-colors duration-100 flex items-center justify-center gap-2"
             >
               Añadir Usuario a Entrenamiento
-              <GiTennisRacket />
+              <GiHealthIncrease />
             </button>
             <button
               onClick={() => setFormType("asistencia")}
               className="min-w-[180px] min-h-[55px] bg-green-500 text-white py-2 px-4 rounded-xl hover:bg-green-600 transition-colors duration-100 flex items-center justify-center gap-2"
             >
               ver asistencias de usuarios
-              <GiTennisRacket />
+              <GiPerson />
             </button>
           </div>
         </div>
