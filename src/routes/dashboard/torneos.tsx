@@ -93,7 +93,7 @@ function RouteComponent() {
     <div className="p-4 bg-gray-900 min-h-screen space-y-6 text-gray-200">
       {/* 🔹 Sección para crear torneos */}
       <div className="shadow-md p-4 rounded-lg bg-gray-800">
-        <h2 className="text-xl font-bold mb-4 text-white">Create Tournament</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Crear Torneo</h2>
         <div className="flex space-x-4">
           <input
             type="text"
@@ -113,9 +113,9 @@ function RouteComponent() {
 
       {/* 🔹 Sección para registrar jugadores */}
       <div className="shadow-md p-4 rounded-lg bg-gray-800">
-        <h2 className="text-xl font-bold mb-4 text-white">Register Player</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Registrar Jugador</h2>
         <div className="mb-4">
-          <label className="block mb-1 font-semibold text-gray-300">Tournament</label>
+          <label className="block mb-1 font-semibold text-gray-300">Torneo</label>
           <select
             className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-gray-200"
             value={selectedTournamentId}
@@ -158,7 +158,7 @@ function RouteComponent() {
 
       {/* 🔹 Sección de torneos existentes */}
       <div className="shadow-md p-4 rounded-lg bg-gray-800">
-        <h2 className="text-xl font-bold mb-4 text-white">Existing Tournaments</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Torneos existentes</h2>
         <div className="space-y-4">
           {tournaments.map((tournament) => {
             const players = tournamentPlayers[tournament.id_torneo] || [];
@@ -166,13 +166,13 @@ function RouteComponent() {
               <div key={tournament.id_torneo} className="border border-gray-600 p-4 rounded">
                 <h3 className="font-semibold mb-2 text-gray-200">{tournament.nombre}</h3>
                 {players.length === 0 ? (
-                  <p className="text-gray-400 mb-2">No players registered yet.</p>
+                  <p className="text-gray-400 mb-2">No hay usuarios registrados todavia</p>
                 ) : (
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="bg-gray-700">
-                        <th className="border border-gray-600 p-2 text-left text-gray-200">Player Name</th>
-                        <th className="border border-gray-600 p-2 text-left text-gray-200">Position</th>
+                        <th className="border border-gray-600 p-2 text-left text-gray-200">Nombre de el jugador</th>
+                        <th className="border border-gray-600 p-2 text-left text-gray-200">Posision</th>
                       </tr>
                     </thead>
                     <tbody>
