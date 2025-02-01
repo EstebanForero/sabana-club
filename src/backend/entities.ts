@@ -13,6 +13,14 @@ export type UserCreationInfo = {
   nombre_tipo_identificacion: string;
 };
 
+export type UserUpdationInfo = {
+  nombre: string;
+  correo: string;
+  telefono: number;
+  identificacion: string;
+  nombre_tipo_identificacion: string;
+};
+
 export type UserInfo = {
   id_persona: string;
   nombre: string;

@@ -1,5 +1,5 @@
 import ky from "ky";
-import { UserInfo, UserSelectionInfo } from "./entities";
+import { UserInfo, UserSelectionInfo, UserUpdationInfo } from "./entities";
 import { tokenStore } from "./../stores/token_store";
 
 const backendUrl = "https://sabana-club-backend.fly.dev"
@@ -24,6 +24,16 @@ export async function getCurrentUser(): Promise<UserInfo> {
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  }).json<UserInfo>();
+}
+
+export async function updateCurrentUser(userUpdationInfo: UserUpdationInfo): Promise<UserInfo> {
+  const token = tokenStore.state
+  return await ky.put(`${backendUrl}/user`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    json: userUpdationInfo
   }).json<UserInfo>();
 }
 

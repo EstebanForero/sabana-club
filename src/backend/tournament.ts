@@ -9,6 +9,10 @@ export async function createTournament(nombre: string): Promise<void> {
   await ky.post(`${backendUrl}/tournament/name/${nombre}`);
 }
 
+export async function deleteTournament(tournament_id: string): Promise<void> {
+  await ky.post(`${backendUrl}/tournament/delete/${tournament_id}`);
+}
+
 export async function registerUserInTournament(registration: UserTournamentRegistration): Promise<void> {
   await ky.post(`${backendUrl}/tournament/register`, {
     json: registration,
