@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
 import { GetAllRequests } from '../../backend/request'
+import RequestComponent from '../../components/requestComponent'
 
 export const Route = createFileRoute('/dashboard/solicitudes')({
   component: RouteComponent,
@@ -16,7 +17,7 @@ function RouteComponent() {
     return <span className="loading loading-spinner loading-lg"></span>
   }
 
-  return <div>
-
+  return <div className='flex-row flex'>
+    {allRequests.map(request => <RequestComponent request={request} key={request.request_id} />)}
   </div>
 }

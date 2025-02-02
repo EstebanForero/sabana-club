@@ -22,7 +22,7 @@ export async function GetAllRequests() {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  }).json<RequestCommand>()
+  }).json<RequestCommand[]>()
 }
 
 export async function DeleteRequest(request_id: string) {
