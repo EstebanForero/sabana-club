@@ -32,7 +32,8 @@ const links: LinkData[] = [
   { linkText: 'Informes', to: '/dashboard/informes', icon: <FaFileAlt className="inline ml-2" /> },
   { linkText: 'Matricula', to: '/dashboard/matricula', icon: <FaCreditCard className="inline ml-2" /> },
   { linkText: 'Solicitudes', to: '/dashboard/solicitudes', icon: <FaCommentDollar className="inline ml-2" /> },
-  {linkText: 'Usuario', to: '/dashboard/usuarios', icon: <FaUserEdit className = "inline ml-2" />},
+  { linkText: 'Usuario', to: '/dashboard/usuarios', icon: <FaUserEdit className="inline ml-2" /> },
+  { linkText: 'Perfil', to: '/dashboard/perfil', icon: <FaUser className="inline ml-2" /> },
   { linkText: 'Interfaz usuario', to: '/user_dashboard', icon: <FaUser className="inline ml-2" /> },
   { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },
 ]
