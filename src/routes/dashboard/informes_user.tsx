@@ -14,7 +14,7 @@ export const Route = createFileRoute('/dashboard/informes_user')({
 
 function RouteComponent() {
   const selectedUserId = sessionStorage.getItem('selectedUserId'); // Obtener el ID del usuario desde sessionStorage
-    const [userName, setUserName] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   // Obtener el nombre del usuario utilizando getUserByIdentification
     useEffect(() => {
