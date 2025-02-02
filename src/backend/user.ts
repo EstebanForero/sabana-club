@@ -37,6 +37,17 @@ export async function updateCurrentUser(userUpdationInfo: UserUpdationInfo): Pro
   }).json<UserInfo>();
 }
 
+export async function updateUser(userUpdationInfo: UserUpdationInfo, user_id: string): Promise<UserInfo> {
+  const token = tokenStore.state
+  userUpdationInfo.nombre_tipo_identificacion = userUpdationInfo.nombre_tipo_identificacion.toUpperCase()
+  return await ky.put(`${backendUrl}/user/id/${user_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    json: userUpdationInfo
+  }).json<UserInfo>();
+}
+
 export async function currentUserIsAdmin(): Promise<boolean> {
   const token = tokenStore.state
   return await ky.get(`${backendUrl}/user/admin`, {

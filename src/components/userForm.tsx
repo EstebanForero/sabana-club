@@ -42,7 +42,10 @@ const UserForm = (props: Props) => {
       return
     }
 
-    props.onSuccessfulSend(userCreationInfo)
+    props.onSuccessfulSend({
+      ...userCreationInfo,
+      nombre_tipo_identificacion: userCreationInfo.nombre_tipo_identificacion.toUpperCase()
+    })
   }
 
   return (

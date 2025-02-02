@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { getUserByIdentification } from './../../backend/user'; // Asegúrate de importar la función correctamente
-import { UserInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
+import { getUserByIdentification, updateUser } from './../../backend/user'; // Asegúrate de importar la función correctamente
+import { UserInfo, UserUpdationInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
+import UserForm from '../../components/userForm';
 
 // Componente principal
 export const Route = createFileRoute('/dashboard/usuario_editar')({
@@ -19,6 +20,19 @@ function RouteComponent() {
     // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
     navigate({ to: '/dashboard/usuarios' });
   };
+
+  const [errorMessage, setErrorMessage] = useState('')
+  const [succesfullMessage, setSuccesfullMessage] = useState('')
+
+  const showToast = (variant: 'succesfull' | 'error', message: string) => {
+    if (variant == 'succesfull') {
+      setSuccesfullMessage(message)
+      setTimeout(() => setSuccesfullMessage(''), 3000)
+    } else {
+      setErrorMessage(message)
+      setTimeout(() => setErrorMessage(''), 3000)
+    }
+  }
 
   useEffect(() => {
     // Obtener el ID del usuario seleccionado desde sessionStorage
@@ -41,8 +55,20 @@ function RouteComponent() {
     }
   }, []);
 
-  // Mostrar un mensaje de carga mientras se obtienen los datos
-  if (loading) {
+  if (!userInfo) {
+    return <span className="loading loading-spinner loading-xl"></span>
+  }
+
+  const updateUserAdmin = async (userUpdateInfo: UserUpdationInfo) => {
+    try {
+      await updateUser(userUpdateInfo, userInfo.id_persona)
+      showToast('succesfull', 'datos de el usuario actualizados')
+    } catch (error) {
+      showToast('error', 'Error actualizando datos de el usuario')
+    }
+  }
+
+  if (loading || !userInfo) {
     return (
       <div className="flex justify-center items-center h-screen">
         <p className="text-gray-600">Cargando información del usuario...</p>
@@ -50,7 +76,6 @@ function RouteComponent() {
     );
   }
 
-  // Mostrar un mensaje de error si algo falla
   if (error) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -62,41 +87,31 @@ function RouteComponent() {
   // Mostrar la información del usuario si se obtiene correctamente
   return (
     <div className="flex justify-center items-center h-screen bg-gray-900">
+      <div className='toast toast-top toast-end'>
+        {succesfullMessage && <div className='alert alert-success'>
+          <span>{succesfullMessage}</span>
+        </div>}
+
+        {errorMessage && <div className='alert alert-error'>
+          <span>{errorMessage}</span>
+        </div>}
+      </div>
+
       <div className="p-6 max-w-4xl w-full bg-gray-800 shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold mb-4 text-white text-center">
           Editar {userInfo ? userInfo.nombre : 'Usuario'}
         </h1>
-        {userInfo ? (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-white mb-2 text-center">Nombre</label>
-              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.nombre}</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white mb-2 text-center">Email</label>
-              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.identificacion}</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white mb-2 text-center">Teléfono</label>
-              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.telefono}</p>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-white mb-2 text-center">Correo</label>
-              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.correo}</p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-500 text-center">No se encontró información del usuario.</p>
-        )}
+        <UserForm onSuccessfulSend={updateUserAdmin} initialData={{
+          identificacion: userInfo.identificacion,
+          nombre: userInfo.nombre,
+          nombre_tipo_identificacion: userInfo.nombre_tipo_identificacion.toLowerCase(),
+          correo: userInfo.correo,
+          contrasena: '',
+          telefono: userInfo.telefono
+        }} buttonName='Actualizar datos de usuario' showPasswordFields={false}
+          exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }} />
+
         <div className="flex justify-center mt-4 gap-6">
-          <div>
-            <button
-              className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
-              // onClick={}
-            >
-              Actualizar Datos
-            </button>
-          </div>
           <div>
             <button
               onClick={onSearchUser}
