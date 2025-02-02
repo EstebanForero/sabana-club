@@ -77,7 +77,7 @@ export type TuitionInfo = {
 };
 
 
-export type Request = {
+export type RequestCommand = {
   requester_id: string,
   request_id: string,
   command_name: "update_user",

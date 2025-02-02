@@ -1,6 +1,6 @@
 import ky from "ky";
 import { tokenStore } from "./../stores/token_store";
-import { RequestContent } from "./entities";
+import { RequestCommand, RequestContent } from "./entities";
 
 const backendUrl = "https://sabana-club-backend.fly.dev"
 
@@ -22,7 +22,7 @@ export async function GetAllRequests() {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  })
+  }).json<RequestCommand>()
 }
 
 export async function DeleteRequest(request_id: string) {
