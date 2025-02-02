@@ -1,6 +1,6 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { getUserByIdentification } from './../../backend/user';  // Asegúrate de importar la función correctamente
+import { getUserByIdentification } from './../../backend/user'; // Asegúrate de importar la función correctamente
 import { UserInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
 
 // Componente principal
@@ -10,20 +10,17 @@ export const Route = createFileRoute('/dashboard/usuario_editar')({
 
 function RouteComponent() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [userName] = useState<string | null>(null);  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-   const navigate = useNavigate();
-  
-      const onSearchUser = () => {
-          // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
-          navigate({to: '/dashboard/usuarios'});
-      };
+  const navigate = useNavigate();
+
+  const onSearchUser = () => {
+    // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
+    navigate({ to: '/dashboard/usuarios' });
+  };
 
   useEffect(() => {
-
-    
     // Obtener el ID del usuario seleccionado desde sessionStorage
     const selectedUserId = sessionStorage.getItem('selectedUserId');
     if (selectedUserId) {
@@ -39,76 +36,77 @@ function RouteComponent() {
           console.error(err);
         });
     } else {
-        setError('No se encontró el ID del usuario en sessionStorage');
-        setLoading(false);
-      }
-    }, []);
-  
-    // Mostrar un mensaje de carga mientras se obtienen los datos
-    if (loading) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <p className="text-gray-600">Cargando información del usuario...</p>
-        </div>
-      );
+      setError('No se encontró el ID del usuario en sessionStorage');
+      setLoading(false);
     }
-  
-    // Mostrar un mensaje de error si algo falla
-    if (error) {
-      return (
-        <div className="flex justify-center items-center h-screen">
-          <p className="text-red-500">{error}</p>
-        </div>
-      );
-    }
-  
-    // Mostrar la información del usuario si se obtiene correctamente
+  }, []);
+
+  // Mostrar un mensaje de carga mientras se obtienen los datos
+  if (loading) {
     return (
-        <div className="flex justify-center items-center h-screen bg-gray-900">
-        <div className="p-6 max-w-4xl w-full bg-gray-800 shadow-lg rounded-lg">
-          <h1 className="text-2xl font-bold mb-4 text-white text-center">Editar {userName || 'Usuario'}</h1>
-          {userInfo ? (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-white mb-2 text-center">Nombre</label>
-                <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.nombre}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white mb-2 text-center">Email</label>
-                <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.identificacion}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white mb-2 text-center">Teléfono</label>
-                <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.telefono}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-white mb-2 text-center">Correo</label>
-                <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.correo}</p>
-              </div>
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center">No se encontró información de .</p>
-          )}
-          <div className="flex justify-center mt-4 gap-6"> {/* Añade gap-6 para separar los botones */}
-  <div>
-    <button
-      className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
-      // onClick={}
-    >
-      Actualizar Datos
-    </button>
-  </div>
-  <div>
-    <button
-      onClick={onSearchUser}
-      className="min-w-[200px] min-h-[55px] bg-red-500 text-white py-3 px-6 rounded-xl hover:bg-red-600 transition-colors duration-200 text-xl"
-    >
-      Atrás
-    </button>
-  </div>
-</div>
-          
-        </div>
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-gray-600">Cargando información del usuario...</p>
       </div>
     );
   }
+
+  // Mostrar un mensaje de error si algo falla
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
+  // Mostrar la información del usuario si se obtiene correctamente
+  return (
+    <div className="flex justify-center items-center h-screen bg-gray-900">
+      <div className="p-6 max-w-4xl w-full bg-gray-800 shadow-lg rounded-lg">
+        <h1 className="text-2xl font-bold mb-4 text-white text-center">
+          Editar {userInfo ? userInfo.nombre : 'Usuario'}
+        </h1>
+        {userInfo ? (
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-white mb-2 text-center">Nombre</label>
+              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.nombre}</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white mb-2 text-center">Email</label>
+              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.identificacion}</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white mb-2 text-center">Teléfono</label>
+              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.telefono}</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-white mb-2 text-center">Correo</label>
+              <p className="mt-1 p-2 bg-gray-500 rounded text-white text-center">{userInfo.correo}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center">No se encontró información del usuario.</p>
+        )}
+        <div className="flex justify-center mt-4 gap-6">
+          <div>
+            <button
+              className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
+              // onClick={}
+            >
+              Actualizar Datos
+            </button>
+          </div>
+          <div>
+            <button
+              onClick={onSearchUser}
+              className="min-w-[200px] min-h-[55px] bg-red-500 text-white py-3 px-6 rounded-xl hover:bg-red-600 transition-colors duration-200 text-xl"
+            >
+              Atrás
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
