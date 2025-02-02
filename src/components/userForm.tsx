@@ -1,23 +1,23 @@
 
 import React, { useState } from 'react'
 import InputComponent from './inputComponent';
-import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateUsername } from 'src/validations/validation_auth';
-import { UserCreationInfo } from 'src/backend/entities';
-import { validateUserCreation } from 'src/validations/validation_auth';
+import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateUsername, validateUserCreation } from '../validations/validation_auth';
+import { UserCreationInfo } from '../backend/entities';
 
 type Props = {
   onSuccessfulSend: (userCreationInfo: UserCreationInfo) => void
+  initialData?: UserCreationInfo
 }
 
 const UserForm = (props: Props) => {
 
-  const [idType, setIdType] = useState<string>("");
-  const [id, setId] = useState<string>("");
-  const [nombreUsuario, setNombreUsuario] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [idType, setIdType] = useState<string>(props.initialData?.nombre_tipo_identificacion ?? '');
+  const [id, setId] = useState<string>(props.initialData?.identificacion ?? '');
+  const [nombreUsuario, setNombreUsuario] = useState<string>(props.initialData?.nombre ?? '');
+  const [email, setEmail] = useState<string>(props.initialData?.correo ?? '');
+  const [phone, setPhone] = useState<string>(props.initialData?.telefono.toString() ?? '');
+  const [password, setPassword] = useState<string>(props.initialData?.contrasena ?? '');
+  const [confirmPassword, setConfirmPassword] = useState<string>(props.initialData?.contrasena ?? '');
 
   const [errorMessage, setErrorMessage] = useState("")
 
