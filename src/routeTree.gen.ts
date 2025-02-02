@@ -228,12 +228,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardTorneosImport
       parentRoute: typeof DashboardImport
     }
-    '/user_dashboard/profile': {
-      id: '/user_dashboard/profile'
-      path: '/profile'
-      fullPath: '/user_dashboard/profile'
-      preLoaderRoute: typeof UserdashboardProfileImport
-      parentRoute: typeof UserdashboardImport
     '/dashboard/usuario_editar': {
       id: '/dashboard/usuario_editar'
       path: '/usuario_editar'
@@ -247,6 +241,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/usuarios'
       preLoaderRoute: typeof DashboardUsuariosImport
       parentRoute: typeof DashboardImport
+    }
+    '/user_dashboard/profile': {
+      id: '/user_dashboard/profile'
+      path: '/profile'
+      fullPath: '/user_dashboard/profile'
+      preLoaderRoute: typeof UserdashboardProfileImport
+      parentRoute: typeof UserdashboardImport
     }
     '/user_dashboard/tournament': {
       id: '/user_dashboard/tournament'
@@ -348,9 +349,9 @@ export interface FileRoutesByFullPath {
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/solicitudes': typeof DashboardSolicitudesRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
-  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/dashboard/usuario_editar': typeof DashboardUsuarioeditarRoute
   '/dashboard/usuarios': typeof DashboardUsuariosRoute
+  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
@@ -368,9 +369,9 @@ export interface FileRoutesByTo {
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/solicitudes': typeof DashboardSolicitudesRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
-  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/dashboard/usuario_editar': typeof DashboardUsuarioeditarRoute
   '/dashboard/usuarios': typeof DashboardUsuariosRoute
+  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
@@ -391,9 +392,9 @@ export interface FileRoutesById {
   '/dashboard/matricula': typeof DashboardMatriculaRoute
   '/dashboard/solicitudes': typeof DashboardSolicitudesRoute
   '/dashboard/torneos': typeof DashboardTorneosRoute
-  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/dashboard/usuario_editar': typeof DashboardUsuarioeditarRoute
   '/dashboard/usuarios': typeof DashboardUsuariosRoute
+  '/user_dashboard/profile': typeof UserdashboardProfileRoute
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
@@ -415,9 +416,9 @@ export interface FileRouteTypes {
     | '/dashboard/matricula'
     | '/dashboard/solicitudes'
     | '/dashboard/torneos'
-    | '/user_dashboard/profile'
     | '/dashboard/usuario_editar'
     | '/dashboard/usuarios'
+    | '/user_dashboard/profile'
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
@@ -434,9 +435,9 @@ export interface FileRouteTypes {
     | '/dashboard/matricula'
     | '/dashboard/solicitudes'
     | '/dashboard/torneos'
-    | '/user_dashboard/profile'
     | '/dashboard/usuario_editar'
     | '/dashboard/usuarios'
+    | '/user_dashboard/profile'
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
@@ -455,9 +456,9 @@ export interface FileRouteTypes {
     | '/dashboard/matricula'
     | '/dashboard/solicitudes'
     | '/dashboard/torneos'
-    | '/user_dashboard/profile'
     | '/dashboard/usuario_editar'
     | '/dashboard/usuarios'
+    | '/user_dashboard/profile'
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
@@ -556,9 +557,6 @@ export const routeTree = rootRoute
       "filePath": "dashboard/torneos.tsx",
       "parent": "/dashboard"
     },
-    "/user_dashboard/profile": {
-      "filePath": "user_dashboard/profile.tsx",
-      "parent": "/user_dashboard"
     "/dashboard/usuario_editar": {
       "filePath": "dashboard/usuario_editar.tsx",
       "parent": "/dashboard"
@@ -566,6 +564,10 @@ export const routeTree = rootRoute
     "/dashboard/usuarios": {
       "filePath": "dashboard/usuarios.tsx",
       "parent": "/dashboard"
+    },
+    "/user_dashboard/profile": {
+      "filePath": "user_dashboard/profile.tsx",
+      "parent": "/user_dashboard"
     },
     "/user_dashboard/tournament": {
       "filePath": "user_dashboard/tournament.tsx",
