@@ -38,6 +38,7 @@
     "react-icons": "^5.4.0",
     "tailwindcss": "^4.0.1",
     "tailwindcss-animate": "^1.0.7",
-    "use-debounce": "^10.0.4"
+    "use-debounce": "^10.0.4",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }
