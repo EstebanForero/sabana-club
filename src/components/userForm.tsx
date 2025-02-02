@@ -1,23 +1,26 @@
 
 import React, { useState } from 'react'
 import InputComponent from './inputComponent';
-import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateUsername, validateUserCreation } from '../validations/validation_auth';
+import { validateConfirmPassword, validateEmailFormat, validateId, validatePassword, validatePhoneFormat, validateUsername, validateUserCreation, checkEmailExists, checkPhoneExists, ExistanceValues, withExeption } from '../validations/validation_auth';
 import { UserCreationInfo } from '../backend/entities';
 
 type Props = {
   onSuccessfulSend: (userCreationInfo: UserCreationInfo) => void
-  initialData?: UserCreationInfo
+  initialData?: UserCreationInfo,
+  buttonName: string,
+  showPasswordFields: boolean,
+  exemptValues?: ExistanceValues
 }
 
 const UserForm = (props: Props) => {
 
   const [idType, setIdType] = useState<string>(props.initialData?.nombre_tipo_identificacion ?? '');
-  const [id, setId] = useState<string>(props.initialData?.identificacion ?? '');
-  const [nombreUsuario, setNombreUsuario] = useState<string>(props.initialData?.nombre ?? '');
-  const [email, setEmail] = useState<string>(props.initialData?.correo ?? '');
-  const [phone, setPhone] = useState<string>(props.initialData?.telefono.toString() ?? '');
-  const [password, setPassword] = useState<string>(props.initialData?.contrasena ?? '');
-  const [confirmPassword, setConfirmPassword] = useState<string>(props.initialData?.contrasena ?? '');
+  const [id, setId] = useState<string>('');
+  const [nombreUsuario, setNombreUsuario] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [phone, setPhone] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
 
   const [errorMessage, setErrorMessage] = useState("")
 
@@ -31,7 +34,7 @@ const UserForm = (props: Props) => {
       nombre_tipo_identificacion: idType
     }
 
-    const validateResult = await validateUserCreation(userCreationInfo)
+    const validateResult = await validateUserCreation(userCreationInfo, props.showPasswordFields, props.exemptValues)
 
     if (!validateResult.isValid) {
       setErrorMessage(validateResult.errorMessage ?? '')
@@ -50,9 +53,9 @@ const UserForm = (props: Props) => {
         </label>
         <select
           id="idType"
-          value={idType}
           onChange={(e) => setIdType(e.target.value)}
           className="p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          defaultValue={props.initialData?.nombre_tipo_identificacion}
           required
         >
           <option value="">Selecciona tu tipo de identificación</option>
@@ -70,6 +73,7 @@ const UserForm = (props: Props) => {
           type="text"
           validator={validateId}
           onChange={setId}
+          defaultValue={props.initialData?.identificacion}
         />
 
         <InputComponent
@@ -78,6 +82,7 @@ const UserForm = (props: Props) => {
           type="text"
           validator={validateUsername}
           onChange={setNombreUsuario}
+          defaultValue={props.initialData?.nombre}
         />
       </div>
 
@@ -86,26 +91,29 @@ const UserForm = (props: Props) => {
           name="Correo electrónico"
           placeholder="Ingresa tu correo electrónico"
           type="email"
-          validator={validateEmail}
+          validator={[validateEmailFormat, withExeption(props.exemptValues?.email, checkEmailExists)]}
           onChange={setEmail}
+          defaultValue={props.initialData?.correo}
         />
 
         <InputComponent
           name="Teléfono"
           placeholder="Ingresa tu número de teléfono"
           type="tel"
-          validator={validatePhone}
+          validator={[validatePhoneFormat, withExeption(props.exemptValues?.phone, checkPhoneExists)]}
           onChange={setPhone}
+          defaultValue={props.initialData?.telefono.toString()}
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      {props.showPasswordFields && <div className="grid grid-cols-2 gap-4">
         <InputComponent
           name="Contraseña"
           placeholder="Crea una contraseña"
           type="password"
           validator={validatePassword}
           onChange={setPassword}
+          defaultValue={props.initialData?.contrasena}
         />
 
         <InputComponent
@@ -114,8 +122,9 @@ const UserForm = (props: Props) => {
           type="password"
           validator={(val) => validateConfirmPassword(val, password)}
           onChange={setConfirmPassword}
+          defaultValue={props.initialData?.contrasena}
         />
-      </div>
+      </div>}
 
       <div className="flex flex-col items-center">
         <p className="text-red-500 mb-3">{errorMessage}</p>
@@ -123,7 +132,7 @@ const UserForm = (props: Props) => {
           onClick={onClickButton}
           className="w-full py-3 px-6 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
         >
-          Registrar
+          {props.buttonName}
         </button>
       </div>
     </div>

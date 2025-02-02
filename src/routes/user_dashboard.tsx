@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import NavBarDashboard, { LinkData } from '../components/navBarDashboard'
-import { FaChessBoard, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy } from 'react-icons/fa'
+import { FaChessBoard, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy, FaUserPlus } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from '../backend/auth'
 import { useQuery } from "@tanstack/react-query"
@@ -24,6 +24,7 @@ const links: LinkData[] = [
   { linkText: 'Entrenamientos', to: '/user_dashboard/training', icon: <GiTennisRacket className="inline ml-2" /> },
   { linkText: 'Torneos', to: '/user_dashboard/tournament', icon: <FaTrophy className="inline ml-2" /> },
   { linkText: 'Matricula', to: '/user_dashboard/tuition', icon: <FaCreditCard className="inline ml-2" /> },
+  { linkText: 'Perfil', to: '/user_dashboard/profile', icon: <FaUserPlus className="inline ml-2" /> },
   { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },
 ]
 

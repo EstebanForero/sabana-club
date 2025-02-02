@@ -76,3 +76,13 @@ export type TuitionInfo = {
   monto_usd: number;
 };
 
+
+export type Request = {
+  requester_id: string,
+  request_id: string,
+  command_name: "update_user",
+  command_content: RequestContent,
+  aprover_id?: string,
+}
+
+export type RequestContent = { UpdateUser: { user_updation: UserUpdationInfo, user_id: string } }

@@ -23,7 +23,7 @@ function RouteComponent() {
           Únete a Club Sabana
         </h2>
 
-        <UserForm onSuccessfulSend={onRegister} />
+        <UserForm onSuccessfulSend={onRegister} buttonName='Registrarse' showPasswordFields />
       </div>
     </div>
 

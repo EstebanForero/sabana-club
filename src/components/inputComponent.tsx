@@ -1,18 +1,21 @@
 
 import React, { useEffect, useState } from 'react'
 
+type Validator = (value: string) => (string | undefined) | Promise<string | undefined>
+
 type Props = {
   onChange: (value: string) => void
   name: string
-  validator?: (value: string) => (string | undefined) | Promise<string | undefined>
+  validator?: Validator | Validator[]
   placeholder?: string
   type?: React.HTMLInputTypeAttribute
+  defaultValue?: string
 }
 
-const InputComponent = ({ onChange, name, validator, placeholder, type }: Props) => {
+const InputComponent = ({ onChange, name, validator, placeholder, type, defaultValue }: Props) => {
 
   const [errorMessage, setErrorMessage] = useState('')
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(defaultValue ?? '')
 
   useEffect(() => {
     if (!errorMessage) {
@@ -27,7 +30,23 @@ const InputComponent = ({ onChange, name, validator, placeholder, type }: Props)
       return
     }
 
-    const errorMessage = await validator(value)
+    let errorMessage = ''
+
+    if (Array.isArray(validator)) {
+      for (let index = 0; index < validator.length; index++) {
+        const element = await validator[index](value);
+
+        if (element) {
+          errorMessage = element
+        }
+      }
+    } else {
+      const message = await validator(value)
+
+      if (message) {
+        errorMessage = message
+      }
+    }
 
     if (!errorMessage) {
       setValue(value)
