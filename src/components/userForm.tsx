@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react'
 import InputComponent from './inputComponent';
-import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateUsername } from '@/validations/validation_auth';
-import { UserCreationInfo } from '@/backend/entities';
-import { validateUserCreation } from '@/validations/validation_auth';
+import { validateConfirmPassword, validateEmail, validateId, validatePassword, validatePhone, validateUsername } from 'src/validations/validation_auth';
+import { UserCreationInfo } from 'src/backend/entities';
+import { validateUserCreation } from 'src/validations/validation_auth';
 
 type Props = {
   onSuccessfulSend: (userCreationInfo: UserCreationInfo) => void

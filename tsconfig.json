@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "src/*": ["./src/*"],
       "@tanstack/react-query": ["node_modules/@tanstack/react-query"]
     }
   }
