@@ -17,7 +17,7 @@ function RouteComponent() {
     return <span className="loading loading-spinner loading-lg"></span>
   }
 
-  return <div className='flex-row flex'>
+  return <div className='flex-row flex gap-4'>
     {allRequests.map(request => <RequestComponent request={request} key={request.request_id} />)}
   </div>
 }

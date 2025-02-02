@@ -83,6 +83,7 @@ export type RequestCommand = {
   command_name: "update_user",
   command_content: RequestContent,
   aprover_id?: string,
+  completed: boolean
 }
 
 export type RequestContent = { UpdateUser: { user_updation: UserUpdationInfo, user_id: string } }

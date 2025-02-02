@@ -75,9 +75,9 @@ export const validateUsername = (value: string): string | undefined => {
   if (value.length < 3 || value.length > 20) {
     return "El nombre de usuario debe tener entre 3 y 20 caracteres";
   }
-  const usernameRegex = /^[a-zA-Z0-9]+$/;
+  const usernameRegex = /^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$/;
   if (!usernameRegex.test(value)) {
-    return "El nombre de usuario solo puede contener letras y números";
+    return "El nombre de usuario solo puede contener letras, números y un solo espacio entre palabras";
   }
 };
 
