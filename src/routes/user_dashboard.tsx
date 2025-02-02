@@ -23,6 +23,7 @@ const links: LinkData[] = [
   { linkText: 'Inicio', to: '/user_dashboard', icon: <FaHome className="inline ml-2" /> },
   { linkText: 'Entrenamientos', to: '/user_dashboard/training', icon: <GiTennisRacket className="inline ml-2" /> },
   { linkText: 'Torneos', to: '/user_dashboard/tournament', icon: <FaTrophy className="inline ml-2" /> },
+  { linkText: 'Informes', to: '/user_dashboard/informes', icon: <FaFileAlt className="inline ml-2" /> },
   { linkText: 'Matricula', to: '/user_dashboard/tuition', icon: <FaCreditCard className="inline ml-2" /> },
   { linkText: 'Perfil', to: '/user_dashboard/profile', icon: <FaUserPlus className="inline ml-2" /> },
   { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from "@tanstack/react-query";
-import { getUserByIdentification, getCurrentUser } from './../../backend/user';  // Asegúrate de importar la función correctamente
-import { UserInfo, UserCreationInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
+import { useEffect, useState} from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { getUserByIdentification } from './../../backend/user';  // Asegúrate de importar la función correctamente
+import { UserInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
 
 // Componente principal
 export const Route = createFileRoute('/dashboard/usuario_editar')({
@@ -11,10 +10,16 @@ export const Route = createFileRoute('/dashboard/usuario_editar')({
 
 function RouteComponent() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);  
+  const [userName] = useState<string | null>(null);  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+   const navigate = useNavigate();
+  
+      const onSearchUser = () => {
+          // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
+          navigate({to: '/dashboard/usuarios'});
+      };
 
   useEffect(() => {
 
@@ -84,14 +89,25 @@ function RouteComponent() {
           ) : (
             <p className="text-gray-500 text-center">No se encontró información de .</p>
           )}
-          <div className="flex justify-center mt-4">
-            <button
-              className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
-              // onClick={}
-            >
-              Actualizar Datos
-            </button>
-          </div>
+          <div className="flex justify-center mt-4 gap-6"> {/* Añade gap-6 para separar los botones */}
+  <div>
+    <button
+      className="min-w-[200px] min-h-[55px] bg-blue-500 text-white py-2 px-4 rounded-xl hover:bg-blue-600 transition-colors duration-200 text-xl"
+      // onClick={}
+    >
+      Actualizar Datos
+    </button>
+  </div>
+  <div>
+    <button
+      onClick={onSearchUser}
+      className="min-w-[200px] min-h-[55px] bg-red-500 text-white py-3 px-6 rounded-xl hover:bg-red-600 transition-colors duration-200 text-xl"
+    >
+      Atrás
+    </button>
+  </div>
+</div>
+          
         </div>
       </div>
     );
