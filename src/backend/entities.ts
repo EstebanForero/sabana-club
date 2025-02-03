@@ -44,6 +44,8 @@ export type UserSelectionInfo = {
 
 export type UserRol = "Usuario" | "Admin" | "Entrenador"
 
+export const roles: UserRol[] = ["Usuario", "Admin", "Entrenador"]
+
 export type Tournament = {
   id_torneo: string;
   nombre: string;

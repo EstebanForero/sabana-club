@@ -27,6 +27,15 @@ export async function getCurrentUser(): Promise<UserInfo> {
   }).json<UserInfo>();
 }
 
+export async function updateUserRole(userRole: UserRol, user_id: string) {
+  const token = tokenStore.state
+  return await ky.put(`${backendUrl}/user/role/${userRole}/${user_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 export async function updateCurrentUser(userUpdationInfo: UserUpdationInfo): Promise<UserInfo> {
   const token = tokenStore.state
   return await ky.put(`${backendUrl}/user`, {
