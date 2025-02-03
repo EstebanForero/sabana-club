@@ -10,7 +10,7 @@ export async function createTournament(nombre: string): Promise<void> {
 }
 
 export async function deleteTournament(tournament_id: string): Promise<void> {
-  await ky.post(`${backendUrl}/tournament/delete/${tournament_id}`);
+  await ky.delete(`${backendUrl}/tournament/delete/${tournament_id}`);
 }
 
 export async function registerUserInTournament(registration: UserTournamentRegistration): Promise<void> {
@@ -37,6 +37,14 @@ export async function getTournamentPositions(tournament_id: string): Promise<num
   }).json<number[]>();
 }
 
+export async function getTournament(tournament_id: string): Promise<Tournament> {
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/tournament/id/${tournament_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<Tournament>();
+}
 
 // Esta funcion obtiene los torneos de el usuario que esta actualmente registrado
 export async function getTournamentsOfCurrentUser(): Promise<UserTournamentInfo[]> {

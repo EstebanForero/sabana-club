@@ -37,16 +37,15 @@ function RouteComponent() {
   const sendUpdateRequest = async (userCreationInfo: UserCreationInfo) => {
     try {
       await CreateRequest({
-        UpdateUser: {
-          user_updation: {
-            nombre_tipo_identificacion: userCreationInfo.nombre_tipo_identificacion.toUpperCase(),
-            nombre: userCreationInfo.nombre,
-            identificacion: userCreationInfo.identificacion,
-            correo: userCreationInfo.correo,
-            telefono: userCreationInfo.telefono
-          },
-          user_id: currentUser.id_persona
-        }
+        type: 'UpdateUser',
+        user_updation: {
+          nombre_tipo_identificacion: userCreationInfo.nombre_tipo_identificacion.toUpperCase(),
+          nombre: userCreationInfo.nombre,
+          identificacion: userCreationInfo.identificacion,
+          correo: userCreationInfo.correo,
+          telefono: userCreationInfo.telefono
+        },
+        user_id: currentUser.id_persona
       })
 
       showToast('succesfull', 'Request to update user created successfully')

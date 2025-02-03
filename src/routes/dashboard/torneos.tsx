@@ -1,10 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Tournament, UserSelectionInfo, UserTournamentRegistration } from './../../backend/entities';
-import { createTournament, getAllTournaments, getTournamentPositions, getUsersInTournament, registerUserInTournament } from './../../backend/tournament';
-import { getAllUsers } from './../../backend/user';
+import { createTournament, deleteTournament, getAllTournaments, getTournamentPositions, getUsersInTournament, registerUserInTournament } from './../../backend/tournament';
+import { currentUserRol, getAllUsers } from './../../backend/user';
 import UserSelectionComponent from '../../components/userSelectionComponent';
 import InputComponent from '../../components/inputComponent';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { CreateRequest } from '../../backend/request';
 
 export const Route = createFileRoute('/dashboard/torneos')({
   component: RouteComponent,
@@ -18,6 +20,27 @@ function RouteComponent() {
   const [selectedTournamentId, setSelectedTournamentId] = useState('');
   const [selectedPlayerId, setSelectedPlayerId] = useState('');
   const [playerPosition, setPlayerPosition] = useState('');
+
+  const [errorMessage, setErrorMessage] = useState('')
+  const [succesfullMessage, setSuccesfullMessage] = useState('')
+
+  const showToast = (variant: 'succesfull' | 'error', message: string) => {
+    if (variant == 'succesfull') {
+      setSuccesfullMessage(message)
+      setTimeout(() => setSuccesfullMessage(''), 3000)
+    } else {
+      setErrorMessage(message)
+      setTimeout(() => setErrorMessage(''), 3000)
+    }
+  }
+
+  const queryClient = useQueryClient()
+
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
+  })
+
 
   useEffect(() => {
     fetchTournamentsAndPlayers();
@@ -126,8 +149,31 @@ function RouteComponent() {
     }
   }
 
+  const onDeleteTournament = async (tournament_id: string) => {
+    if (userRol == 'Entrenador') {
+      await CreateRequest({
+        type: 'DeleteTournament',
+        tournament_id: tournament_id
+      })
+      showToast('succesfull', "Request to delete tournament sended")
+    } else if (userRol == 'Admin') {
+      await deleteTournament(tournament_id)
+      fetchTournamentsAndPlayers()
+    }
+  }
+
   return (
     <div className="p-4 bg-gray-900 min-h-screen space-y-6 text-gray-200">
+
+      <div className='toast toast-top toast-end'>
+        {succesfullMessage && <div className='alert alert-success'>
+          <span>{succesfullMessage}</span>
+        </div>}
+
+        {errorMessage && <div className='alert alert-error'>
+          <span>{errorMessage}</span>
+        </div>}
+      </div>
       {/* 🔹 Sección para crear torneos */}
       <div className="shadow-md p-4 rounded-lg bg-gray-800">
         <h2 className="text-xl font-bold mb-4 text-white">Crear Torneo</h2>
@@ -193,7 +239,13 @@ function RouteComponent() {
             const players = tournamentPlayers[tournament.id_torneo] || [];
             return (
               <div key={tournament.id_torneo} className="border border-gray-600 p-4 rounded">
-                <h3 className="font-semibold mb-2 text-gray-200">{tournament.nombre}</h3>
+                <div className='flex flex-row justify-between mb-4 items-center'>
+                  <h3 className="font-semibold mb-2 text-gray-200">{tournament.nombre}</h3>
+                  <button className='bg-red-500 px-2 py-1 cursor-pointer rounded-sm hover:bg-red-600'
+                    onClick={() => onDeleteTournament(tournament.id_torneo)}
+                  >
+                    {userRol == "Admin" ? "Delete tournament" : "Send delete tournament request"}</button>
+                </div>
                 {players.length === 0 ? (
                   <p className="text-gray-400 mb-2">No hay usuarios registrados todavia</p>
                 ) : (

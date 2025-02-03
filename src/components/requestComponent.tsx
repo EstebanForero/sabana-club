@@ -18,6 +18,12 @@ const RequestComponent = ({ request }: Props) => {
     queryFn: async () => getUserByIdentification(request.requester_id)
   })
 
+  const { data: aproverInfo } = useQuery({
+    queryKey: [`user-${request.aprover_id}`],
+    queryFn: async () => getUserByIdentification(request.requester_id),
+    enabled: !(!request.aprover_id)
+  })
+
   const [errorMessage, setErrorMessage] = useState('')
   const [succesfullMessage, setSuccesfullMessage] = useState('')
 
@@ -77,10 +83,14 @@ const RequestComponent = ({ request }: Props) => {
       <h1 className='text-xl font-bold mb-4'>Solicitud: {request.command_name}</h1>
       <UserInfoComponent userInfo={requesterInfo} className='bg-gray-900 p-2 rounded-xl mb-4' />
       <RequestContentVisualizer requestContent={request.command_content} />
+      <div className='my-2 w-full'></div>
       {!request.completed ? <div>
         <button className='bg-green-500 rounded-xl py-1 px-2 mr-4 cursor-pointer' onClick={() => AcceptRequest()}>Accept</button>
         <button className='bg-red-500 py-1 px-2 rounded-xl cursor-pointer' onClick={() => CancelRequest()}>Decline</button>
-      </div> : <p className='bg-green-500 rounded-xl py-1 px-2'>This request was already approved by: {}</p>}
+      </div> : <details className='dropdown'>
+        <summary className='bg-green-500 rounded-xl py-1 px-2 cursor-pointer w-full'>Aprovador</summary>
+        {aproverInfo && <UserInfoComponent userInfo={aproverInfo} className='bg-green-300 text-black rounded-xl dropdown-content p-2' />}
+      </details>}
     </div>
   )
 }

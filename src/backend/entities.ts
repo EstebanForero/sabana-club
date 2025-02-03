@@ -88,4 +88,11 @@ export type RequestCommand = {
   completed: boolean
 }
 
-export type RequestContent = { UpdateUser: { user_updation: UserUpdationInfo, user_id: string } }
+interface RequestBase {
+  type: string
+}
+
+export type RequestContent = UserUpdateRequest | DeleteTournamentRequest
+export type CommandType = "UpdateUser" | "DeleteTournament"
+export interface DeleteTournamentRequest extends RequestBase { type: CommandType, tournament_id: string }
+export interface UserUpdateRequest extends RequestBase { type: CommandType, user_updation: UserUpdationInfo, user_id: string }
