@@ -8,13 +8,18 @@ export const Route = createFileRoute('/dashboard/solicitudes')({
 })
 
 function RouteComponent() {
-  const { data: allRequests } = useQuery({
+  const { data: allRequests, isLoading } = useQuery({
     queryKey: ['all_requests'],
     queryFn: GetAllRequests
   })
 
-  if (!allRequests) {
+  if (isLoading) {
     return <span className="loading loading-spinner loading-lg"></span>
+  }
+
+  if (!allRequests || allRequests.length == 0) {
+    console.log("requests is empty")
+    return <h1 className='text-xl'>No hay solicitudes por el momento</h1>
   }
 
   return <div className='flex-row flex gap-4'>

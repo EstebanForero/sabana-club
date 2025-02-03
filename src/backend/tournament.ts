@@ -28,6 +28,15 @@ export async function getUsersInTournament(id_torneo: string): Promise<UserTourn
   }).json<UserTournamentRegistration[]>();
 }
 
+export async function getTournamentPositions(tournament_id: string): Promise<number[]> {
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/tournament/positions/${tournament_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<number[]>();
+}
+
 
 // Esta funcion obtiene los torneos de el usuario que esta actualmente registrado
 export async function getTournamentsOfCurrentUser(): Promise<UserTournamentInfo[]> {

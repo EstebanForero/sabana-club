@@ -118,7 +118,7 @@ function RouteComponent() {
     if (formType === "crear") {
       return (
         <div className="min-h-screen flex items-center justify-center w-full ">
-          <form className="max-w-[2000px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-blue-950" onSubmit={handleCreateTraining}>
+          <form className="max-w-[2000px] w-full shadow-lg shadow-black rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-800" onSubmit={handleCreateTraining}>
             <h2 className="text-xl font-bold">Formulario Crear Entrenamiento</h2>
             <input
               type="text"
@@ -159,8 +159,8 @@ function RouteComponent() {
 
     if (formType === "asistencia") {
       return (
-        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-green-500">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-green-700">
+        <div className="max-w-[800px] w-full shadow-lg shadow-black rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-700">
+          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
             <h2 className="text-xl font-bold">Formulario Asistencia</h2>
             <select
               className="p-2 border rounded max-w-full my-2"
@@ -217,8 +217,8 @@ function RouteComponent() {
 
     if (formType === "añadir") {
       return (
-        <div className="max-w-[800px] w-full border-2 border-gray-400 rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-yellow-600">
-          <div className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-yellow-700">
+        <div className="max-w-[800px] w-full shadow-lg shadow-black rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-700">
+          <div className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
             <h2 className="text-xl font-bold">Añadir Usuario a Entrenamiento</h2>
             <select
               className="p-2 border rounded max-w-full"

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { RequestCommand } from '../backend/entities'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUserByIdentification } from '../backend/user'
 import UserInfoComponent from './userInfoComponent'
 import { DeleteRequest, ExecuteRequest } from '../backend/request'
@@ -35,15 +35,23 @@ const RequestComponent = ({ request }: Props) => {
     try {
       await ExecuteRequest(request.request_id)
       showToast('succesfull', "Request accepted succesfully")
+      queryClient.invalidateQueries({
+        queryKey: ["all_requests"]
+      })
     } catch (error) {
       showToast('error', "Error accepting request")
     }
   }
 
+  const queryClient = useQueryClient()
+
   const CancelRequest = async () => {
     try {
       await DeleteRequest(request.request_id)
       showToast('succesfull', "Request deleting succesfully")
+      queryClient.invalidateQueries({
+        queryKey: ["all_requests"]
+      })
     } catch (error) {
       showToast('error', "Error deleting request")
     }
@@ -69,7 +77,7 @@ const RequestComponent = ({ request }: Props) => {
       <h1 className='text-xl font-bold mb-4'>Solicitud: {request.command_name}</h1>
       <UserInfoComponent userInfo={requesterInfo} className='bg-gray-900 p-2 rounded-xl mb-4' />
       <RequestContentVisualizer requestContent={request.command_content} />
-      {request.completed ? <div>
+      {!request.completed ? <div>
         <button className='bg-green-500 rounded-xl py-1 px-2 mr-4 cursor-pointer' onClick={() => AcceptRequest()}>Accept</button>
         <button className='bg-red-500 py-1 px-2 rounded-xl cursor-pointer' onClick={() => CancelRequest()}>Decline</button>
       </div> : <p className='bg-green-500 rounded-xl py-1 px-2'>This request was already approved by: {}</p>}

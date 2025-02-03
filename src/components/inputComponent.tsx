@@ -10,9 +10,11 @@ type Props = {
   placeholder?: string
   type?: React.HTMLInputTypeAttribute
   defaultValue?: string
+  className?: string
+  disabled?: boolean
 }
 
-const InputComponent = ({ onChange, name, validator, placeholder, type, defaultValue }: Props) => {
+const InputComponent = ({ onChange, name, validator, placeholder, type, defaultValue, className, disabled }: Props) => {
 
   const [errorMessage, setErrorMessage] = useState('')
   const [value, setValue] = useState(defaultValue ?? '')
@@ -58,7 +60,7 @@ const InputComponent = ({ onChange, name, validator, placeholder, type, defaultV
   }
 
   return (
-    <div className='flex flex-col'>
+    <div className={`flex flex-col ${className}`}>
       <label htmlFor={name} className='className="text-sm text-gray-300 mb-2"'>
         {name}
       </label>
@@ -66,6 +68,7 @@ const InputComponent = ({ onChange, name, validator, placeholder, type, defaultV
         className='p-3 bg-gray-800 border border-gray-700 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500'
         placeholder={placeholder}
         type={type}
+        disabled={disabled}
       />
       <p className='text-red-500'>{errorMessage}</p>
     </div>

@@ -1,9 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { Tournament, UserSelectionInfo, UserTournamentRegistration } from './../../backend/entities';
-import { createTournament, getAllTournaments, getUsersInTournament, registerUserInTournament } from './../../backend/tournament';
+import { createTournament, getAllTournaments, getTournamentPositions, getUsersInTournament, registerUserInTournament } from './../../backend/tournament';
 import { getAllUsers } from './../../backend/user';
 import UserSelectionComponent from '../../components/userSelectionComponent';
+import InputComponent from '../../components/inputComponent';
 
 export const Route = createFileRoute('/dashboard/torneos')({
   component: RouteComponent,
@@ -40,6 +41,36 @@ function RouteComponent() {
     }
   }
 
+  const onPositionChange = (value: string) => {
+    const position = value
+
+    if (Number(position) > 0) {
+      setPlayerPosition(value)
+    }
+  }
+
+  const validatePosition = async (value: string): Promise<string | undefined> => {
+    try {
+      const numberValue = Number(value ?? '0')
+
+      if (numberValue < 0) {
+        return "La posicion no puede ser menor o igual a cero"
+      }
+
+      if (numberValue > 99) {
+        return "La posicion no puede ser mayor a 99"
+      }
+
+      const tournamentPositions = await getTournamentPositions(selectedTournamentId)
+
+      if (tournamentPositions.includes(numberValue)) {
+        return "Esta posicion ya existe en el torneo"
+      }
+    } catch (error) {
+      return "La posicion debe ser un numero"
+    }
+  }
+
   async function fetchUsers(): Promise<void> {
     try {
 
@@ -71,6 +102,12 @@ function RouteComponent() {
       return;
     }
 
+    const validateString = await validatePosition(playerPosition)
+    if (validateString) {
+      console.log('position not valid: ', validateString)
+      return;
+    }
+
     const registration: UserTournamentRegistration = {
       id_torneo: selectedTournamentId,
       id_persona: selectedPlayerId,
@@ -83,7 +120,7 @@ function RouteComponent() {
       await fetchTournamentsAndPlayers(); // 🔹 Actualizar la lista de torneos y jugadores
       setSelectedTournamentId('');
       setSelectedPlayerId('');
-      setPlayerPosition('');
+      setPlayerPosition('0');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -132,22 +169,14 @@ function RouteComponent() {
         <div className="mb-4">
           <UserSelectionComponent onChangeUser={(user_id) => setSelectedPlayerId(user_id)} />
         </div>
-        <div className="mb-4">
-          <label className="block mb-1 font-semibold text-gray-300">Position</label>
-          <input
-            type="number"
-            placeholder="Position"
-            className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-gray-200"
-            value={playerPosition}
-            onChange={(e) => {
-              const position = e.target.value
-
-              if (Number(position) > 0) {
-                setPlayerPosition(e.target.value)
-              }
-            }}
-          />
-        </div>
+        <InputComponent
+          name='Posicion'
+          onChange={(value) => onPositionChange(value)}
+          validator={validatePosition}
+          type='number'
+          className='mb-6'
+          disabled={!selectedTournamentId}
+        />
         <button
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           onClick={handleRegisterPlayer}
@@ -172,7 +201,7 @@ function RouteComponent() {
                     <thead>
                       <tr className="bg-gray-700">
                         <th className="border border-gray-600 p-2 text-left text-gray-200">Nombre de el jugador</th>
-                        <th className="border border-gray-600 p-2 text-left text-gray-200">Posision</th>
+                        <th className="border border-gray-600 p-2 text-left text-gray-200">Posicion</th>
                       </tr>
                     </thead>
                     <tbody>
