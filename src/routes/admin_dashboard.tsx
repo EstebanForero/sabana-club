@@ -1,11 +1,11 @@
-import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import NavBarDashboard, { LinkData } from './../components/navBarDashboard'
 import { FaCommentDollar, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy, FaUser, FaUserEdit } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from './../backend/auth'
 import { currentUserRol } from '../backend/user'
 
-export const Route = createFileRoute('/dashboard')({
+export const Route = createFileRoute('/admin_dashboard')({
   component: RouteComponent,
   beforeLoad: async () => {
     if (!await isAuthenticated()) {
@@ -16,7 +16,7 @@ export const Route = createFileRoute('/dashboard')({
     }
 
     const user_rol = await currentUserRol()
-    if (user_rol == 'Usuario') {
+    if (user_rol == 'Usuario' || user_rol == 'Entrenador') {
       throw redirect({
         to: '/user_dashboard'
       })

@@ -4,7 +4,7 @@ import { FaChessBoard, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy, 
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from '../backend/auth'
 import { useQuery } from "@tanstack/react-query"
-import { currentUserIsAdmin, getCurrentUser } from '../backend/user'
+import { currentUserRol, getCurrentUser } from '../backend/user'
 
 export const Route = createFileRoute('/user_dashboard')({
   component: RouteComponent,
@@ -37,13 +37,13 @@ const adminLink: LinkData = {
 
 function RouteComponent() {
 
-  const { data: isAdmin } = useQuery({
-    queryKey: ['isAdmin'],
-    queryFn: currentUserIsAdmin
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
   })
 
   const returnLinks = () => {
-    if (isAdmin) {
+    if (userRol == 'Admin') {
       console.log('user is admin')
       return [...links, adminLink]
     }

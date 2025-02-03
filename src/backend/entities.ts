@@ -28,7 +28,7 @@ export type UserInfo = {
   telefono: number;
   identificacion: string;
   nombre_tipo_identificacion: string;
-  es_admin: boolean;
+  nombre_rol: UserRol
 };
 
 export type UserSelectionInfo = {
@@ -38,9 +38,11 @@ export type UserSelectionInfo = {
   telefono: number;
   identificacion: string;
   nombre_tipo_identificacion: string;
-  es_admin: boolean;
+  nombre_rol: UserRol
   matricula_valida: boolean;
 };
+
+export type UserRol = "Usuario" | "Admin" | "Entrenador"
 
 export type Tournament = {
   id_torneo: string;
