@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import NavBarDashboard, { LinkData } from './../components/navBarDashboard'
-import { FaCommentDollar, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTrophy, FaUser, FaUserEdit } from 'react-icons/fa'
+import { FaCommentDollar, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTeamspeak, FaTrophy, FaUser, FaUserEdit } from 'react-icons/fa'
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from './../backend/auth'
 import { currentUserRol } from '../backend/user'
@@ -41,6 +41,7 @@ const links: LinkData[] = [
 
 const adminLinks: LinkData[] = [
   { linkText: 'Solicitudes', to: '/dashboard/solicitudes', icon: <FaCommentDollar className="inline ml-2" /> },
+  { linkText: 'Gestion roles', to: '/dashboard/gestion_roles', icon: <FaTeamspeak className="inline ml-2" /> },
 ]
 
 function RouteComponent() {
