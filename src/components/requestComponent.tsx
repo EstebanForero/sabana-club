@@ -88,7 +88,7 @@ const RequestComponent = ({ request }: Props) => {
         <button className='bg-green-500 rounded-xl py-1 px-2 mr-4 cursor-pointer' onClick={() => AcceptRequest()}>Accept</button>
         <button className='bg-red-500 py-1 px-2 rounded-xl cursor-pointer' onClick={() => CancelRequest()}>Decline</button>
       </div> : <details className='dropdown'>
-        <summary className='bg-green-500 rounded-xl py-1 px-2 cursor-pointer w-full'>Aprovador</summary>
+        <summary className='bg-green-500 rounded-xl py-1 px-2 cursor-pointer w-full'>Aprovador de solicitud</summary>
         {aproverInfo && <UserInfoComponent userInfo={aproverInfo} className='bg-green-300 text-black rounded-xl dropdown-content p-2' />}
       </details>}
     </div>

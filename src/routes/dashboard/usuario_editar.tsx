@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { getUserByIdentification, updateUser } from './../../backend/user'; // Asegúrate de importar la función correctamente
+import { useQuery } from '@tanstack/react-query'
+import { currentUserRol, getUserByIdentification, updateUser } from './../../backend/user'; // Asegúrate de importar la función correctamente
 import { UserInfo, UserUpdationInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
 import UserForm from '../../components/userForm';
+import { CreateRequest } from '../../backend/request';
 
 // Componente principal
 export const Route = createFileRoute('/dashboard/usuario_editar')({
@@ -13,6 +15,11 @@ function RouteComponent() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
+  })
 
   const navigate = useNavigate();
 
@@ -59,10 +66,19 @@ function RouteComponent() {
     return <span className="loading loading-spinner loading-xl"></span>
   }
 
-  const updateUserAdmin = async (userUpdateInfo: UserUpdationInfo) => {
+  const onUpdateUser = async (userUpdateInfo: UserUpdationInfo) => {
     try {
-      await updateUser(userUpdateInfo, userInfo.id_persona)
-      showToast('succesfull', 'datos de el usuario actualizados')
+      if (userRol == 'Admin') {
+        await updateUser(userUpdateInfo, userInfo.id_persona)
+        showToast('succesfull', 'datos de el usuario actualizados')
+      } else if (userRol == 'Entrenador') {
+        await CreateRequest({
+          type: "UpdateUser",
+          user_updation: userUpdateInfo,
+          user_id: userInfo.id_persona
+        })
+        showToast('succesfull', 'solicitud de actualizacion enviada')
+      }
     } catch (error) {
       showToast('error', 'Error actualizando datos de el usuario')
     }
@@ -101,14 +117,14 @@ function RouteComponent() {
         <h1 className="text-2xl font-bold mb-4 text-white text-center">
           Editar {userInfo ? userInfo.nombre : 'Usuario'}
         </h1>
-        <UserForm onSuccessfulSend={updateUserAdmin} initialData={{
+        <UserForm onSuccessfulSend={onUpdateUser} initialData={{
           identificacion: userInfo.identificacion,
           nombre: userInfo.nombre,
           nombre_tipo_identificacion: userInfo.nombre_tipo_identificacion.toLowerCase(),
           correo: userInfo.correo,
           contrasena: '',
           telefono: userInfo.telefono
-        }} buttonName='Actualizar datos de usuario' showPasswordFields={false}
+        }} buttonName={userRol == 'Admin' ? 'Actualizar datos de usuario' : 'Enviar solicitud de actualizacion'} showPasswordFields={false}
           exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }} />
 
         <div className="flex justify-center mt-4 gap-6">
