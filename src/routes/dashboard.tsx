@@ -4,6 +4,7 @@ import { FaCommentDollar, FaCreditCard, FaFileAlt, FaHome, FaSignOutAlt, FaTroph
 import { GiTennisRacket } from 'react-icons/gi'
 import { isAuthenticated } from './../backend/auth'
 import { currentUserRol } from '../backend/user'
+import { useQuery } from "@tanstack/react-query"
 
 export const Route = createFileRoute('/dashboard')({
   component: RouteComponent,
@@ -32,17 +33,36 @@ const links: LinkData[] = [
   { linkText: 'Torneos', to: '/dashboard/torneos', icon: <FaTrophy className="inline ml-2" /> },
   { linkText: 'Informes', to: '/dashboard/informes', icon: <FaFileAlt className="inline ml-2" /> },
   { linkText: 'Matricula', to: '/dashboard/matricula', icon: <FaCreditCard className="inline ml-2" /> },
-  { linkText: 'Solicitudes', to: '/dashboard/solicitudes', icon: <FaCommentDollar className="inline ml-2" /> },
   { linkText: 'Usuario', to: '/dashboard/usuarios', icon: <FaUserEdit className="inline ml-2" /> },
   { linkText: 'Perfil', to: '/dashboard/perfil', icon: <FaUser className="inline ml-2" /> },
   { linkText: 'Interfaz usuario', to: '/user_dashboard', icon: <FaUser className="inline ml-2" /> },
   { linkText: 'Cerrar Sesión', to: '/', icon: <FaSignOutAlt className="inline ml-2" /> },
 ]
 
+const adminLinks: LinkData[] = [
+  { linkText: 'Solicitudes', to: '/dashboard/solicitudes', icon: <FaCommentDollar className="inline ml-2" /> },
+]
+
 function RouteComponent() {
+
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
+  })
+
+  const returnLinks = () => {
+    if (userRol == 'Admin') {
+      console.log('user is admin')
+      return [...links, ...adminLinks]
+    }
+
+    console.log('user is not admin')
+    return links
+  }
+
   return (
     <div>
-      <NavBarDashboard links={links} />
+      <NavBarDashboard links={returnLinks()} />
     </div>
   )
 }

@@ -15,11 +15,9 @@ import { Route as UserdashboardImport } from './routes/user_dashboard'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as DashboardImport } from './routes/dashboard'
-import { Route as AdmindashboardImport } from './routes/admin_dashboard'
 import { Route as IndexImport } from './routes/index'
 import { Route as UserdashboardIndexImport } from './routes/user_dashboard/index'
 import { Route as DashboardIndexImport } from './routes/dashboard/index'
-import { Route as AdmindashboardIndexImport } from './routes/admin_dashboard/index'
 import { Route as UserdashboardTuitionImport } from './routes/user_dashboard/tuition'
 import { Route as UserdashboardTrainingImport } from './routes/user_dashboard/training'
 import { Route as UserdashboardTournamentImport } from './routes/user_dashboard/tournament'
@@ -34,7 +32,6 @@ import { Route as DashboardMatriculaImport } from './routes/dashboard/matricula'
 import { Route as DashboardInformesuserImport } from './routes/dashboard/informes_user'
 import { Route as DashboardInformesImport } from './routes/dashboard/informes'
 import { Route as DashboardEntrenamientosImport } from './routes/dashboard/entrenamientos'
-import { Route as AdmindashboardSolicitudesImport } from './routes/admin_dashboard/solicitudes'
 
 // Create/Update Routes
 
@@ -62,12 +59,6 @@ const DashboardRoute = DashboardImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AdmindashboardRoute = AdmindashboardImport.update({
-  id: '/admin_dashboard',
-  path: '/admin_dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -84,12 +75,6 @@ const DashboardIndexRoute = DashboardIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DashboardRoute,
-} as any)
-
-const AdmindashboardIndexRoute = AdmindashboardIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AdmindashboardRoute,
 } as any)
 
 const UserdashboardTuitionRoute = UserdashboardTuitionImport.update({
@@ -176,12 +161,6 @@ const DashboardEntrenamientosRoute = DashboardEntrenamientosImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
-const AdmindashboardSolicitudesRoute = AdmindashboardSolicitudesImport.update({
-  id: '/solicitudes',
-  path: '/solicitudes',
-  getParentRoute: () => AdmindashboardRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -191,13 +170,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/admin_dashboard': {
-      id: '/admin_dashboard'
-      path: '/admin_dashboard'
-      fullPath: '/admin_dashboard'
-      preLoaderRoute: typeof AdmindashboardImport
       parentRoute: typeof rootRoute
     }
     '/dashboard': {
@@ -227,13 +199,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/user_dashboard'
       preLoaderRoute: typeof UserdashboardImport
       parentRoute: typeof rootRoute
-    }
-    '/admin_dashboard/solicitudes': {
-      id: '/admin_dashboard/solicitudes'
-      path: '/solicitudes'
-      fullPath: '/admin_dashboard/solicitudes'
-      preLoaderRoute: typeof AdmindashboardSolicitudesImport
-      parentRoute: typeof AdmindashboardImport
     }
     '/dashboard/entrenamientos': {
       id: '/dashboard/entrenamientos'
@@ -333,13 +298,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserdashboardTuitionImport
       parentRoute: typeof UserdashboardImport
     }
-    '/admin_dashboard/': {
-      id: '/admin_dashboard/'
-      path: '/'
-      fullPath: '/admin_dashboard/'
-      preLoaderRoute: typeof AdmindashboardIndexImport
-      parentRoute: typeof AdmindashboardImport
-    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -358,20 +316,6 @@ declare module '@tanstack/react-router' {
 }
 
 // Create and export the route tree
-
-interface AdmindashboardRouteChildren {
-  AdmindashboardSolicitudesRoute: typeof AdmindashboardSolicitudesRoute
-  AdmindashboardIndexRoute: typeof AdmindashboardIndexRoute
-}
-
-const AdmindashboardRouteChildren: AdmindashboardRouteChildren = {
-  AdmindashboardSolicitudesRoute: AdmindashboardSolicitudesRoute,
-  AdmindashboardIndexRoute: AdmindashboardIndexRoute,
-}
-
-const AdmindashboardRouteWithChildren = AdmindashboardRoute._addFileChildren(
-  AdmindashboardRouteChildren,
-)
 
 interface DashboardRouteChildren {
   DashboardEntrenamientosRoute: typeof DashboardEntrenamientosRoute
@@ -427,12 +371,10 @@ const UserdashboardRouteWithChildren = UserdashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin_dashboard': typeof AdmindashboardRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/user_dashboard': typeof UserdashboardRouteWithChildren
-  '/admin_dashboard/solicitudes': typeof AdmindashboardSolicitudesRoute
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/informes_user': typeof DashboardInformesuserRoute
@@ -447,7 +389,6 @@ export interface FileRoutesByFullPath {
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
-  '/admin_dashboard/': typeof AdmindashboardIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user_dashboard/': typeof UserdashboardIndexRoute
 }
@@ -456,7 +397,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/admin_dashboard/solicitudes': typeof AdmindashboardSolicitudesRoute
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/informes_user': typeof DashboardInformesuserRoute
@@ -471,7 +411,6 @@ export interface FileRoutesByTo {
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
-  '/admin_dashboard': typeof AdmindashboardIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/user_dashboard': typeof UserdashboardIndexRoute
 }
@@ -479,12 +418,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/admin_dashboard': typeof AdmindashboardRouteWithChildren
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/user_dashboard': typeof UserdashboardRouteWithChildren
-  '/admin_dashboard/solicitudes': typeof AdmindashboardSolicitudesRoute
   '/dashboard/entrenamientos': typeof DashboardEntrenamientosRoute
   '/dashboard/informes': typeof DashboardInformesRoute
   '/dashboard/informes_user': typeof DashboardInformesuserRoute
@@ -499,7 +436,6 @@ export interface FileRoutesById {
   '/user_dashboard/tournament': typeof UserdashboardTournamentRoute
   '/user_dashboard/training': typeof UserdashboardTrainingRoute
   '/user_dashboard/tuition': typeof UserdashboardTuitionRoute
-  '/admin_dashboard/': typeof AdmindashboardIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/user_dashboard/': typeof UserdashboardIndexRoute
 }
@@ -508,12 +444,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/admin_dashboard'
     | '/dashboard'
     | '/login'
     | '/register'
     | '/user_dashboard'
-    | '/admin_dashboard/solicitudes'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
     | '/dashboard/informes_user'
@@ -528,7 +462,6 @@ export interface FileRouteTypes {
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
-    | '/admin_dashboard/'
     | '/dashboard/'
     | '/user_dashboard/'
   fileRoutesByTo: FileRoutesByTo
@@ -536,7 +469,6 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
-    | '/admin_dashboard/solicitudes'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
     | '/dashboard/informes_user'
@@ -551,18 +483,15 @@ export interface FileRouteTypes {
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
-    | '/admin_dashboard'
     | '/dashboard'
     | '/user_dashboard'
   id:
     | '__root__'
     | '/'
-    | '/admin_dashboard'
     | '/dashboard'
     | '/login'
     | '/register'
     | '/user_dashboard'
-    | '/admin_dashboard/solicitudes'
     | '/dashboard/entrenamientos'
     | '/dashboard/informes'
     | '/dashboard/informes_user'
@@ -577,7 +506,6 @@ export interface FileRouteTypes {
     | '/user_dashboard/tournament'
     | '/user_dashboard/training'
     | '/user_dashboard/tuition'
-    | '/admin_dashboard/'
     | '/dashboard/'
     | '/user_dashboard/'
   fileRoutesById: FileRoutesById
@@ -585,7 +513,6 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdmindashboardRoute: typeof AdmindashboardRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
@@ -594,7 +521,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdmindashboardRoute: AdmindashboardRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
@@ -612,7 +538,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/admin_dashboard",
         "/dashboard",
         "/login",
         "/register",
@@ -621,13 +546,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/admin_dashboard": {
-      "filePath": "admin_dashboard.tsx",
-      "children": [
-        "/admin_dashboard/solicitudes",
-        "/admin_dashboard/"
-      ]
     },
     "/dashboard": {
       "filePath": "dashboard.tsx",
@@ -660,10 +578,6 @@ export const routeTree = rootRoute
         "/user_dashboard/tuition",
         "/user_dashboard/"
       ]
-    },
-    "/admin_dashboard/solicitudes": {
-      "filePath": "admin_dashboard/solicitudes.tsx",
-      "parent": "/admin_dashboard"
     },
     "/dashboard/entrenamientos": {
       "filePath": "dashboard/entrenamientos.tsx",
@@ -720,10 +634,6 @@ export const routeTree = rootRoute
     "/user_dashboard/tuition": {
       "filePath": "user_dashboard/tuition.tsx",
       "parent": "/user_dashboard"
-    },
-    "/admin_dashboard/": {
-      "filePath": "admin_dashboard/index.tsx",
-      "parent": "/admin_dashboard"
     },
     "/dashboard/": {
       "filePath": "dashboard/index.tsx",

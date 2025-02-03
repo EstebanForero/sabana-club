@@ -18,12 +18,25 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
     setInputValue(e.target.value);
   };
 
+  const [onlyTuitionUsers, setOnlyTuitionUsers] = useState(false)
+
   const [debouncedValue] = useDebounce(inputValue, 500);
 
   const { data: users, isLoading } = useQuery({
     queryKey: ["users_selection", debouncedValue, queryType],
     queryFn: async () => searchUserSelectionInfo(debouncedValue, queryType, 10),
   });
+
+  const getUsers = (): UserSelectionInfo[] => {
+    const userShow = users ?? []
+
+    if (onlyTuitionUsers) {
+      console.log('Executing only tuition users')
+      return userShow.filter(user => user.matricula_valida)
+    }
+
+    return userShow
+  }
 
   const onSelectUser = (userInfo: UserSelectionInfo) => {
     onChangeUser(userInfo.id_persona)
@@ -32,7 +45,7 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
 
   return (
     <details className="dropdown w-full max-w-sm shadow-lg rounded-xl transition-all ease-in-out duration-300 justify-center">
-      <summary className="m-1 w-full text-left cursor-pointer bg-gray-950 rounded-xl p-4 border-2 border-transparent hover:border-blue-500 hover:bg-gray-800 justify-center border-2 border-white">
+      <summary className="m-1 w-full text-left cursor-pointer bg-gray-800 rounded-xl p-4 hover:border-blue-500 hover:bg-gray-950 justify-center border-2 border-white">
         {selectedUser ? (
           <div className="flex flex-col justify-center">
             <span className="font-semibold text-white justify-center">{selectedUser.nombre}</span>
@@ -43,7 +56,7 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
         )}
       </summary>
       <div className="menu dropdown-content rounded-box z-10 w-full p-2 shadow-black shadow-lg bg-gray-950 justify-center ">
-        <div className="flex gap-2 mb-2 justify-center border-2 ">
+        <div className="flex gap-2 mb-2 justify-center">
           <button
             className={`btn ${queryType === "UserName" ? "bg-blue-500 text-white" : "border-gray-300 "}`}
             onClick={() => setQueryType("UserName")}
@@ -62,7 +75,19 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
           >
             PhoneNumber
           </button>
+
         </div>
+
+        <label className="label cursor-pointer w-full flex-row justify-between my-2">
+          <span className="label-text">{onlyTuitionUsers ? "Usuarios con matricula" : "Todos los usuarios"}</span>
+          <input type="checkbox" className="toggle toggle-primary" defaultChecked onChange={(e) => {
+            if (e.target.checked) {
+              setOnlyTuitionUsers(false)
+            } else {
+              setOnlyTuitionUsers(true)
+            }
+          }} />
+        </label>
 
 
         <input
@@ -78,7 +103,7 @@ const UserSelectionComponent = ({ onChangeUser }: Props) => {
         ) : (
           (users ?? []).length > 0 && (
             <ul className="border rounded shadow bg-gray-950 max-h-60 overflow-y-auto">
-              {(users ?? []).map((user) => (
+              {getUsers().map((user) => (
                 <li
                   key={user.id_persona}
                   className={`

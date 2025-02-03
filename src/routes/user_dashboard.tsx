@@ -46,6 +46,12 @@ function RouteComponent() {
     if (userRol == 'Admin') {
       console.log('user is admin')
       return [...links, adminLink]
+    } else if (userRol == 'Entrenador') {
+      console.log('user is trainer')
+      return [...links, {
+        ...adminLink,
+        linkText: "Trainer dashboard"
+      }]
     }
 
     console.log('user is not admin')
