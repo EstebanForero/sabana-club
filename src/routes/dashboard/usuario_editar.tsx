@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useQuery } from '@tanstack/react-query'
-import { getUserByIdentification, getCurrentUser, updateCurrentUser } from '../../backend/user'
+import { getUserByIdentification, getCurrentUser, updateCurrentUser, updateUser } from '../../backend/user'
 import UserForm from '../../components/userForm'
 import { UserInfo, UserCreationInfo } from '../../backend/entities'
 import { useState, useEffect } from 'react'
@@ -68,12 +67,18 @@ function RouteComponent() {
 
   const sendUpdateRequest = async (userCreationInfo: UserCreationInfo) => {
     try {
-      await updateCurrentUser(userCreationInfo)
-      showToast('succesfull', 'Datos de usuario actualizados exitosamente')
+      // Debes pasar el user_id (por ejemplo, de 'userInfo')
+      if (userInfo) {
+        await updateUser(userCreationInfo, userInfo.id_persona); // Aquí le pasas el ID del usuario
+        showToast('succesfull', 'Datos de usuario actualizados exitosamente');
+      } else {
+        throw new Error("No se encontró el ID del usuario");
+      }
     } catch (error) {
-      showToast('error', 'Error al actualizar los datos')
+      showToast('error', 'Error al actualizar los datos');
     }
-  }
+  };
+  
 
   // Aquí llenamos el campo 'contrasena' con un valor vacío para que UserCreationInfo sea válido
   const initialUserData: UserCreationInfo = {
