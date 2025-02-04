@@ -32,7 +32,7 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    const userId = sessionStorage.getItem('userId') // O cualquier otro nombre de clave
+    const userId = sessionStorage.getItem('selectedUserId') // O cualquier otro nombre de clave
     if (userId) {
       getUserByIdentification(userId)
         .then((userData) => {
