@@ -5,7 +5,7 @@ import { validateNumericInput } from '../../validations/validations';
 import { createTraining, deleteTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
 import { getUserByIdentification, currentUserRol } from '../../backend/user';
 import { CreateRequest } from '../../backend/request';
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
 
 // Definición de la ruta
@@ -24,6 +24,8 @@ function RouteComponent() {
   const [toastMessage, setToastMessage] = useState<string>(""); // Mensaje del toast
   const [selectedTraining, setSelectedTraining] = useState<string | null>(null);
   const [userId, setUserId] = useState<string>(""); // State for user ID
+
+  const queryClient = useQueryClient()
 
   const { data: entrenamientos, isLoading } = useQuery({
     queryKey: ['all_trainings'],
@@ -58,6 +60,8 @@ function RouteComponent() {
     }
   };
 
+
+
   const validateTrainingName = (name: string) => {
     const regex = /^[\w\s]+$/; // Allow only alphanumeric characters and spaces
     return regex.test(name);
@@ -82,6 +86,9 @@ function RouteComponent() {
     await createTraining(trainingInfo);
     setShowToast(true);
     setToastMessage("Entrenamiento creado exitosamente.");
+    queryClient.invalidateQueries({
+      queryKey: ['all_trainings']
+    })
     setDuration(''); // Reset duration
     setTrainingName(""); // Reset training name
     setTimeout(() => {
@@ -125,6 +132,9 @@ function RouteComponent() {
           await deleteTraining(selectedTraining);
           setShowToast(true);
           setToastMessage("Entrenamiento y usuarios eliminados exitosamente.");
+          queryClient.invalidateQueries({
+            queryKey: ['all_trainings']
+          })
         } else {
           setShowToast(true);
           setToastMessage("FALTA INFORMACION");
