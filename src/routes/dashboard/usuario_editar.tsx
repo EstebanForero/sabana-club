@@ -14,11 +14,12 @@ function RouteComponent() {
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
   const [succesfullMessage, setSuccesfullMessage] = useState('')
+
+  const navigate = useNavigate();
   const onSearchUser = () => {
     // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
-     const navigate = useNavigate();
-    navigate({ to: '/dashboard/usuarios' });
-  };
+    navigate({ to: '/dashboard/usuarios' });
+  };
 
   const showToast = (variant: 'succesfull' | 'error', message: string) => {
     if (variant == 'succesfull') {
@@ -78,7 +79,7 @@ function RouteComponent() {
       showToast('error', 'Error al actualizar los datos');
     }
   };
-  
+
 
   // Aquí llenamos el campo 'contrasena' con un valor vacío para que UserCreationInfo sea válido
   const initialUserData: UserCreationInfo = {
@@ -88,29 +89,29 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col min-h-screen justify-center items-center p-20">
-    <div className="toast toast-top toast-end">
-      {succesfullMessage && (
-        <div className="alert alert-success">
-          <span>{succesfullMessage}</span>
-        </div>
-      )}
-  
-      {errorMessage && (
-        <div className="alert alert-error">
-          <span>{errorMessage}</span>
-        </div>
-      )}
-    </div>
-  
-    <div className="bg-black p-6 rounded-lg shadow-lg w-full max-w-lg"> {/* Esta es la caja que se va a centrar */}
-      <UserForm
-        onSuccessfulSend={sendUpdateRequest}
-        initialData={initialUserData}  // Pasamos los datos iniciales completos
-        buttonName="Actualizar datos"
-        showPasswordFields={false}
-        exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }}
-      />
-      <div className="flex justify-center mt-4 gap-6 w-full max-w-lg">
+      <div className="toast toast-top toast-end">
+        {succesfullMessage && (
+          <div className="alert alert-success">
+            <span>{succesfullMessage}</span>
+          </div>
+        )}
+
+        {errorMessage && (
+          <div className="alert alert-error">
+            <span>{errorMessage}</span>
+          </div>
+        )}
+      </div>
+
+      <div className="bg-black p-6 rounded-lg shadow-lg w-full max-w-lg"> {/* Esta es la caja que se va a centrar */}
+        <UserForm
+          onSuccessfulSend={sendUpdateRequest}
+          initialData={initialUserData}  // Pasamos los datos iniciales completos
+          buttonName="Actualizar datos"
+          showPasswordFields={false}
+          exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }}
+        />
+        <div className="flex justify-center mt-4 gap-6 w-full max-w-lg">
           <div>
             <button
               onClick={onSearchUser}
@@ -119,9 +120,9 @@ function RouteComponent() {
               Atrás
             </button>
           </div>
-        </div>
+        </div>
+      </div>
     </div>
-  </div>
-  
+
   )
 }
