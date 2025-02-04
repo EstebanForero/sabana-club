@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { GiHealthIncrease, GiPerson, GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
-import { createTraining, deleteTraining, getAllTrainings, getUsersInTraining, registerUserInTraining} from '../../backend/training';
-import { getUserByIdentification,currentUserRol } from '../../backend/user';
+import { createTraining, deleteTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
+import { getUserByIdentification, currentUserRol } from '../../backend/user';
 import { CreateRequest } from '../../backend/request';
 import { useQuery } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
@@ -34,7 +34,7 @@ function RouteComponent() {
     queryKey: ['this_rol'],
     queryFn: currentUserRol
   })
-  
+
   const { data: users_in_training, isLoading: isLoadingUsers } = useQuery({
     queryKey: ['user_training', selectedTraining],
     queryFn: async () => {
@@ -192,7 +192,7 @@ function RouteComponent() {
     if (formType === "asistencia") {
       return (
         <div className="max-w-[800px] w-full shadow-lg shadow-black rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-700">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
+          <div className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
             <h2 className="text-xl font-bold">Formulario Asistencia</h2>
             <select
               className="p-2 border rounded max-w-full my-2"
@@ -237,7 +237,7 @@ function RouteComponent() {
             )}
             <button
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
-              onClick={()=>handledeleteTraining()}
+              onClick={() => handledeleteTraining()}
             >
               eliminar entrenamiento
             </button>
@@ -248,7 +248,7 @@ function RouteComponent() {
             >
               Regresar
             </button>
-          </form>
+          </div>
         </div>
       );
     }
