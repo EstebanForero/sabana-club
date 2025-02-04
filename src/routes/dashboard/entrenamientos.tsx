@@ -2,8 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { GiHealthIncrease, GiPerson, GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
-import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
-import { getUserByIdentification } from '../../backend/user';
+import { createTraining, deleteTraining, getAllTrainings, getUsersInTraining, registerUserInTraining} from '../../backend/training';
+import { getUserByIdentification,currentUserRol } from '../../backend/user';
+import { CreateRequest } from '../../backend/request';
 import { useQuery } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
 
@@ -29,6 +30,11 @@ function RouteComponent() {
     queryFn: getAllTrainings
   });
 
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
+  })
+  
   const { data: users_in_training, isLoading: isLoadingUsers } = useQuery({
     queryKey: ['user_training', selectedTraining],
     queryFn: async () => {
@@ -108,6 +114,32 @@ function RouteComponent() {
         setShowToast(false);
       }, 3000); // Ocultar el toast después de 3 segundos
     }
+  };
+
+  const handledeleteTraining = async () => {
+    if (formType === "asistencia") {
+      // Delete the training and all users enrolled
+      if (selectedTraining) {
+        await deleteTraining(selectedTraining);
+        setShowToast(true);
+        setToastMessage("Entrenamiento y usuarios eliminados exitosamente.");
+      } else {
+        setShowToast(true);
+        setToastMessage("FALTA INFORMACION");
+      }
+    }/* else if (formType === "añadir") {
+      // Remove only the selected user from the training
+      if (selectedTraining && userId.trim() !== '') {
+        // Logic to remove the user from the training
+        // Assuming there's a function to unregister a user from training
+        //await unregisterUserFromTraining(selectedTraining, userId);
+        setShowToast(true);
+        setToastMessage("Usuario eliminado del entrenamiento exitosamente.");
+      } else {
+        setShowToast(true);
+        setToastMessage("FALTA INFORMACION");
+      }
+    }*/
   };
 
   const renderForm = () => {
@@ -204,8 +236,14 @@ function RouteComponent() {
               </div>
             )}
             <button
-              type="button"
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
+              onClick={()=>handledeleteTraining()}
+            >
+              eliminar entrenamiento
+            </button>
+            <button
+              type="button"
+              className="p-2 bg-green-500 text-white rounded hover:bg-grenn-600 hover:cursor-pointer"
               onClick={() => setFormType(null)}
             >
               Regresar
@@ -246,8 +284,14 @@ function RouteComponent() {
               Añadir Usuario
             </button>
             <button
+              className="p-2 bg-red-500 text-white rounded hover:bg-green-800 hover:cursor-pointer"
+              onClick={handledeleteTraining}
+            >
+              eliminar entrenamiento
+            </button>
+            <button
               type="button"
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
+              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:cursor-pointer"
               onClick={() => {
                 setFormType(null);
                 setUserId("");
