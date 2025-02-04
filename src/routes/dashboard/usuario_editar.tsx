@@ -1,35 +1,25 @@
-import { useEffect, useState } from 'react';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
-import { currentUserRol, getUserByIdentification, updateUser } from './../../backend/user'; // Asegúrate de importar la función correctamente
-import { UserInfo, UserUpdationInfo } from 'src/backend/entities'; // Importa la interfaz UserInfo
-import UserForm from '../../components/userForm';
-import { CreateRequest } from '../../backend/request';
+import { getUserByIdentification, getCurrentUser, updateCurrentUser } from '../../backend/user'
+import UserForm from '../../components/userForm'
+import { UserInfo, UserCreationInfo } from '../../backend/entities'
+import { useState, useEffect } from 'react'
 
-// Componente principal
 export const Route = createFileRoute('/dashboard/usuario_editar')({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  const { data: userRol } = useQuery({
-    queryKey: ['this_rol'],
-    queryFn: currentUserRol
-  })
-
-  const navigate = useNavigate();
-
-  const onSearchUser = () => {
-    // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
-    navigate({ to: '/dashboard/usuarios' });
-  };
-
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
+  const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState('')
   const [succesfullMessage, setSuccesfullMessage] = useState('')
+  const onSearchUser = () => {
+    // Si un usuario ha sido seleccionado, redirigimos a la página de informes del usuario
+     const navigate = useNavigate();
+    navigate({ to: '/dashboard/usuarios' });
+  };
 
   const showToast = (variant: 'succesfull' | 'error', message: string) => {
     if (variant == 'succesfull') {
@@ -42,92 +32,80 @@ function RouteComponent() {
   }
 
   useEffect(() => {
-    // Obtener el ID del usuario seleccionado desde sessionStorage
-    const selectedUserId = sessionStorage.getItem('selectedUserId');
-    if (selectedUserId) {
-      // Llamar a la función del backend para obtener la información del usuario
-      getUserByIdentification(selectedUserId)
-        .then((user) => {
-          setUserInfo(user);
-          setLoading(false);
+    const userId = sessionStorage.getItem('selectedUserId') // O cualquier otro nombre de clave
+    if (userId) {
+      getUserByIdentification(userId)
+        .then((userData) => {
+          setUserInfo(userData)
+          setLoading(false)
         })
-        .catch((err) => {
-          setError('Error al cargar la información del usuario');
-          setLoading(false);
-          console.error(err);
-        });
+        .catch((error) => {
+          setErrorMessage('Error al cargar los datos del usuario')
+          setLoading(false)
+          console.error(error)
+        })
     } else {
-      setError('No se encontró el ID del usuario en sessionStorage');
-      setLoading(false);
+      getCurrentUser()
+        .then((userData) => {
+          setUserInfo(userData)
+          setLoading(false)
+        })
+        .catch((error) => {
+          setErrorMessage('Error al cargar los datos del usuario actual')
+          setLoading(false)
+          console.error(error)
+        })
     }
-  }, []);
+  }, [])
+
+  if (loading) {
+    return <p>Cargando...</p>
+  }
 
   if (!userInfo) {
-    return <span className="loading loading-spinner loading-xl"></span>
+    return <p>No se encontró información del usuario.</p>
   }
 
-  const onUpdateUser = async (userUpdateInfo: UserUpdationInfo) => {
+  const sendUpdateRequest = async (userCreationInfo: UserCreationInfo) => {
     try {
-      if (userRol == 'Admin') {
-        await updateUser(userUpdateInfo, userInfo.id_persona)
-        showToast('succesfull', 'datos de el usuario actualizados')
-      } else if (userRol == 'Entrenador') {
-        await CreateRequest({
-          type: "UpdateUser",
-          user_updation: userUpdateInfo,
-          user_id: userInfo.id_persona
-        })
-        showToast('succesfull', 'solicitud de actualizacion enviada')
-      }
+      await updateCurrentUser(userCreationInfo)
+      showToast('succesfull', 'Datos de usuario actualizados exitosamente')
     } catch (error) {
-      showToast('error', 'Error actualizando datos de el usuario')
+      showToast('error', 'Error al actualizar los datos')
     }
   }
 
-  if (loading || !userInfo) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-600">Cargando información del usuario...</p>
-      </div>
-    );
+  // Aquí llenamos el campo 'contrasena' con un valor vacío para que UserCreationInfo sea válido
+  const initialUserData: UserCreationInfo = {
+    ...userInfo,  // Propiedades que vienen de 'UserInfo'
+    contrasena: '', // Agregamos la propiedad contrasena con valor vacío
   }
 
-  if (error) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
-  // Mostrar la información del usuario si se obtiene correctamente
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-900">
-      <div className='toast toast-top toast-end'>
-        {succesfullMessage && <div className='alert alert-success'>
+    <div className="flex flex-col min-h-screen justify-center items-center p-20">
+    <div className="toast toast-top toast-end">
+      {succesfullMessage && (
+        <div className="alert alert-success">
           <span>{succesfullMessage}</span>
-        </div>}
-
-        {errorMessage && <div className='alert alert-error'>
+        </div>
+      )}
+  
+      {errorMessage && (
+        <div className="alert alert-error">
           <span>{errorMessage}</span>
-        </div>}
-      </div>
-
-      <div className="p-6 max-w-4xl w-full bg-gray-800 shadow-lg rounded-lg">
-        <h1 className="text-2xl font-bold mb-4 text-white text-center">
-          Editar {userInfo ? userInfo.nombre : 'Usuario'}
-        </h1>
-        <UserForm onSuccessfulSend={onUpdateUser} initialData={{
-          identificacion: userInfo.identificacion,
-          nombre: userInfo.nombre,
-          nombre_tipo_identificacion: userInfo.nombre_tipo_identificacion.toLowerCase(),
-          correo: userInfo.correo,
-          contrasena: '',
-          telefono: userInfo.telefono
-        }} buttonName={userRol == 'Admin' ? 'Actualizar datos de usuario' : 'Enviar solicitud de actualizacion'} showPasswordFields={false}
-          exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }} />
-
-        <div className="flex justify-center mt-4 gap-6">
+        </div>
+      )}
+    </div>
+  
+    <div className="bg-black p-6 rounded-lg shadow-lg w-full max-w-lg"> {/* Esta es la caja que se va a centrar */}
+      <UserForm
+        onSuccessfulSend={sendUpdateRequest}
+        initialData={initialUserData}  // Pasamos los datos iniciales completos
+        buttonName="Actualizar datos"
+        showPasswordFields={false}
+        exemptValues={{ email: userInfo.correo, phone: userInfo.telefono.toString() }}
+      />
+      <div className="flex justify-center mt-4 gap-6 w-full max-w-lg">
           <div>
             <button
               onClick={onSearchUser}
@@ -136,8 +114,9 @@ function RouteComponent() {
               Atrás
             </button>
           </div>
-        </div>
-      </div>
+        </div>
     </div>
-  );
+  </div>
+  
+  )
 }
