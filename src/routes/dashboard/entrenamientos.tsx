@@ -119,14 +119,30 @@ function RouteComponent() {
   const handledeleteTraining = async () => {
     if (formType === "asistencia") {
       // Delete the training and all users enrolled
-      if (selectedTraining) {
-        await deleteTraining(selectedTraining);
-        setShowToast(true);
-        setToastMessage("Entrenamiento y usuarios eliminados exitosamente.");
-      } else {
-        setShowToast(true);
-        setToastMessage("FALTA INFORMACION");
+
+      if (userRol == 'Admin') {
+        if (selectedTraining) {
+          await deleteTraining(selectedTraining);
+          setShowToast(true);
+          setToastMessage("Entrenamiento y usuarios eliminados exitosamente.");
+        } else {
+          setShowToast(true);
+          setToastMessage("FALTA INFORMACION");
+        }
+      } else if (userRol == 'Entrenador') {
+        if (selectedTraining) {
+          await CreateRequest({
+            type: 'DeleteTraining',
+            training_id: selectedTraining
+          });
+          setShowToast(true);
+          setToastMessage("Solicitud enviada exitosamente para borrar entrenamiento");
+        } else {
+          setShowToast(true);
+          setToastMessage("FALTA INFORMACION");
+        }
       }
+
     }/* else if (formType === "añadir") {
       // Remove only the selected user from the training
       if (selectedTraining && userId.trim() !== '') {
@@ -239,7 +255,7 @@ function RouteComponent() {
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
               onClick={() => handledeleteTraining()}
             >
-              eliminar entrenamiento
+              {userRol == 'Admin' ? "Eliminar entrenamiento" : "Enviar solicitud para eleminar entrenamiento"}
             </button>
             <button
               type="button"
@@ -287,7 +303,7 @@ function RouteComponent() {
               className="p-2 bg-red-500 text-white rounded hover:bg-green-800 hover:cursor-pointer"
               onClick={handledeleteTraining}
             >
-              eliminar entrenamiento
+              {userRol == 'Admin' ? "Eliminar entrenamiento" : "Enviar solicitud para eleminar entrenamiento"}
             </button>
             <button
               type="button"

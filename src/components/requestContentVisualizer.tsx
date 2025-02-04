@@ -1,8 +1,9 @@
 
 import React from 'react'
-import { DeleteTournamentRequest, RequestContent, UserUpdateRequest } from 'src/backend/entities'
+import { DeleteTournamentRequest, DeleteTrainingRequest, RequestContent, UserUpdateRequest } from 'src/backend/entities'
 import { useQuery } from '@tanstack/react-query'
 import { getTournament } from '../backend/tournament'
+import { getTraining } from '../backend/training'
 
 type Props = {
   requestContent: RequestContent
@@ -16,6 +17,8 @@ const RequestContentVisualizer = ({ requestContent }: Props) => {
       return <UserUpdateRequestComponent user_update_request={requestContent as UserUpdateRequest} />
     } else if (requestContent.type == 'DeleteTournament') {
       return <DeleteTournamentRequestComponent delete_tournament_request={requestContent as DeleteTournamentRequest} />
+    } else if (requestContent.type == 'DeleteTraining') {
+      return <DeleteTrainingRequestComponent delete_training_request={requestContent as DeleteTrainingRequest} />
     }
   }
 
@@ -58,6 +61,26 @@ const DeleteTournamentRequestComponent = ({ delete_tournament_request }: DeleteT
     <div>
       <h1>Torneo a borrar</h1>
       <p>Nombre: {tournamentInfo?.nombre}</p>
+    </div>
+  )
+}
+
+type DeleteTrainingRequestProps = {
+  delete_training_request: DeleteTrainingRequest
+}
+
+const DeleteTrainingRequestComponent = ({ delete_training_request }: DeleteTrainingRequestProps) => {
+
+  const { data: trainingInfo } = useQuery({
+    queryKey: [`training_${delete_training_request.training_id}`],
+    queryFn: async () => getTraining(delete_training_request.training_id)
+  })
+
+  return (
+    <div>
+      <h1>Entrenamiento a borrar</h1>
+      <p>Nombre: {trainingInfo?.nombre_entrenamiento}</p>
+      <p>Tiempo entrenamiento: {trainingInfo?.tiempo_minutos} minutos</p>
     </div>
   )
 }

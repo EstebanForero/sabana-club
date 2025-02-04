@@ -35,6 +35,15 @@ export async function deleteTraining(training_id: string) {
   });
 }
 
+export async function getTraining(training_id: string): Promise<Training> {
+  const token = tokenStore.state
+  return await ky.get(`${backendUrl}/training/id/${training_id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).json<Training>();
+}
+
 // Obtiene los entrenamientos de el usuario registrado actualmente
 export async function getTrainingsForCurrentUser(): Promise<Training[]> {
   const token = tokenStore.state
