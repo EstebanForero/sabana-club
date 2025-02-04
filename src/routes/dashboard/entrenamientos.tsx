@@ -2,9 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import { GiHealthIncrease, GiPerson, GiTennisRacket } from 'react-icons/gi';
 import { validateNumericInput } from '../../validations/validations';
-import { createTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
-import { getUserByIdentification } from '../../backend/user';
-import { useQuery } from '@tanstack/react-query'
+import { createTraining, deleteTraining, getAllTrainings, getUsersInTraining, registerUserInTraining } from '../../backend/training';
+import { getUserByIdentification, currentUserRol } from '../../backend/user';
+import { CreateRequest } from '../../backend/request';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import UserSelectionComponent from "../../components/userSelectionComponent";
 
 // Definición de la ruta
@@ -24,10 +25,17 @@ function RouteComponent() {
   const [selectedTraining, setSelectedTraining] = useState<string | null>(null);
   const [userId, setUserId] = useState<string>(""); // State for user ID
 
+  const queryClient = useQueryClient()
+
   const { data: entrenamientos, isLoading } = useQuery({
     queryKey: ['all_trainings'],
     queryFn: getAllTrainings
   });
+
+  const { data: userRol } = useQuery({
+    queryKey: ['this_rol'],
+    queryFn: currentUserRol
+  })
 
   const { data: users_in_training, isLoading: isLoadingUsers } = useQuery({
     queryKey: ['user_training', selectedTraining],
@@ -51,6 +59,8 @@ function RouteComponent() {
       setDuration('');
     }
   };
+
+
 
   const validateTrainingName = (name: string) => {
     const regex = /^[\w\s]+$/; // Allow only alphanumeric characters and spaces
@@ -76,6 +86,9 @@ function RouteComponent() {
     await createTraining(trainingInfo);
     setShowToast(true);
     setToastMessage("Entrenamiento creado exitosamente.");
+    queryClient.invalidateQueries({
+      queryKey: ['all_trainings']
+    })
     setDuration(''); // Reset duration
     setTrainingName(""); // Reset training name
     setTimeout(() => {
@@ -108,6 +121,51 @@ function RouteComponent() {
         setShowToast(false);
       }, 3000); // Ocultar el toast después de 3 segundos
     }
+  };
+
+  const handledeleteTraining = async () => {
+    if (formType === "asistencia") {
+      // Delete the training and all users enrolled
+
+      if (userRol == 'Admin') {
+        if (selectedTraining) {
+          await deleteTraining(selectedTraining);
+          setShowToast(true);
+          setToastMessage("Entrenamiento y usuarios eliminados exitosamente.");
+          queryClient.invalidateQueries({
+            queryKey: ['all_trainings']
+          })
+        } else {
+          setShowToast(true);
+          setToastMessage("FALTA INFORMACION");
+        }
+      } else if (userRol == 'Entrenador') {
+        if (selectedTraining) {
+          await CreateRequest({
+            type: 'DeleteTraining',
+            training_id: selectedTraining
+          });
+          setShowToast(true);
+          setToastMessage("Solicitud enviada exitosamente para borrar entrenamiento");
+        } else {
+          setShowToast(true);
+          setToastMessage("FALTA INFORMACION");
+        }
+      }
+
+    }/* else if (formType === "añadir") {
+      // Remove only the selected user from the training
+      if (selectedTraining && userId.trim() !== '') {
+        // Logic to remove the user from the training
+        // Assuming there's a function to unregister a user from training
+        //await unregisterUserFromTraining(selectedTraining, userId);
+        setShowToast(true);
+        setToastMessage("Usuario eliminado del entrenamiento exitosamente.");
+      } else {
+        setShowToast(true);
+        setToastMessage("FALTA INFORMACION");
+      }
+    }*/
   };
 
   const renderForm = () => {
@@ -160,7 +218,7 @@ function RouteComponent() {
     if (formType === "asistencia") {
       return (
         <div className="max-w-[800px] w-full shadow-lg shadow-black rounded-lg p-6 flex flex-col justify-evenly gap-4 bg-gray-700">
-          <form className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
+          <div className="rounded-lg p-6 flex flex-col justify-evenly gap-[50px] bg-gray-800">
             <h2 className="text-xl font-bold">Formulario Asistencia</h2>
             <select
               className="p-2 border rounded max-w-full my-2"
@@ -204,13 +262,19 @@ function RouteComponent() {
               </div>
             )}
             <button
-              type="button"
               className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
+              onClick={() => handledeleteTraining()}
+            >
+              {userRol == 'Admin' ? "Eliminar entrenamiento" : "Enviar solicitud para eleminar entrenamiento"}
+            </button>
+            <button
+              type="button"
+              className="p-2 bg-green-500 text-white rounded hover:bg-grenn-600 hover:cursor-pointer"
               onClick={() => setFormType(null)}
             >
               Regresar
             </button>
-          </form>
+          </div>
         </div>
       );
     }
@@ -246,8 +310,14 @@ function RouteComponent() {
               Añadir Usuario
             </button>
             <button
+              className="p-2 bg-red-500 text-white rounded hover:bg-green-800 hover:cursor-pointer"
+              onClick={handledeleteTraining}
+            >
+              {userRol == 'Admin' ? "Eliminar entrenamiento" : "Enviar solicitud para eleminar entrenamiento"}
+            </button>
+            <button
               type="button"
-              className="p-2 bg-red-500 text-white rounded hover:bg-red-600 hover:cursor-pointer"
+              className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600 hover:cursor-pointer"
               onClick={() => {
                 setFormType(null);
                 setUserId("");

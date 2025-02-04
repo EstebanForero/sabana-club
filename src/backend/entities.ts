@@ -91,10 +91,12 @@ export type RequestCommand = {
 }
 
 interface RequestBase {
-  type: string
+  type: CommandType
 }
 
-export type RequestContent = UserUpdateRequest | DeleteTournamentRequest
-export type CommandType = "UpdateUser" | "DeleteTournament"
+export type RequestContent = UserUpdateRequest | DeleteTournamentRequest | DeleteTrainingRequest
+export type CommandType = "UpdateUser" | "DeleteTournament" | "DeleteTraining"
+export interface DeleteTrainingRequest extends RequestBase { type: CommandType, training_id: string }
 export interface DeleteTournamentRequest extends RequestBase { type: CommandType, tournament_id: string }
 export interface UserUpdateRequest extends RequestBase { type: CommandType, user_updation: UserUpdationInfo, user_id: string }
+
