@@ -61,12 +61,7 @@ function RouteComponent() {
               <div key={tournament.id_torneo} className="border border-gray-700 p-6 rounded-lg bg-gray-700 hover:bg-gray-600 transition duration-300">
                 <div className="flex flex-row justify-between mb-6 items-center">
                   <h3 className="text-xl font-semibold text-gray-200">{tournament.nombre}</h3>
-                  <button
-                    className="bg-red-600 px-4 py-2 text-white rounded-lg hover:bg-red-700 transition duration-300"
-                    onClick={() => onDeleteTournament(tournament.id_torneo)}
-                  >
-                    {userRol === 'Admin' ? 'Eliminar Torneo' : 'Solicitar Eliminación'}
-                  </button>
+                 
                 </div>
                 {players.length === 0 ? (
                   <p className="text-gray-400 mb-2">No hay usuarios registrados todavía</p>
